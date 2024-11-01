@@ -6,8 +6,8 @@
 # `jekyll serve`. If you change this file, please restart the server process.
 
 # Site Settings
-title                    : "Lorem ipsum"
-description              : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. "
+title                    : "Mouyang Cheng"
+description              : "A humble PhD student in computational science and engineering"
 repository               : "vipandyc/vipandyc.github.io"
 google_scholar_stats_use_cdn : true
 
