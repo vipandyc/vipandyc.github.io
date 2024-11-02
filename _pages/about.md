@@ -21,8 +21,14 @@ Hi! I'm Mouyang Cheng (程谋阳), 1st year graduate student in MIT CSE-DMSE (Co
 
 Specifically, my current interest includes understanding defects and amorphous systems using computational methods, and predicting experimental synthesis recipe using advanced machine learning techniques. I'm also generally interested in predicting novel properties of energy materials, and inverse designing next-generation advanced functional materials.
 
-There will be future updates on this personal page!
+There will be future updates on this personal page! Thank you for your visiting!
 
+# 🎖 Honors and Awards
+- *2024.03* Excellent Undergraduate Research Project, Peking University (Undergraduate)
+- *2023.09* National Scholarship, Peking University (Undergraduate, top 1%)
+- *2022.09* National Scholarship, Peking University (Undergraduate, top 1%)
+- *2021.09* National Scholarship, Peking University (Undergraduate, top 1%)
+  
 # 📖 Educations
 - *2024.07 - (now)*, Ph.D. Computational Science and Engineering, MIT, US
 - *2020.09 - 2024.07*, B.S. Physics, Peking University, China 
