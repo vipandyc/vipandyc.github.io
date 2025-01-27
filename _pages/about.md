@@ -26,17 +26,6 @@ There will be future updates on this personal page! Thank you for your visiting!
 # 📝 Selected publications
 For full list of publications please refer to my  [Google scholar page](https://scholar.google.com/citations?user=RQP17VsAAAAJ).
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Nature</div><img src='images/Nature2023.jpg' alt="sym" width="100%"></div></div>
-<div class='paper-box-text' markdown="1">
-
-[Disorder tuned conductivity in amorphous monolayer carbon](https://www.nature.com/articles/s41586-022-05617-w)
-
-**Mouyang Cheng**\*
-
-- A trial of combination between symmetry in music theory and deep learning.
-</div>
-</div>
-
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">Matter</div><img src='images/matter2024.jpg' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
@@ -44,11 +33,23 @@ For full list of publications please refer to my  [Google scholar page](https://
 
 **Mouyang Cheng**, Ryotaro Okabe, Abhijatmedhi Chotrattanapituk, Mingda Li\*
 
-- Rigorous interpretation and modeling of pKa data with thermodynamic consistency.
-- State-of-the-art performance among ML-based pKa prediction models.
-- Fast enumeration and ranking for the protonation states of molecules under various pH conditions.
+- Majorana zero modes (MZMs) show promise for topological quantum computation via zero-bias peaks (ZBPs)
+- Machine learning framework distinguishes MZM signals from spurious ZBP signals with up to 94\% accuracy.
 </div>
 </div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Nature</div><img src='images/Nature2023.jpg' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Disorder tuned conductivity in amorphous monolayer carbon](https://www.nature.com/articles/s41586-022-05617-w)
+
+Huifeng Tian$^\dagger$, Yinhang Ma$^\dagger$, Zhenjiang Li$^\dagger$, **Mouyang Cheng$^\dagger$**, Shoucong Ning$^\dagger$ et al. ($^\dagger$ Equal contribution.)
+
+- Medium range order and density of crystalline sites tune electric conductivity to up to 9 orders of magnitude.
+- Unravelling the complex structure-property relation of amorphous monolayer carbon.
+</div>
+</div>
+
 
 # 🎖 Honors and Awards
 - *2024.03* Excellent Undergraduate Research Project, Peking University (Undergraduate)
