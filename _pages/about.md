@@ -31,7 +31,7 @@ For full list of publications please refer to my  [Google scholar page](https://
 
 [Machine learning detection of Majorana zero modes from zero-bias peak measurements](https://www.cell.com/matter/abstract/S2590-2385(24)00253-4)
 
-**Mouyang Cheng**, Ryotaro Okabe, Abhijatmedhi Chotrattanapituk, Mingda Li\*
+**Mouyang Cheng\***, Ryotaro Okabe, Abhijatmedhi Chotrattanapituk, Mingda Li\*
 
 - Majorana zero modes (MZMs) show promise for topological quantum computation via zero-bias peaks (ZBPs)
 - Machine learning framework distinguishes MZM signals from spurious ZBP signals with up to 94\% accuracy.
@@ -43,7 +43,7 @@ For full list of publications please refer to my  [Google scholar page](https://
 
 [Disorder tuned conductivity in amorphous monolayer carbon](https://www.nature.com/articles/s41586-022-05617-w)
 
-Huifeng Tian$^\dagger$, Yinhang Ma$^\dagger$, Zhenjiang Li$^\dagger$, **Mouyang Cheng$^\dagger$**, Shoucong Ning$^\dagger$ et al. ($^\dagger$ Equal contribution.)
+Huifeng Tian<sup>&dagger;</sup>, Yinhang Ma<sup>&dagger;</sup>, Zhenjiang Li<sup>&dagger;</sup>, **Mouyang Cheng<sup>&dagger;</sup>**, Shoucong Ning<sup>&dagger;</sup> et al. (<sup>&dagger;</sup>Equal contribution.)
 
 - Medium range order and density of crystalline sites tune electric conductivity to up to 9 orders of magnitude.
 - Unravelling the complex structure-property relation of amorphous monolayer carbon.
@@ -59,7 +59,7 @@ Huifeng Tian$^\dagger$, Yinhang Ma$^\dagger$, Zhenjiang Li$^\dagger$, **Mouyang 
 
 # 🔥 News
 - *2024.09*: I joined [Mingda's research group](https://qm.mit.edu/)!
-- *2024.07*: “Machine Learning Detection of Majorana Zero Modes from Zero Bias Peak Measurements” has been accepted by *Matter* and selected as the highlighted article for 5$^{th}$ anniversary of the journal.
+- *2024.07*: “Machine Learning Detection of Majorana Zero Modes from Zero Bias Peak Measurements” has been accepted by *Matter* and selected as the highlighted article for 5 $^{\text{th}}$ anniversary of the journal.
 
 # 📖 Educations
 - *2024.07 - (now)*, Ph.D. Computational Science and Engineering, MIT, US
