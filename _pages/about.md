@@ -23,12 +23,43 @@ Specifically, my current interest includes understanding defects and amorphous s
 
 There will be future updates on this personal page! Thank you for your visiting!
 
+# 📝 Selected publications
+For full list of publications please refer to my  [Google scholar page](https://scholar.google.com/citations?user=RQP17VsAAAAJ).
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Nature</div><img src='images/Nature2023.jpg' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Disorder tuned conductivity in amorphous monolayer carbon](https://www.nature.com/articles/s41586-022-05617-w)
+
+**Mouyang Cheng**\*
+
+- A trial of combination between symmetry in music theory and deep learning.
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Matter</div><img src='images/matter2024.jpg' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Machine learning detection of Majorana zero modes from zero-bias peak measurements](https://www.cell.com/matter/abstract/S2590-2385(24)00253-4)
+
+**Mouyang Cheng**, Ryotaro Okabe, Abhijatmedhi Chotrattanapituk, Mingda Li\*
+
+- Rigorous interpretation and modeling of pKa data with thermodynamic consistency.
+- State-of-the-art performance among ML-based pKa prediction models.
+- Fast enumeration and ranking for the protonation states of molecules under various pH conditions.
+</div>
+</div>
+
 # 🎖 Honors and Awards
 - *2024.03* Excellent Undergraduate Research Project, Peking University (Undergraduate)
 - *2023.09* National Scholarship, Peking University (Undergraduate, top 1%)
 - *2022.09* National Scholarship, Peking University (Undergraduate, top 1%)
 - *2021.09* National Scholarship, Peking University (Undergraduate, top 1%)
-  
+
+# 🔥 News
+- *2024.09*: I joined [Mingda's research group](https://qm.mit.edu/)!
+- *2024.07*: “Machine Learning Detection of Majorana Zero Modes from Zero Bias Peak Measurements” has been accepted by *Matter* and selected as the highlighted article for 5$^{th}$ anniversary of the journal.
+
 # 📖 Educations
 - *2024.07 - (now)*, Ph.D. Computational Science and Engineering, MIT, US
 - *2020.09 - 2024.07*, B.S. Physics, Peking University, China 
