@@ -34,7 +34,7 @@ For full list of publications please refer to my  [Google scholar page](https://
 **Mouyang Cheng\***, Ryotaro Okabe, Abhijatmedhi Chotrattanapituk, Mingda Li\*
 
 - Majorana zero modes (MZMs) show promise for topological quantum computation via zero-bias peaks (ZBPs)
-- Machine learning framework distinguishes MZM signals from spurious ZBP signals with up to 94\% accuracy.
+- Machine learning framework distinguishes MZM signals from spurious ZBP signals with up to 94% accuracy.
 </div>
 </div>
 
