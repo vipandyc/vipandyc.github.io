@@ -26,6 +26,18 @@ There will be future updates on this personal page! Thank you for your visiting!
 # 📝 Selected publications
 For full list of publications please refer to my  [Google scholar page](https://scholar.google.com/citations?user=RQP17VsAAAAJ).
 
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Arxiv</div><img src='images/ai_mat_rev.pdf' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[AI-driven materials design: a mini-review](https://arxiv.org/abs/2502.02905)
+
+**Mouyang Cheng\*** <sup>&dagger;</sup>, Chu-Liang Fu<sup>&dagger;</sup>, Ryotaro Okabe<sup>&dagger;</sup>, Abhijatmedhi Chotrattanapituk<sup>&dagger;</sup> et al. (<sup>&dagger;</sup>Equal contribution.)
+
+- Review article on AI-driven materials design.
+- Highlighting a shift of paradigm from forward screening to inverse design, driven by deep generative models.
+</div>
+</div>
+
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">Matter</div><img src='images/matter2024.jpg' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
@@ -58,6 +70,7 @@ Huifeng Tian<sup>&dagger;</sup>, Yinhang Ma<sup>&dagger;</sup>, Zhenjiang Li<sup
 - *2021.09* National Scholarship, Peking University (Undergraduate, top 1%)
 
 # 🔥 News
+- *2025.02*: I uploaded my first review paper “AI-driven materials design: a mini-review” as lead author!
 - *2024.09*: I joined [Mingda's research group](https://qm.mit.edu/)!
 - *2024.07*: “Machine Learning Detection of Majorana Zero Modes from Zero Bias Peak Measurements” has been accepted by *Matter* and selected as the highlighted article for 5 $^{\text{th}}$ anniversary of the journal.
 
