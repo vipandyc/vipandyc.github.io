@@ -26,7 +26,7 @@ There will be future updates on this personal page! Thank you for your visiting!
 # 📝 Selected publications
 For full list of publications please refer to my  [Google scholar page](https://scholar.google.com/citations?user=RQP17VsAAAAJ).
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Arxiv</div><img src='images/ai_mat_rev.png' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Arxiv</div><img src='images/ai_mat_rev_mainpage.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [AI-driven materials design: a mini-review](https://arxiv.org/abs/2502.02905)
