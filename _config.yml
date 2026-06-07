@@ -22,7 +22,7 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 # Site Author
 author:
   name             : "Mouyang Cheng"
-  avatar           : "images/android-chrome-512x512.png"
+  avatar           : "/images/android-chrome-512x512.png"
   bio              : "MIT Mingda Li's Group"
   location         : "Cambridge, MA, U.S."
   employer         :
@@ -37,7 +37,7 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : # e.g., "github username"
+  github           : "vipandyc"
   google_plus      :
   keybase          :
   instagram        :
