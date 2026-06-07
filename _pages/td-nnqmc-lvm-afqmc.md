@@ -9,31 +9,31 @@ author_profile: true
 
 This note is a method-first tutorial. The model can be a spin system, a fermion lattice Hamiltonian, or a continuum many-electron problem after choosing a basis. The common goal is to compute either real-time dynamics or the corresponding canonical thermal benchmark.
 
-The three algorithms play different roles. Time-dependent NNQMC represents $|\psi(t)\rangle$ by a neural state $|\psi_{\theta(t)}\rangle$ and evolves $\theta(t)$ by a time-dependent variational principle. The Linear Variational Method (LVM) represents $|\psi(t)\rangle=\sum_k c_k(t)|\phi_k\rangle$ in a fixed subspace and solves projected dynamics. Canonical AFQMC samples finite-temperature equilibrium in a fixed particle-number or symmetry sector.
+The three algorithms play different roles. Time-dependent NNQMC represents $\lvert\psi(t)\rangle$ by a neural state $\lvert\psi_{\theta(t)}\rangle$ and evolves $\theta(t)$ by a time-dependent variational principle. The Linear Variational Method (LVM) represents $\lvert\psi(t)\rangle=\sum_k c_k(t)\lvert\phi_k\rangle$ in a fixed subspace and solves projected dynamics. Canonical AFQMC samples finite-temperature equilibrium in a fixed particle-number or symmetry sector.
 
 ## Notation
 
-Let $x$ be a computational-basis configuration and $\psi_\theta(x)=\langle x|\psi_\theta\rangle$. Neural quantum Monte Carlo samples $p_\theta(x)=|\psi_\theta(x)|^2/\sum_y|\psi_\theta(y)|^2$.
+Let $x$ be a computational-basis configuration and $\psi_\theta(x)=\langle x\vert\psi_\theta\rangle$. Neural quantum Monte Carlo samples $p_\theta(x)=\lvert\psi_\theta(x)\rvert^2/\sum_y\lvert\psi_\theta(y)\rvert^2$.
 
-For any operator $A$, the local estimator is $A_{\rm loc}(x)=\langle x|A|\psi_\theta\rangle/\psi_\theta(x)=\sum_{x'}A_{xx'}\psi_\theta(x')/\psi_\theta(x)$. Thus $\langle A\rangle=E_{x\sim p_\theta}[A_{\rm loc}(x)]$.
+For any operator $A$, the local estimator is $A_{\rm loc}(x)=\langle x\vert A\vert\psi_\theta\rangle/\psi_\theta(x)=\sum_y A_{xy}\psi_\theta(y)/\psi_\theta(x)$. Thus $\langle A\rangle=E_{x\sim p_\theta}[A_{\rm loc}(x)]$.
 
-The practical primitive is simple: for each sampled $x$, enumerate all connected configurations $x'$ with $A_{xx'}\ne0$, compute $\psi_\theta(x')/\psi_\theta(x)$, multiply by $A_{xx'}$, and sum. For fermions, this is where operator-ordering signs enter.
+The practical primitive is simple: for each sampled $x$, enumerate all connected configurations $y$ with $A_{xy}\ne0$, compute $\psi_\theta(y)/\psi_\theta(x)$, multiply by $A_{xy}$, and sum. For fermions, this is where operator-ordering signs enter.
 
 ## 1. Time-Dependent NNQMC
 
-Exact real-time evolution obeys $d|\psi(t)\rangle/dt=-iH(t)|\psi(t)\rangle$. TD-NNQMC restricts the state to a variational manifold $|\psi_{\theta(t)}\rangle$ and chooses $\dot\theta$ so that $\sum_j\dot\theta_j|\partial_j\psi_\theta\rangle$ is as close as possible to $-iH|\psi_\theta\rangle$.
+Exact real-time evolution obeys $d\lvert\psi(t)\rangle/dt=-iH(t)\lvert\psi(t)\rangle$. TD-NNQMC restricts the state to a variational manifold $\lvert\psi_{\theta(t)}\rangle$ and chooses $\dot\theta$ so that $\sum_j\dot\theta_j\lvert\partial_j\psi_\theta\rangle$ is as close as possible to $-iH\lvert\psi_\theta\rangle$.
 
 ### Log-Derivative Geometry
 
 Define logarithmic derivatives $O_j(x)=\partial_{\theta_j}\log\psi_\theta(x)$. Then $\partial_{\theta_j}\psi_\theta(x)=O_j(x)\psi_\theta(x)$. Remove norm/phase redundancy by centering: $\Delta O_j(x)=O_j(x)-E[O_j]$ and $\Delta E(x)=E_{\rm loc}(x)-E[E_{\rm loc}]$.
 
-The TDVP equations are $S\dot\theta=-iF$, with $S_{ij}=E[\Delta O_i^*\Delta O_j]$ and $F_i=E[\Delta O_i^*E_{\rm loc}]$. For real parameters, split complex quantities into real and imaginary parts; many implementations use ${\rm Re}(S)\dot\theta={\rm Im}(F)$, up to sign conventions.
+The TDVP equations are $S\dot\theta=-iF$, with $S_{ij}=E[\Delta O_i^\ast\Delta O_j]$ and $F_i=E[\Delta O_i^\ast E_{\rm loc}]$. For real parameters, split complex quantities into real and imaginary parts; many implementations use ${\rm Re}(S)\dot\theta={\rm Im}(F)$, up to sign conventions.
 
 Equivalently, $\dot\theta$ minimizes the residual $r(x)=\sum_j\dot\theta_j\Delta O_j(x)+i\Delta E(x)$ in mean square. This residual is the most useful interpretation: TDVP projects the Schrodinger vector field onto the neural tangent space.
 
 ### Monte Carlo Estimators
 
-Draw $M$ samples $x_a\sim p_\theta$. Estimate $\bar O_j=M^{-1}\sum_a O_j(x_a)$ and $\bar E=M^{-1}\sum_a E_{\rm loc}(x_a)$. Then $S_{ij}\approx M^{-1}\sum_a (O_i(x_a)-\bar O_i)^*(O_j(x_a)-\bar O_j)$ and $F_i\approx M^{-1}\sum_a (O_i(x_a)-\bar O_i)^*(E_{\rm loc}(x_a)-\bar E)$.
+Draw $M$ samples $x_a\sim p_\theta$. Estimate $\bar O_j=M^{-1}\sum_a O_j(x_a)$ and $\bar E=M^{-1}\sum_a E_{\rm loc}(x_a)$. Then $S_{ij}\approx M^{-1}\sum_a (O_i(x_a)-\bar O_i)^\ast(O_j(x_a)-\bar O_j)$ and $F_i\approx M^{-1}\sum_a (O_i(x_a)-\bar O_i)^\ast(E_{\rm loc}(x_a)-\bar E)$.
 
 Directly forming and inverting $S$ is expensive because $S$ is $P\times P$, where $P$ is the number of neural-network parameters.
 
@@ -74,9 +74,9 @@ Choose $dt$ so the largest local energy scale times $dt$ is small. In a static H
 
 Use a sampler that stays in the intended Hilbert-space sector. For spin systems, this may mean magnetization-preserving spin exchanges. For fermions, propose particle moves from occupied to empty orbitals while preserving $N_\uparrow$ and $N_\downarrow$.
 
-At each measurement time, sample from $|\psi_\theta|^2$, evaluate $A_{\rm loc}(x)$, and average. For Hermitian $A$, keep the real part but monitor the imaginary part as a noise diagnostic.
+At each measurement time, sample from $\lvert\psi_\theta\rvert^2$, evaluate $A_{\rm loc}(x)$, and average. For Hermitian $A$, keep the real part but monitor the imaginary part as a noise diagnostic.
 
-The TDVP residual should be estimated on an independent validation batch: $L_{\rm val}=E_{\rm val}[|\sum_j\dot\theta_j\Delta O_j(x)+i\Delta E(x)|^2]$. Using the same batch as the linear solve can underestimate the error because the solve may fit sampling noise.
+The TDVP residual should be estimated on an independent validation batch: $L_{\rm val}=E_{\rm val}[\lvert\sum_j\dot\theta_j\Delta O_j(x)+i\Delta E(x)\rvert^2]$. Using the same batch as the linear solve can underestimate the error because the solve may fit sampling noise.
 
 ### TD-NNQMC Algorithm
 
@@ -101,15 +101,15 @@ For large networks, avoid explicitly storing the full Jacobian if possible. The 
 
 ## 2. Linear Variational Method
 
-LVM approximates dynamics in a fixed basis $|\phi_k\rangle$: $|\psi(t)\rangle=\sum_{k=1}^{M_b}c_k(t)|\phi_k\rangle$. The basis can be TD-NNQMC snapshots, Krylov vectors, Lanczos vectors, Chebyshev vectors, or separately optimized variational states.
+LVM approximates dynamics in a fixed basis $\lvert\phi_k\rangle$: $\lvert\psi(t)\rangle=\sum_{k=1}^{M_b}c_k(t)\lvert\phi_k\rangle$. The basis can be TD-NNQMC snapshots, Krylov vectors, Lanczos vectors, Chebyshev vectors, or separately optimized variational states.
 
-Define the overlap matrix $S_{ij}=\langle\phi_i|\phi_j\rangle$ and projected Hamiltonian $H_{ij}=\langle\phi_i|H|\phi_j\rangle$. Projecting Schrodinger evolution gives $S\dot c=-iHc$. In an orthonormal basis this reduces to $\dot c=-iHc$, but neural snapshots are generally nonorthogonal.
+Define the overlap matrix $S_{ij}=\langle\phi_i\vert\phi_j\rangle$ and projected Hamiltonian $H_{ij}=\langle\phi_i\vert H\vert\phi_j\rangle$. Projecting Schrodinger evolution gives $S\dot c=-iHc$. In an orthonormal basis this reduces to $\dot c=-iHc$, but neural snapshots are generally nonorthogonal.
 
 ### Matrix Elements by Monte Carlo
 
-For neural basis states, choose a sampling distribution with support over all basis states, for example $\Pi(x)=\sum_k w_k|\phi_k(x)|^2$ with $w_k>0$. Then $S_{ij}=Z_\Pi E_\Pi[\phi_i^*(x)\phi_j(x)/\Pi(x)]$.
+For neural basis states, choose a sampling distribution with support over all basis states, for example $\Pi(x)=\sum_k w_k\lvert\phi_k(x)\rvert^2$ with $w_k>0$. Then $S_{ij}=Z_\Pi E_\Pi[\phi_i^\ast(x)\phi_j(x)/\Pi(x)]$.
 
-For an operator $A$, define the transition local estimator $A_{\rm loc}^{(j)}(x)=\langle x|A|\phi_j\rangle/\phi_j(x)$. Then $A_{ij}=Z_\Pi E_\Pi[\phi_i^*(x)\phi_j(x)A_{\rm loc}^{(j)}(x)/\Pi(x)]$.
+For an operator $A$, define the transition local estimator $A_{\rm loc}^{(j)}(x)=\langle x\vert A\vert\phi_j\rangle/\phi_j(x)$. Then $A_{ij}=Z_\Pi E_\Pi[\phi_i^\ast(x)\phi_j(x)A_{\rm loc}^{(j)}(x)/\Pi(x)]$.
 
 Use the same logic for $H_{ij}$. After Monte Carlo estimation, symmetrize Hermitian matrices: $S\leftarrow(S+S^\dagger)/2$, $H\leftarrow(H+H^\dagger)/2$, and $A\leftarrow(A+A^\dagger)/2$.
 
@@ -117,15 +117,15 @@ Use the same logic for $H_{ij}$. After Monte Carlo estimation, symmetrize Hermit
 
 Do not invert $S$ blindly. Diagonalize $S=UsU^\dagger$, discard directions with $s_\alpha<\epsilon_Ss_{\max}$, and define $B=U_{\rm kept}s_{\rm kept}^{-1/2}$.
 
-The retained orthonormal basis is $|\chi_\alpha\rangle=\sum_i B_{i\alpha}|\phi_i\rangle$. Transform matrices as $H_o=B^\dagger HB$ and $A_o=B^\dagger AB$.
+The retained orthonormal basis is $\lvert\chi_\alpha\rangle=\sum_i B_{i\alpha}\lvert\phi_i\rangle$. Transform matrices as $H_o=B^\dagger HB$ and $A_o=B^\dagger AB$.
 
-If $|\psi\rangle=\sum_i c_i|\phi_i\rangle$, its coefficients in the orthonormal retained basis are $d=B^\dagger Sc$. Conversely, within the retained subspace, $c=Bd$.
+If $\lvert\psi\rangle=\sum_i c_i\lvert\phi_i\rangle$, its coefficients in the orthonormal retained basis are $d=B^\dagger Sc$. Conversely, within the retained subspace, $c=Bd$.
 
 ### Finite-Time and Infinite-Time Dynamics
 
 For time-independent $H$, evolve $d(t)=e^{-iH_ot}d(0)$. Observables are $\langle A(t)\rangle=d^\dagger(t)A_od(t)/d^\dagger(t)d(t)$.
 
-For the infinite-time average, diagonalize $H_ou_\alpha=E_\alpha u_\alpha$ and expand $d(0)=\sum_\alpha a_\alpha u_\alpha$. If there are no degeneracies, $\bar A_\infty=\sum_\alpha |a_\alpha|^2u_\alpha^\dagger A_ou_\alpha$. With degeneracies, keep all pairs satisfying $E_\alpha=E_\beta$: $\bar A_\infty=\sum_{\alpha,\beta:E_\alpha=E_\beta}a_\alpha^*a_\beta u_\alpha^\dagger A_ou_\beta$.
+For the infinite-time average, diagonalize $H_ou_\alpha=E_\alpha u_\alpha$ and expand $d(0)=\sum_\alpha a_\alpha u_\alpha$. If there are no degeneracies, $\bar A_\infty=\sum_\alpha \lvert a_\alpha\rvert^2u_\alpha^\dagger A_ou_\alpha$. With degeneracies, keep all pairs satisfying $E_\alpha=E_\beta$: $\bar A_\infty=\sum_{\alpha,\beta:E_\alpha=E_\beta}a_\alpha^\ast a_\beta u_\alpha^\dagger A_ou_\beta$.
 
 In finite precision, group energies using a tolerance. The tolerance should exceed numerical diagonalization noise but not merge physically distinct frequencies.
 
@@ -147,25 +147,25 @@ evolve d(t) or diagonalize H_o for infinite-time averages
 repeat with larger bases and independent samples
 ```
 
-For dynamics generated from time snapshots, a natural sequence is $|\phi_k\rangle\approx(e^{-iH\Delta t})^k|\psi_0\rangle$. Increasing the final snapshot time or the number of basis states controls the subspace approximation.
+For dynamics generated from time snapshots, a natural sequence is $\lvert\phi_k\rangle\approx(e^{-iH\Delta t})^k\lvert\psi_0\rangle$. Increasing the final snapshot time or the number of basis states controls the subspace approximation.
 
 ## 3. Canonical AFQMC
 
-AFQMC is an imaginary-time finite-temperature method. Grand-canonical AFQMC samples ${\rm Tr}\,e^{-\beta(H-\mu N)}$, while canonical AFQMC samples ${\rm Tr}_N e^{-\beta H}$ or ${\rm Tr}_{N_\uparrow,N_\downarrow}e^{-\beta H}$. Canonical sampling is the right benchmark when the real-time dynamics conserves particle number or magnetization.
+AFQMC is an imaginary-time finite-temperature method. Grand-canonical AFQMC samples ${\rm Tr}\,e^{-\beta(H-\mu N)}$, while canonical AFQMC samples ${\rm Tr}_{N}e^{-\beta H}$ or ${\rm Tr}_{N_\uparrow,N_\downarrow}e^{-\beta H}$. Canonical sampling is the right benchmark when the real-time dynamics conserves particle number or magnetization.
 
 ### BSS Structure
 
 Write the Hamiltonian as a one-body part plus interactions that can be Hubbard-Stratonovich decoupled. Discretize $\beta=L_\tau\Delta\tau$ and use a symmetric Trotter step. After HS decoupling, each time slice is a one-body propagator $B_\ell(s_\ell)$, and a full auxiliary-field configuration $s$ gives $U_s=B_{L_\tau}(s_{L_\tau})\cdots B_1(s_1)$.
 
-For one species, the grand-canonical field weight is $W_{\rm GC}(s)=\det(I+U_s)$. For spin species, multiply the determinants over spin sectors. If $W$ is not positive, sample $|W|$ and reweight by the sign or phase.
+For one species, the grand-canonical field weight is $W_{\rm GC}(s)=\det(I+U_s)$. For spin species, multiply the determinants over spin sectors. If $W$ is not positive, sample $\lvert W\rvert$ and reweight by the sign or phase.
 
 ### Exact Canonical Projection
 
-Introduce a fugacity $z$. For fixed fields, $\det(I+zU_s)=\sum_N z^N W_N(s)$. The canonical weight is the coefficient $W_N(s)=[z^N]\det(I+zU_s)$.
+Introduce a fugacity $z$. For fixed fields, $\det(I+zU_s)=\sum_N z^N W_{N}(s)$. The canonical weight is the coefficient $W_{N}(s)=[z^N]\det(I+zU_s)$.
 
 For two spin sectors, $W_{N_\uparrow,N_\downarrow}(s)=[z_\uparrow^{N_\uparrow}]\det(I+z_\uparrow U_{s,\uparrow})[z_\downarrow^{N_\downarrow}]\det(I+z_\downarrow U_{s,\downarrow})$.
 
-One way to compute the coefficient is Fourier projection: $W_N(s)=N_\phi^{-1}\sum_{m=0}^{N_\phi-1}e^{-iN\phi_m}\det(I+e^{i\phi_m}U_s)$, with $\phi_m=2\pi m/N_\phi$ and $N_\phi\ge N_{\rm orb}+1$ for exact projection in exact arithmetic.
+One way to compute the coefficient is Fourier projection: $W_{N}(s)=N_{\phi}^{-1}\sum_{m=0}^{N_{\phi}-1}e^{-iN\phi_m}\det(I+e^{i\phi_m}U_s)$, with $\phi_m=2\pi m/N_{\phi}$ and $N_{\phi}\ge N_{\rm orb}+1$ for exact projection in exact arithmetic.
 
 Another way is to use eigenvalues $\lambda_a$ of $U_s$: $\det(I+zU_s)=\prod_a(1+z\lambda_a)$. The coefficient of $z^N$ is the degree-$N$ elementary symmetric polynomial in $\{\lambda_a\}$, computed recursively by updating coefficients in descending order.
 
@@ -187,11 +187,11 @@ The procedure is empirical but controlled: increase $\lambda_N$ and $\lambda_S$ 
 
 ### Updates, Stabilization, and Measurements
 
-A local update proposes changing one auxiliary field. The acceptance ratio is the ratio of canonical weights, $R=W_N(s')/W_N(s)$, or the corresponding penalty-Hamiltonian grand-canonical ratio. Accept with probability $\min(1,|R|)$ and reweight signs if needed.
+A local update proposes changing one auxiliary field. The acceptance ratio is the ratio of canonical weights, $R=W_{N}(s_{\rm new})/W_{N}(s)$, or the corresponding penalty-Hamiltonian grand-canonical ratio. Accept with probability $\min(1,\lvert R\rvert)$ and reweight signs if needed.
 
 The product $U_s=B_{L_\tau}\cdots B_1$ must be stabilized by QR or SVD factorizations. Store products in factorized form, track log determinants, and periodically recompute Green's functions from stabilized matrices.
 
-Measurements use $\langle A\rangle_N=\sum_s W_N(s)A_N(s)/\sum_s W_N(s)$. With signs, use $\langle A\rangle_N=\langle A_N(s){\rm sign}_N(s)\rangle_{|W_N|}/\langle{\rm sign}_N(s)\rangle_{|W_N|}$. Use blocking or jackknife because Markov-chain samples are correlated.
+Measurements use $\langle A\rangle_{N}=\sum_s W_{N}(s)A_{N}(s)/\sum_s W_{N}(s)$. With signs, use $\langle A\rangle_{N}=\langle A_{N}(s){\rm sign}_{N}(s)\rangle_{\lvert W_{N}\rvert}/\langle{\rm sign}_{N}(s)\rangle_{\lvert W_{N}\rvert}$. Use blocking or jackknife because Markov-chain samples are correlated.
 
 ### Canonical AFQMC Algorithm
 
