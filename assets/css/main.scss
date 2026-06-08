@@ -107,3 +107,47 @@ h1:before, .anchor:before {
     background-color: #00369f;
     font-size: .8em;
 }
+
+.math-display {
+    margin: 1.1rem 0 1.3rem;
+    padding: 0.4rem 0;
+    overflow-x: auto;
+    text-align: center;
+}
+
+.algorithm-block {
+    margin: 1.3rem 0 1.6rem;
+    border-top: 1.5px solid #222;
+    border-bottom: 1.5px solid #222;
+    background: #fbfbfb;
+    font-size: 0.98rem;
+    line-height: 1.55;
+}
+
+.algorithm-title {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #999;
+    font-weight: 700;
+    font-variant: small-caps;
+    letter-spacing: 0.02em;
+}
+
+.algorithm-io {
+    padding: 0.45rem 0.75rem 0.1rem;
+}
+
+.algorithm-block ol {
+    margin: 0.25rem 0 0.75rem 2.4rem;
+    padding-right: 0.75rem;
+}
+
+.algorithm-block li {
+    margin: 0.12rem 0;
+    padding-left: 0.25rem;
+    font-size: 0.98rem;
+}
+
+.algorithm-block code {
+    font-size: 0.95em;
+    background: transparent;
+}
