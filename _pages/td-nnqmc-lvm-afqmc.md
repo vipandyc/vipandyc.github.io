@@ -50,7 +50,30 @@ TD-NNQMC restricts the state to a variational manifold $\lvert\psi_{\theta(t)}\r
 
 Define logarithmic derivatives $O_j(x)=\partial_{\theta_j}\log\psi_\theta(x)$. Then $\partial_{\theta_j}\psi_\theta(x)=O_j(x)\psi_\theta(x)$. Remove norm/phase redundancy by centering: $\Delta O_j(x)=O_j(x)-E[O_j]$ and $\Delta E(x)=E_{\rm loc}(x)-E[E_{\rm loc}]$.
 
-The TDVP equations are
+To see where the TDVP matrices come from, write the variational time derivative as $\dot\psi_\theta=\sum_j\dot\theta_j\partial_j\psi_\theta$. TDVP chooses $\dot\theta$ by minimizing the residual between this tangent-space velocity and the exact Schrodinger velocity:
+
+<div class="math-display">
+$$
+\left\lVert
+\sum_j\dot\theta_j\lvert\partial_j\psi_\theta\rangle
++iH\lvert\psi_\theta\rangle
+\right\rVert^2.
+$$
+</div>
+
+At the minimum, the residual is orthogonal to every tangent vector $\lvert\partial_i\psi_\theta\rangle$. This gives the projected linear system
+
+<div class="math-display">
+$$
+\sum_j
+\langle\partial_i\psi_\theta\vert\partial_j\psi_\theta\rangle
+\dot\theta_j
+=
+-i\langle\partial_i\psi_\theta\vert H\vert\psi_\theta\rangle.
+$$
+</div>
+
+Now use $\partial_i\psi_\theta(x)=O_i(x)\psi_\theta(x)$. The tangent-vector overlap becomes an average of two log derivatives, and the Hamiltonian projection becomes an average with the local energy. After removing the component parallel to the state by centering, the TDVP equations are
 
 <div class="math-display">
 $$
