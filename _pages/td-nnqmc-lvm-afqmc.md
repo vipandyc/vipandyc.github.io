@@ -151,7 +151,7 @@ For dynamics generated from time snapshots, a natural sequence is $\lvert\phi_k\
 
 ## 3. Canonical AFQMC
 
-AFQMC is an imaginary-time finite-temperature method. Grand-canonical AFQMC samples <span class="math">\( {\rm Tr}\,e^{-\beta(H-\mu N)} \)</span>, while canonical AFQMC samples <span class="math">\( {\rm Tr}_{N}e^{-\beta H} \)</span> or <span class="math">\( {\rm Tr}_{N_\uparrow,N_\downarrow}e^{-\beta H} \)</span>. Canonical sampling is the right benchmark when the real-time dynamics conserves particle number or magnetization.
+AFQMC is an imaginary-time finite-temperature method. Grand-canonical AFQMC samples ${\rm Tr}\,e^{-\beta(H-\mu N)}$, while canonical AFQMC samples fixed-particle-number traces such as ${\rm Tr}^{(N)}e^{-\beta H}$, or fixed up/down particle-number sectors. Canonical sampling is the right benchmark when the real-time dynamics conserves particle number or magnetization.
 
 ### BSS Structure
 
@@ -191,7 +191,7 @@ A local update proposes changing one auxiliary field. The acceptance ratio is th
 
 The product $U_s=B_{L_\tau}\cdots B_1$ must be stabilized by QR or SVD factorizations. Store products in factorized form, track log determinants, and periodically recompute Green's functions from stabilized matrices.
 
-Measurements use <span class="math">\( \langle A\rangle_{N}=\sum_s W_{N}(s)A_{N}(s)/\sum_s W_{N}(s) \)</span>. With signs, use <span class="math">\( \langle A\rangle_{N}=\langle A_{N}(s){\rm sign}_{N}(s)\rangle_{\lvert W_{N}\rvert}/\langle{\rm sign}_{N}(s)\rangle_{\lvert W_{N}\rvert} \)</span>. Use blocking or jackknife because Markov-chain samples are correlated.
+Measurements use $\langle A\rangle^{(N)}=\sum_s W^{(N)}(s)A^{(N)}(s)/\sum_s W^{(N)}(s)$. With signs, accumulate the reweighted ratio $\langle A\rangle^{(N)}=\langle A^{(N)}(s)\,{\rm sgn}^{(N)}(s)\rangle/\langle{\rm sgn}^{(N)}(s)\rangle$. Use blocking or jackknife because Markov-chain samples are correlated.
 
 ### Canonical AFQMC Algorithm
 
