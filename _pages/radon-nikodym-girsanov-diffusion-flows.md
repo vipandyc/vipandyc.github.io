@@ -9,29 +9,57 @@ author_profile: true
 
 This note is for the common situation where the same random object is being described by two different probability laws. In physics language, think of two ensembles on the same configuration space. The Radon-Nikodym derivative is the pointwise reweighting factor between them. Girsanov's theorem is the path-space version for diffusion processes: it tells us how much probability weight changes when we change the drift of an SDE but keep the noise strength fixed.
 
-The goal here is not measure-theory elegance. The goal is to make the object computable, and then connect it to the formulas that appear in score-based diffusion, DDIM/probability-flow ODEs, flow matching, Fokker-Planck equations, continuity equations, and reverse-time SDEs.
+The goal here is not measure-theory elegance. The goal is to make the object computable, while keeping just enough rigor to avoid misleading pictures. Then we connect it to the formulas that appear in score-based diffusion, DDIM/probability-flow ODEs, flow matching, Fokker-Planck equations, continuity equations, and reverse-time SDEs.
 
 ## 1. Radon-Nikodym Derivative
 
-Suppose two probability laws $P$ and $Q$ live on the same space. The Radon-Nikodym derivative
+Suppose two probability laws $P$ and $Q$ live on the same measurable space $(\Omega,\mathcal F)$. Here $\Omega$ is the sample space and $\mathcal F$ is the collection of events we are allowed to assign probabilities to.
+
+The Radon-Nikodym derivative
 
 <div class="math-display">
 $$
-\frac{dP}{dQ}(x)
+\frac{\mathrm dP}{\mathrm dQ}(x)
 $$
 </div>
 
 is the local density ratio: how much more strongly $P$ weights the point $x$ compared with $Q$.
 
-If both laws have ordinary densities $p(x)$ and $q(x)$ with respect to the same base measure $dx$, then nothing mysterious is happening:
+The upright $\mathrm d$ is the convention many books use for measure/integration notation:
 
 <div class="math-display">
 $$
-\frac{dP}{dQ}(x)=\frac{p(x)}{q(x)}.
+\mathrm dP(x)
+=
+\frac{\mathrm dP}{\mathrm dQ}(x)\,\mathrm dQ(x).
 $$
 </div>
 
-The only extra condition is that $Q$ must not assign zero probability to regions where $P$ assigns positive probability. In symbols, $P\ll Q$. Computably, this just means: do not try to reweight from samples that never visit the important states.
+So $\mathrm dP/\mathrm dQ$ should not be read as an ordinary derivative with respect to a coordinate. It means "the density of the measure $P$ relative to the measure $Q$." In informal writing people often type $dP/dQ$, but the upright $\mathrm d$ version is the cleaner notation.
+
+If both laws have ordinary densities $p(x)$ and $q(x)$ with respect to the same base measure $\mathrm dx$, then nothing mysterious is happening:
+
+<div class="math-display">
+$$
+\frac{\mathrm dP}{\mathrm dQ}(x)=\frac{p(x)}{q(x)}
+\qquad
+\text{where }q(x)>0.
+$$
+</div>
+
+The extra condition is that $Q$ must not assign zero probability to regions where $P$ assigns positive probability. In symbols,
+
+<div class="math-display">
+$$
+P\ll Q
+\qquad
+\Longleftrightarrow
+\qquad
+Q(A)=0\Rightarrow P(A)=0.
+$$
+</div>
+
+Computably, this just means: do not try to reweight from samples that never visit the important states.
 
 ### Reweighting Identity
 
@@ -41,11 +69,21 @@ The main use is expectation conversion:
 $$
 E_P[f(X)]
 =
-E_Q\left[f(X)\frac{dP}{dQ}(X)\right].
+E_Q\left[f(X)\frac{\mathrm dP}{\mathrm dQ}(X)\right].
 $$
 </div>
 
 This is importance sampling in its cleanest form.
+
+More explicitly,
+
+<div class="math-display">
+$$
+\int_\Omega f(x)\,\mathrm dP(x)
+=
+\int_\Omega f(x)\frac{\mathrm dP}{\mathrm dQ}(x)\,\mathrm dQ(x).
+$$
+</div>
 
 ### Physics Picture
 
@@ -61,7 +99,7 @@ Then
 
 <div class="math-display">
 $$
-\frac{dP_1}{dP_0}(x)
+\frac{\mathrm dP_1}{\mathrm dP_0}(x)
 =
 \frac{Z_0}{Z_1}e^{-\beta(E_1(x)-E_0(x))}.
 $$
@@ -75,7 +113,7 @@ Most computations use the log ratio:
 
 <div class="math-display">
 $$
-\log\frac{dP}{dQ}(x)=\log p(x)-\log q(x).
+\log\frac{\mathrm dP}{\mathrm dQ}(x)=\log p(x)-\log q(x).
 $$
 </div>
 
@@ -85,32 +123,32 @@ This is the quantity that appears in likelihood-ratio estimators, variational bo
 
 The theorem says:
 
-If $P$ is absolutely continuous with respect to $Q$, meaning $Q(A)=0$ implies $P(A)=0$, then there exists a measurable function $r(x)$ such that
+If $P$ is absolutely continuous with respect to $Q$, meaning $Q(A)=0$ implies $P(A)=0$, then there exists a nonnegative measurable function $r(x)$ such that
 
 <div class="math-display">
 $$
-P(A)=\int_A r(x)\,dQ(x)
+P(A)=\int_A r(x)\,\mathrm dQ(x)
 \qquad
 \text{for all events }A.
 $$
 </div>
 
-That function is written
+That function is unique up to $Q$-almost everywhere equality, and is written
 
 <div class="math-display">
 $$
-r(x)=\frac{dP}{dQ}(x).
+r(x)=\frac{\mathrm dP}{\mathrm dQ}(x).
 $$
 </div>
 
-Intuitively: if $P$ never puts probability mass where $Q$ sees nothing, then $P$ can be built by locally reweighting $Q$.
+The phrase "$Q$-almost everywhere" just means that changing $r$ on a set with $Q$-probability zero does not change any integral against $Q$. Intuitively: if $P$ never puts probability mass where $Q$ sees nothing, then $P$ can be built by locally reweighting $Q$.
 
 ### Computable Versions
 
-- Discrete states: $dP/dQ(x)=P(x)/Q(x)$.
-- Continuous densities: $dP/dQ(x)=p(x)/q(x)$.
-- Path measures: $dP/dQ(\omega)$ is a likelihood ratio for the whole trajectory $\omega=\{X_t:0\le t\le T\}$.
-- Monte Carlo: sample from $Q$, weight by $dP/dQ$.
+- Discrete states: $\mathrm dP/\mathrm dQ(x)=P(x)/Q(x)$.
+- Continuous densities: $\mathrm dP/\mathrm dQ(x)=p(x)/q(x)$.
+- Path measures: $\mathrm dP/\mathrm dQ(\omega)$ is a likelihood ratio for the whole trajectory $\omega=\{X_t:0\le t\le T\}$.
+- Monte Carlo: sample from $Q$, weight by $\mathrm dP/\mathrm dQ$.
 - Training objective: log-likelihood ratios are usually easier than raw likelihood ratios.
 
 ## 3. Girsanov Theorem
@@ -145,7 +183,7 @@ Then, under standard regularity/integrability conditions, the path probability r
 
 <div class="math-display">
 $$
-\frac{dP_1}{dP_0}
+\frac{\mathrm dP_1}{\mathrm dP_0}
 =
 \exp\left(
 \int_0^T u_t\cdot dW_t
@@ -154,6 +192,8 @@ $$
 \right).
 $$
 </div>
+
+Here $P_0$ and $P_1$ are probability measures on path space, not just densities at a single time. The random variable inside the exponential depends on the whole trajectory. That is the main conceptual jump from ordinary density ratios to stochastic-process density ratios.
 
 The important interpretation:
 
@@ -704,7 +744,7 @@ Radon-Nikodym derivative:
 
 <div class="math-display">
 $$
-\frac{dP}{dQ}
+\frac{\mathrm dP}{\mathrm dQ}
 =
 \text{density ratio between two probability laws}.
 $$
@@ -714,7 +754,7 @@ Girsanov theorem:
 
 <div class="math-display">
 $$
-\frac{dP_{\rm new\ drift}}{dP_{\rm old\ drift}}
+\frac{\mathrm dP_{\rm new\ drift}}{\mathrm dP_{\rm old\ drift}}
 =
 \text{exponential path-weight ratio}.
 $$

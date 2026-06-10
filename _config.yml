@@ -7,7 +7,7 @@
 
 # Site Settings
 title                    : "Mouyang Cheng"
-description              : "A humble PhD student in computational science and engineering"
+description              : "PhD candidate at MIT working on AI for materials, computational physics, and many-body simulation"
 repository               : "vipandyc/vipandyc.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -23,7 +23,7 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 author:
   name             : "Mouyang Cheng"
   avatar           : "/images/android-chrome-512x512.png"
-  bio              : "MIT Mingda Li's Group"
+  bio              : "AI for materials | Computational physics | Mingda Li Group, MIT"
   location         : "Cambridge, MA, U.S."
   employer         :
   pubmed           : 
