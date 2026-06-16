@@ -7,7 +7,7 @@ author_profile: true
 
 # Transport Regimes: Boltzmann, Ballistic, and Quantum
 
-This note is a compact map for deciding which transport model is appropriate. The key inputs are three length scales: mean free path $\ell$, phase-coherence length $L_\phi$, and device/bulk length $L$.
+This note is a compact map for deciding which transport model is appropriate. I use: mean free path $\ell_{\mathrm{mfp}}$, phase-coherence length $L_\phi$, Fermi wavelength $\lambda_F$, and device/bulk length $L$.
 
 ## 1. Boltzmann Transport in One Page
 
@@ -30,7 +30,7 @@ $$
 \left.\frac{\partial f}{\partial t}\right|_{\mathrm{coll}}
 =-\frac{f-f_0}{\tau},
 \qquad
-\ell=v_F\tau.
+\ell_{\mathrm{mfp}}=v_F\tau.
 $$
 </div>
 
@@ -52,16 +52,16 @@ Let $L$ be the transport length (channel length, film thickness, or probe spacin
 
 | Regime | Length-scale condition | Dominant picture | Typical model |
 |---|---|---|---|
-| **Ballistic semiclassical** | $L\ll \ell$ and $L\gg \lambda_F$ | Few/no collisions, classical trajectories | Ballistic BTE / Landauer with classical channels |
-| **Diffusive semiclassical** | $\ell\ll L$ and $L_\phi\ll L$ | Many collisions, phase randomized | BTE + RTA, drift-diffusion |
-| **Coherent quantum ballistic** | $L\ll \ell$ and $L\ll L_\phi$ | Wave interference, mode quantization | Landauer-Buttiker, NEGF |
-| **Coherent quantum diffusive** | $\ell\ll L\lesssim L_\phi$ | Multiple scattering + interference | NEGF with disorder/self-energies, weak localization theory |
+| **Ballistic semiclassical** | $L\ll \ell_{\mathrm{mfp}}$ and $L\gg \lambda_F$ | Few/no collisions, classical trajectories | Ballistic BTE / Landauer with classical channels |
+| **Diffusive semiclassical** | $\ell_{\mathrm{mfp}}\ll L$ and $L_\phi\ll L$ | Many collisions, phase randomized | BTE + RTA, drift-diffusion |
+| **Coherent quantum ballistic** | $L\ll \ell_{\mathrm{mfp}}$ and $L\ll L_\phi$ | Wave interference, mode quantization | Landauer-Buttiker, NEGF |
+| **Coherent quantum diffusive** | $\ell_{\mathrm{mfp}}\ll L\lesssim L_\phi$ | Multiple scattering + interference | NEGF with disorder/self-energies, weak localization theory |
 
 Three practical boundaries:
 
-1. **Momentum-randomizing boundary:** $L/\ell$ separates ballistic and diffusive transport.
+1. **Momentum-randomizing boundary:** $L/\ell_{\mathrm{mfp}}$ separates ballistic and diffusive transport.
 2. **Phase-randomizing boundary:** $L/L_\phi$ determines whether interference survives.
-3. **Bulk vs mesoscopic boundary:** when all internal scales satisfy $\ell,L_\phi\ll L$, transport is effectively bulk/local; when $L$ is comparable to either, nonlocal mesoscopic effects matter.
+3. **Bulk vs mesoscopic boundary:** when all internal scales satisfy $\ell_{\mathrm{mfp}},L_\phi\ll L$, transport is effectively bulk/local; when $L$ is comparable to either, nonlocal mesoscopic effects matter.
 
 So, **Boltzmann is strongest in the semiclassical window** $L_\phi\ll L$ with quasiparticles and local scattering. It breaks down when phase coherence, tunneling, or strong confinement dominates.
 
