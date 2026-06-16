@@ -136,7 +136,22 @@ k_F\ell_{\mathrm{mfp}}\gg1.
 $$
 </div>
 
-## 6. How to Estimate $L_\phi$
+## 6. Scattering: Elastic vs Inelastic
+
+Different scattering mechanisms contribute differently to $\ell_{\mathrm{mfp}}$ and $\tau_\phi$:
+
+**Elastic scattering** (impurities, defects, boundaries):
+- Randomizes momentum $\Rightarrow$ contributes to $1/\ell_{\mathrm{mfp}}$.
+- Preserves phase coherence (no energy loss).
+- Does **not** reduce $\tau_\phi$ or $L_\phi$.
+
+**Inelastic scattering** (electron-phonon, electron-electron, magnons, etc.):
+- Randomizes momentum $\Rightarrow$ contributes to $1/\ell_{\mathrm{mfp}}$.
+- Breaks phase coherence (energy/information loss) $\Rightarrow$ defines dephasing time $\tau_\phi$ and thus $L_\phi$.
+
+In BTE frameworks like BoltzTraP or EPW, electron-phonon scattering provides the dominant inelastic contribution to lifetimes and thus to $\tau_\phi$.
+
+## 7. How to Estimate $L_\phi$
 
 Use
 
@@ -146,7 +161,7 @@ L_\phi=\sqrt{D\tau_\phi},
 $$
 </div>
 
-with $D$ the diffusion constant and $\tau_\phi$ the dephasing time.
+with $D$ the diffusion constant and $\tau_\phi$ the dephasing time from inelastic processes.
 
 Typical extraction routes:
 
