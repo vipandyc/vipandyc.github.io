@@ -168,13 +168,30 @@ with $D$ the diffusion constant and $\tau_\phi$ the dephasing time from inelasti
 From Einstein relation,
 <div class="math-display">
 $$
-D=\frac{\sigma}{\rho_0 c}=\frac{v_F^2\tau}{d},
+D=\frac{\sigma}{\rho_0 c}=\frac{v_F^2\tau}{d}=\frac{v_F\ell_{\mathrm{mfp}}}{d},
 $$
 </div>
 
-where $\sigma$ is conductivity, $\rho_0c$ is density of states times charge, and $d$ is dimensionality. Alternatively, $D=v_F\ell_{\mathrm{mfp}}/d$ (related to the diffusion length in weak localization). Experimentally, extract from resistivity and Hall effect, or compute from BTE/ab initio (BoltzTraP, EPW).
+where $\sigma$ is conductivity, $\rho_0c$ is density of states times charge, $d$ is dimensionality, and $\ell_{\mathrm{mfp}}=v_F\tau$. Experimentally, extract from resistivity and Hall effect, or compute from BTE/ab initio (BoltzTraP, EPW).
 
-**Typical extraction routes for $\tau_\phi$:**
+**Getting the dephasing time $\tau_\phi$ via Matthiessen's rule:**
+
+Inelastic scattering rates add inversely:
+
+<div class="math-display">
+$$
+\frac{1}{\tau_\phi}=\sum_i\frac{1}{\tau_i^{\phi}},
+$$
+</div>
+
+where $\tau_i^{\phi}$ are individual dephasing times ($e$-$e$, $e$-ph, magnon-scattering, etc.). Each temperature-dependent:
+
+- **Electron-electron ($e$-$e$):** $1/\tau_{ee}^{\phi}\propto T$ (in 2D) or $\propto T^2$ (in 3D).
+- **Electron-phonon ($e$-$ph$):** typically weaker; $\propto T$ at high $T$, stronger at low $T$ in some materials.
+
+Then compute $L_\phi=\sqrt{D\tau_\phi}$ combining the Einstein $D$.
+
+**Typical experimental extraction routes:**
 
 1. Weak localization / anti-localization magnetoconductance fits (HLN-type).
 2. Universal conductance fluctuation correlation field.
