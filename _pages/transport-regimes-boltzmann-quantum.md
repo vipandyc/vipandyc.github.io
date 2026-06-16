@@ -46,24 +46,14 @@ $$
 
 Use BTE when carriers can be treated as wave packets with well-defined momentum between scattering events.
 
-## 2. Regime Map: Ballistic, Diffusive, Semiclassical, Quantum
+## 2. Practical Boltzmann Implementations
 
-Let $L$ be the transport length (channel length, film thickness, or probe spacing).
+For electronic materials from first principles, the two common BTE pipelines are:
 
-| Regime | Length-scale condition | Dominant picture | Typical model |
-|---|---|---|---|
-| **Ballistic semiclassical** | $L\ll \ell_{\mathrm{mfp}}$ and $L\gg \lambda_F$ and $L_\phi\ll L$ | Few/no collisions, weak phase effects | Ballistic BTE / Knudsen-type transport |
-| **Diffusive semiclassical** | $\ell_{\mathrm{mfp}}\ll L$ and $L_\phi\ll L$ | Many collisions, phase randomized | BTE + RTA, drift-diffusion |
-| **Coherent quantum ballistic** | $L\ll \ell_{\mathrm{mfp}}$ and $L\ll L_\phi$ | Wave interference, mode quantization | Landauer-Buttiker, NEGF |
-| **Coherent quantum diffusive** | $\ell_{\mathrm{mfp}}\ll L\lesssim L_\phi$ | Multiple scattering + interference | NEGF with disorder/self-energies, weak localization theory |
+- **BoltzTraP/BoltzTraP2:** interpolate DFT bands and compute transport in constant-$\tau$ or model-$\tau$ settings.
+- **EPW (electron-phonon Wannier):** compute $e$-ph matrix elements and scattering rates, then solve BTE with ab initio lifetimes.
 
-Three practical boundaries:
-
-1. **Momentum-randomizing boundary:** $L/\ell_{\mathrm{mfp}}$ separates ballistic and diffusive transport.
-2. **Phase-randomizing boundary:** $L/L_\phi$ determines whether interference survives.
-3. **Bulk vs mesoscopic boundary:** when all internal scales satisfy $\ell_{\mathrm{mfp}},L_\phi\ll L$, transport is effectively bulk/local; when $L$ is comparable to either, nonlocal mesoscopic effects matter.
-
-So, **Boltzmann is strongest in the semiclassical window** $\lambda_F\ll \ell_{\mathrm{mfp}}\ll L$, with $L_\phi\ll L$ and $k_F\ell_{\mathrm{mfp}}\gg1$. It breaks down when phase coherence, tunneling, or strong disorder/localization dominates.
+Both are still semiclassical BTE frameworks; they differ mainly in how accurately $\tau$ and scattering are modeled.
 
 ## 3. Quantum Transport (Landauer + NEGF)
 
@@ -118,25 +108,37 @@ Important interpretation:
 
 This framework naturally captures tunneling, resonances, contact effects, and atomistic chemistry that semiclassical BTE cannot represent.
 
-## 5. Minimal Checklist (Less Ambiguous)
+## 5. Three Breakdown Tests for Boltzmann
 
-Use these three tests first:
+Let $L$ be device length, $\ell_{\mathrm{mfp}}$ mean free path, and $L_\phi$ coherence length.
 
-1. **Quasiparticle validity:** $\lambda_F\ll \ell_{\mathrm{mfp}}$ (equivalently $k_F\ell_{\mathrm{mfp}}\gg1$).  
-   If this fails ($k_F\ell_{\mathrm{mfp}}\sim1$), Boltzmann breaks down (localization/strong disorder).
-2. **Ballistic vs diffusive:** $L\gg \ell_{\mathrm{mfp}}$ means diffusive; $L\lesssim \ell_{\mathrm{mfp}}$ means ballistic.
-3. **Coherence relevance:** $L\gg L_\phi$ means semiclassical/incoherent; $L\lesssim L_\phi$ means coherent quantum effects matter.
+1. **Ioffe-Regel / quasiparticle test:**  
+   $\lambda_F\ll \ell_{\mathrm{mfp}}$ (equivalently $k_F\ell_{\mathrm{mfp}}\gg1$) supports Fermi-liquid quasiparticles and BTE.  
+   If $k_F\ell_{\mathrm{mfp}}\sim1$, Boltzmann breaks down (strong disorder/localization) and quantum methods are required.
 
-So:
+2. **Diffusive test:**  
+   $L\gg \ell_{\mathrm{mfp}}$ gives diffusive transport (bulk BTE/Drude regime).  
+   If this fails ($L\lesssim\ell_{\mathrm{mfp}}$), transport is ballistic: bulk diffusive BTE is no longer right, boundary conditions dominate, and for nanoscale electrons Landauer/NEGF is typically the clean choice.
 
-- **Boltzmann window:** $\lambda_F\ll \ell_{\mathrm{mfp}}\ll L$ and $L_\phi\ll L$.
-- **Quantum transport window:** $L_\phi\gtrsim L$, or $k_F\ell_{\mathrm{mfp}}\sim1$, or tunneling/discrete channels/interference dominate.
+3. **Coherence test:**  
+   $L\gg L_\phi$ gives semiclassical incoherent transport.  
+   If this fails ($L_\phi\gtrsim L$), phase coherence survives across the device and quantum transport is needed.
 
-Important nuance: $\ell_{\mathrm{mfp}}\gtrsim L$ alone means ballistic, not automatically "fully quantum." For nanoscale electronic devices, ballistic transport is usually best treated with Landauer/NEGF. For large clean high-temperature systems, ballistic transport can still be semiclassical (Knudsen-like).
+In short, Boltzmann is safest when
 
-## 6. How to Estimate $L_\phi$ in Practice
+<div class="math-display">
+$$
+\lambda_F\ll \ell_{\mathrm{mfp}}\ll L,
+\qquad
+L_\phi\ll L,
+\qquad
+k_F\ell_{\mathrm{mfp}}\gg1.
+$$
+</div>
 
-The standard route is
+## 6. How to Estimate $L_\phi$
+
+Use
 
 <div class="math-display">
 $$
@@ -144,19 +146,21 @@ L_\phi=\sqrt{D\tau_\phi},
 $$
 </div>
 
-where $D$ is the diffusion constant and $\tau_\phi$ is the dephasing time.
+with $D$ the diffusion constant and $\tau_\phi$ the dephasing time.
 
-Common experimental extractions:
+Typical extraction routes:
 
-1. **Weak localization / weak anti-localization magnetoconductance** fit (e.g., HLN in 2D) $\rightarrow L_\phi$ directly.
-2. **Universal conductance fluctuations:** correlation field $B_c$ gives coherence area, hence $L_\phi$.
-3. **Aharonov-Bohm oscillations:** oscillation visibility vs temperature/length gives $L_\phi$.
-4. **From scattering models:** estimate $\tau_\phi$ from $e$-$e$ and $e$-phonon dephasing rates, then use $L_\phi=\sqrt{D\tau_\phi}$.
+1. Weak localization / anti-localization magnetoconductance fits (HLN-type).
+2. Universal conductance fluctuation correlation field.
+3. Aharonov-Bohm oscillation visibility vs temperature/size.
+4. Microscopic dephasing rates ($e$-$e$, $e$-ph) combined with $L_\phi=\sqrt{D\tau_\phi}$.
 
 ## References
 
 - N. W. Ashcroft and N. D. Mermin, *Solid State Physics*
 - S. Datta, *Electronic Transport in Mesoscopic Systems*
 - S. Datta, *Quantum Transport: Atom to Transistor*
+- G. K. H. Madsen and D. J. Singh, [BoltzTraP](https://doi.org/10.1016/j.cpc.2006.03.007)
+- J. Ponce et al., [EPW: electron-phonon coupling and transport](https://doi.org/10.1016/j.cpc.2016.07.028)
 - M. Brandbyge et al., [Density-functional method for nonequilibrium electron transport](https://doi.org/10.1103/PhysRevB.65.165401)
 - M. Paulsson and M. Brandbyge, [Transmission eigenchannels from NEGF](https://doi.org/10.1103/PhysRevB.76.115117)
