@@ -118,33 +118,40 @@ Important interpretation:
 
 This framework naturally captures tunneling, resonances, contact effects, and atomistic chemistry that semiclassical BTE cannot represent.
 
-## 5. Sharper Model Selection Rule
+## 5. Minimal Checklist (Less Ambiguous)
 
-Use **quantum transport** when any of the following is true:
+Use these three tests first:
 
-1. $L_\phi\gtrsim L$ (phase coherence survives across the device).
-2. $k_F\ell_{\mathrm{mfp}}\sim1$ (strong disorder/localization; Boltzmann fails).
-3. The physics is dominated by tunneling, discrete channels/subbands, Landau levels, superconducting coherence, or strong interference.
+1. **Quasiparticle validity:** $\lambda_F\ll \ell_{\mathrm{mfp}}$ (equivalently $k_F\ell_{\mathrm{mfp}}\gg1$).  
+   If this fails ($k_F\ell_{\mathrm{mfp}}\sim1$), Boltzmann breaks down (localization/strong disorder).
+2. **Ballistic vs diffusive:** $L\gg \ell_{\mathrm{mfp}}$ means diffusive; $L\lesssim \ell_{\mathrm{mfp}}$ means ballistic.
+3. **Coherence relevance:** $L\gg L_\phi$ means semiclassical/incoherent; $L\lesssim L_\phi$ means coherent quantum effects matter.
 
-Use **Boltzmann** when
+So:
+
+- **Boltzmann window:** $\lambda_F\ll \ell_{\mathrm{mfp}}\ll L$ and $L_\phi\ll L$.
+- **Quantum transport window:** $L_\phi\gtrsim L$, or $k_F\ell_{\mathrm{mfp}}\sim1$, or tunneling/discrete channels/interference dominate.
+
+Important nuance: $\ell_{\mathrm{mfp}}\gtrsim L$ alone means ballistic, not automatically "fully quantum." For nanoscale electronic devices, ballistic transport is usually best treated with Landauer/NEGF. For large clean high-temperature systems, ballistic transport can still be semiclassical (Knudsen-like).
+
+## 6. How to Estimate $L_\phi$ in Practice
+
+The standard route is
 
 <div class="math-display">
 $$
-\lambda_F\ll \ell_{\mathrm{mfp}}\ll L,\qquad
-L_\phi\ll L,\qquad
-k_F\ell_{\mathrm{mfp}}\gg1.
+L_\phi=\sqrt{D\tau_\phi},
 $$
 </div>
 
-Important nuance: $\ell_{\mathrm{mfp}}\gtrsim L$ means **ballistic**, not automatically "fully quantum." In nanoscale electronic devices ballistic transport is usually best treated with Landauer/NEGF because channel quantization and contact physics matter. In large clean classical systems, ballistic transport can still be modeled semiclassically.
+where $D$ is the diffusion constant and $\tau_\phi$ is the dephasing time.
 
-## 6. Concrete Cases (Why This Gets Confusing)
+Common experimental extractions:
 
-- $L=50$ nm, $\ell_{\mathrm{mfp}}=500$ nm, $L_\phi=2$ $\mu$m: coherent quantum ballistic $\Rightarrow$ Landauer/NEGF.
-- $L=1$ mm, $\ell_{\mathrm{mfp}}=10$ cm, but high temperature and short $L_\phi$: ballistic but effectively semiclassical (beam/Knudsen-like).
-- $L=10$ $\mu$m, $\ell_{\mathrm{mfp}}=20$ nm, $L_\phi=100$ nm: diffusive and incoherent $\Rightarrow$ Boltzmann/Drude is appropriate.
-- $L=1$ $\mu$m, $\ell_{\mathrm{mfp}}=20$ nm, $L_\phi=5$ $\mu$m: diffusive but coherent $\Rightarrow$ include quantum corrections or full quantum transport.
-- Even for large $L$, if $k_F\ell_{\mathrm{mfp}}\sim1$: Boltzmann breaks down; use quantum/Kubo/localization methods.
+1. **Weak localization / weak anti-localization magnetoconductance** fit (e.g., HLN in 2D) $\rightarrow L_\phi$ directly.
+2. **Universal conductance fluctuations:** correlation field $B_c$ gives coherence area, hence $L_\phi$.
+3. **Aharonov-Bohm oscillations:** oscillation visibility vs temperature/length gives $L_\phi$.
+4. **From scattering models:** estimate $\tau_\phi$ from $e$-$e$ and $e$-phonon dephasing rates, then use $L_\phi=\sqrt{D\tau_\phi}$.
 
 ## References
 
