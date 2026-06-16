@@ -120,7 +120,7 @@ This framework naturally captures tunneling, resonances, contact effects, and at
 
 ## 5. Quick Model Selection Rule
 
-If $L_\phi\ll L$ and no strong tunneling/confinement: start with **Boltzmann**.  
+If $\ell_{\mathrm{mfp}}\ll L$ and $L_\phi\ll L$ (with no strong tunneling/confinement): start with **Boltzmann**.  
 If $L\lesssim L_\phi$ or channels are nanoscopic/quantized: use **quantum transport (Landauer/NEGF)**.  
 If both scattering and coherence are relevant: use **NEGF with scattering self-energies** or a hybrid multiscale approach.
 
