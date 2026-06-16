@@ -163,7 +163,18 @@ $$
 
 with $D$ the diffusion constant and $\tau_\phi$ the dephasing time from inelastic processes.
 
-Typical extraction routes:
+**Getting the diffusion constant $D$:**
+
+From Einstein relation,
+<div class="math-display">
+$$
+D=\frac{\sigma}{\rho_0 c}=\frac{v_F^2\tau}{d},
+$$
+</div>
+
+where $\sigma$ is conductivity, $\rho_0c$ is density of states times charge, and $d$ is dimensionality. Alternatively, $D=v_F\ell_{\mathrm{mfp}}/d$ (related to the diffusion length in weak localization). Experimentally, extract from resistivity and Hall effect, or compute from BTE/ab initio (BoltzTraP, EPW).
+
+**Typical extraction routes for $\tau_\phi$:**
 
 1. Weak localization / anti-localization magnetoconductance fits (HLN-type).
 2. Universal conductance fluctuation correlation field.
