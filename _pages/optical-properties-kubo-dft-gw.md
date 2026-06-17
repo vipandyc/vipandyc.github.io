@@ -208,17 +208,18 @@ $$
 
 ### 3.2 Independent-Particle Polarizability (Adler-Wiser Formula)
 
-The bubble diagram is built from two $G^0$ propagators connected by density vertices. The retarded density-density correlator is defined as:
+The bubble diagram is built from two $G^0$ propagators connected by density vertices. The retarded density-density correlator:
 
 <div class="math-display">
 $$
-\chi^0(\mathbf{r},\mathbf{r}',t-t') = -\frac{i}{\hbar}\langle[\hat{n}(\mathbf{r},t), \hat{n}(\mathbf{r}',t')]\rangle\Theta(t-t'),
+\chi^0(\mathbf{r},\mathbf{r}',\omega) = -\frac{i}{\hbar}\int_{-\infty}^\infty \frac{dt}{2\pi}\,e^{i\omega t}
+\langle[\hat{n}(\mathbf{r},t), \hat{n}(\mathbf{r}',0)]\rangle_>,
 \qquad
-\hat{n}(\mathbf{r},t) = \psi^\dagger(\mathbf{r},t)\psi(\mathbf{r},t).
+\hat{n}(\mathbf{r}) = \psi^{\dagger}(\mathbf{r})\psi(\mathbf{r}).
 $$
 </div>
 
-The commutator $[\hat{n}, \hat{n}]$ is a product of four field operators.  Wick's theorem (or direct evaluation) decouples this into products of two single-particle Green's functions—one forward and one backward in the Keldysh contour, denoted $G^0_>$ and $G^0_<$. Fourier-transforming to frequency and momentum space $({\mathbf{q}}, \omega)$ and expanding plane waves $e^{\pm i(\mathbf{q}+\mathbf{G})\cdot\mathbf{r}}$ for the periodic potential:
+Wick's theorem decomposes the four-operator commutator into products of two single-particle propagators. Fourier-expanding in plane waves $e^{\pm i(\mathbf{q}+\mathbf{G})\cdot\mathbf{r}}$:
 
 <div class="math-display">
 $$
