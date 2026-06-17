@@ -136,38 +136,35 @@ v_\mathbf{G}(\mathbf{q}) = \frac{4\pi e^2}{|\mathbf{q}+\mathbf{G}|^2}.
 $$
 </div>
 
-**Why $\varepsilon$ is directly proportional to $\chi^0$ in DFT:**  The key is that Poisson's 
-equation for the induced potential $\phi_{\text{ind}}$ couples linearly to the charge density 
-perturbation $\delta n$:
+**Why $\varepsilon$ is directly proportional to $\chi^0$ in DFT:**  
+Apply Poisson to the density perturbation:
 
 <div class="math-display">
 $$
-\nabla^2\phi_{\text{ind}} = -4\pi e\,\delta n.
+\delta n(\mathbf{r}) = \chi^0(\mathbf{r},\mathbf{r}',\omega)[\phi_{\text{ext}}(\mathbf{r}')+\phi_{\text{ind}}(\mathbf{r}')],
+\qquad
+\phi_{\text{ind}} = v * \delta n,
 $$
 </div>
 
-In Fourier space with plane-wave expansions, an applied density perturbation $\delta n_{\mathbf{G}}$ 
-at wavevector $\mathbf{G}$ produces an induced Coulomb potential 
-$\phi_{\text{ind},\mathbf{G}} = v_\mathbf{G}\,\delta n_{\mathbf{G}}$.  This induced potential 
-then acts back on the electrons, modifying the single-particle levels via a shift of the 
-self-consistent potential (Hartree term).  Within DFT, the induced density itself is encoded 
-in the **irreducible polarisability** $\chi^0$: electrons respond to both the external field 
-(through the commutator $[\hat{H}_{KS},\hat{\mathbf{r}}]$) and the self-consistent Hartree 
-potential they generate.  The total density response is thus 
-$\delta n = \chi^0(\phi_{\text{ext}} + \phi_{\text{ind}}) = \chi^0(\phi_{\text{ext}} + v\,\delta n)$, 
-where $v$ is the bare Coulomb potential.  Rearranging gives the relation between $\chi^0$ and 
-the full dielectric function via
+where $*$ denotes convolution.  Combining these:
 
 <div class="math-display">
 $$
-\varepsilon = 1 - v\chi^0.
+\delta n = \chi^0(\phi_{\text{ext}} + v*\chi^0\phi_{\text{ext}})
+= (1 - v*\chi^0)^{-1}\chi^0\phi_{\text{ext}}.
 $$
 </div>
 
-This is the **optical sum rule**: the dielectric function is uniquely determined by the 
-non-interacting response in DFT because the self-consistent field is fully accounted for by 
-$\chi^0$ under the DFT variational principle.  No additional approximation is needed—$\chi^0$ 
-already includes the Hartree feedback automatically.
+The dielectric response then follows from $\delta n = \chi \phi_{\text{ext}}$, giving
+
+<div class="math-display">
+$$
+\varepsilon = 1 - v*\chi^0.
+$$
+</div>
+
+In the plane-wave basis this becomes $\varepsilon_{\mathbf{GG}'}(\mathbf{q},\omega) = \delta_{\mathbf{GG}'} - v_\mathbf{G}(\mathbf{q})\chi^0_{\mathbf{GG}'}(\mathbf{q},\omega)$.
 
 The macroscopic dielectric function governing optical measurements is obtained by inverting
 the full matrix and taking the $\mathbf{G}=\mathbf{G}'=\mathbf{0}$ element:
@@ -211,31 +208,20 @@ $$
 
 ### 3.2 Independent-Particle Polarizability (Adler-Wiser Formula)
 
-The key insight is that the density-density response function in linear response theory is encoded 
-in the **bubble diagram**: two fermion loops (propagators) connected by a density vertex.  
-Starting from the Kubo formula in Section 2.2, the retarded density-density correlator at frequency 
-$\omega$ is built from four objects: a density creation operator $e^{-i(\mathbf{q}+\mathbf{G})\cdot\mathbf{r}}$, 
-two intermediate-state propagators (Green's functions), and another density operator 
-$e^{i(\mathbf{q}+\mathbf{G}')\cdot\mathbf{r}}$.  Within DFT (or any single-particle theory), the 
-intermediate propagators are Kohn-Sham Green's functions $G^0$.  The bubble diagram thus evaluates 
-as a product of two $G^0$ **on different spatial positions** connected by the density operators.  
-Explicitly, the density-density response is:
+The bubble diagram is built from two $G^0$ propagators connected by density vertices. Starting from Keldysh formalism:
 
 <div class="math-display">
 $$
 \chi^0_{\mathbf{G}\mathbf{G}'}(\mathbf{q},\omega)
 = \frac{1}{\hbar i}\int d\omega' \int \frac{d\mathbf{r}\,d\mathbf{r}'}{(2\pi)^6}
   e^{-i(\mathbf{q}+\mathbf{G})\cdot\mathbf{r}}
-  e^{i(\mathbf{q}+\mathbf{G}')\cdot\mathbf{r}'}
   G^0_{>}(\mathbf{r},\mathbf{r}',\omega+\omega')
-  G^0_{<}(\mathbf{r}',\mathbf{r},\omega'),
+  G^0_{<}(\mathbf{r}',\mathbf{r},\omega')
+  e^{i(\mathbf{q}+\mathbf{G}')\cdot\mathbf{r}'}.
 $$
 </div>
 
-where the $>$ and $<$ subscripts denote the greater and lesser components of the Keldysh Green's 
-function.  For equilibrium systems at $T=0$, using the spectral representation, this reduces to 
-the **Adler-Wiser** formula: inserting a complete set of (occupied, empty) Kohn-Sham states and 
-performing the frequency integrations gives
+Spectral representation yields the **Adler-Wiser** formula:
 
 <div class="math-display">
 $$
@@ -257,16 +243,7 @@ $$
 $$
 </div>
 
-The factor of 2 accounts for spin degeneracy (spin index suppressed throughout).
-
-**Anatomy of the bubble diagram:**  The physical meaning is transparent: 
-the numerator $f_{n\mathbf{k}} - f_{m,\mathbf{k}+\mathbf{q}}$ is the Pauli-blocking factor 
-(occupied state minus empty state, enabling a transition).  The propagator denominator 
-$\hbar\omega - \Delta\epsilon + i\eta$ is the energy difference between the electron-hole 
-pair and the photon frequency, with infinitesimal broadening $\eta$. The density matrix 
-elements $\rho^2$ weight each pair (valence-to-conduction) transition by the square of its 
-oscillator strength.  The $\mathbf{k}$-sum and $\mathbf{q}$-sum capture all possible 
-excitations across the Brillouin zone.
+The factor of 2 accounts for spin degeneracy.
 
 In the **optical limit** $\mathbf{q}\to\mathbf{0}$, the $\mathbf{G}=\mathbf{0}$ matrix element for
 $n\neq m$ reduces via the commutator $[\hat{H}_{KS},\hat{\mathbf{r}}] = i\hbar\hat{\mathbf{p}}/m_e$ to:
