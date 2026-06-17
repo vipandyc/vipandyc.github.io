@@ -12,6 +12,7 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 ## Materials
 
 - [Transport Regimes: When Boltzmann Breaks Down](/blog/transport-regimes-boltzmann-quantum/)
+- [Simulating Optical Properties: From Kubo Formula to GW-BSE](/blog/optical-properties-kubo-dft-gw/)
 
 ## Methods
 
