@@ -208,7 +208,17 @@ $$
 
 ### 3.2 Independent-Particle Polarizability (Adler-Wiser Formula)
 
-The bubble diagram is built from two $G^0$ propagators connected by density vertices. Starting from Keldysh formalism:
+The bubble diagram is built from two $G^0$ propagators connected by density vertices. The retarded density-density correlator is defined as:
+
+<div class="math-display">
+$$
+\chi^0(\mathbf{r},\mathbf{r}',t-t') = -\frac{i}{\hbar}\langle[\hat{n}(\mathbf{r},t), \hat{n}(\mathbf{r}',t')]\rangle\Theta(t-t'),
+\qquad
+\hat{n}(\mathbf{r},t) = \psi^\dagger(\mathbf{r},t)\psi(\mathbf{r},t).
+$$
+</div>
+
+The commutator $[\hat{n}, \hat{n}]$ is a product of four field operators.  Wick's theorem (or direct evaluation) decouples this into products of two single-particle Green's functions—one forward and one backward in the Keldysh contour, denoted $G^0_>$ and $G^0_<$. Fourier-transforming to frequency and momentum space $({\mathbf{q}}, \omega)$ and expanding plane waves $e^{\pm i(\mathbf{q}+\mathbf{G})\cdot\mathbf{r}}$ for the periodic potential:
 
 <div class="math-display">
 $$
@@ -221,7 +231,7 @@ $$
 $$
 </div>
 
-Spectral representation yields the **Adler-Wiser** formula:
+Spectral representation—inserting complete sets of KS eigenstates and evaluating the $\omega'$ integral—yields the **Adler-Wiser** formula:
 
 <div class="math-display">
 $$
