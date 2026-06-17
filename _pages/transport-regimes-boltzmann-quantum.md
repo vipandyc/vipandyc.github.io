@@ -168,11 +168,11 @@ with $D$ the diffusion constant and $\tau_\phi$ the dephasing time from inelasti
 From Einstein relation,
 <div class="math-display">
 $$
-D=\frac{\sigma}{\rho_0 c}=\frac{v_F^2\tau}{d}=\frac{v_F\ell_{\mathrm{mfp}}}{d},
+D=\frac{\sigma}{e\cdot N(E_F)}=\frac{v_F^2\tau}{d}=\frac{v_F\ell_{\mathrm{mfp}}}{d},
 $$
 </div>
 
-where $\sigma$ is conductivity, $\rho_0c$ is density of states times charge, $d$ is dimensionality, and $\ell_{\mathrm{mfp}}=v_F\tau$. Experimentally, extract from resistivity and Hall effect, or compute from BTE/ab initio (BoltzTraP, EPW).
+where $\sigma$ is conductivity, $e$ is elementary charge, $N(E_F)$ is density of states at Fermi level, $d$ is dimensionality, and $\ell_{\mathrm{mfp}}=v_F\tau$. Experimentally, extract from resistivity and Hall effect, or compute from BTE/ab initio (BoltzTraP, EPW).
 
 **Getting the dephasing time $\tau_\phi$ via Matthiessen's rule:**
 
