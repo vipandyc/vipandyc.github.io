@@ -137,24 +137,24 @@ $$
 </div>
 
 **Why $\varepsilon$ is directly proportional to $\chi^0$ in DFT:**  The key is that Poisson's 
-equation for the induced potential $\phi_\text{ind}$ couples linearly to the charge density 
+equation for the induced potential $\phi_{\text{ind}}$ couples linearly to the charge density 
 perturbation $\delta n$:
 
 <div class="math-display">
 $$
-\nabla^2\phi_\text{ind} = -4\pi e\,\delta n.
+\nabla^2\phi_{\text{ind}} = -4\pi e\,\delta n.
 $$
 </div>
 
-In Fourier space with plane-wave expansions, an applied density perturbation $\delta n_\mathbf{G}$ 
+In Fourier space with plane-wave expansions, an applied density perturbation $\delta n_{\mathbf{G}}$ 
 at wavevector $\mathbf{G}$ produces an induced Coulomb potential 
-$\phi_{\text{ind},\mathbf{G}} = v_\mathbf{G}\,\delta n_\mathbf{G}$.  This induced potential 
+$\phi_{\text{ind},\mathbf{G}} = v_\mathbf{G}\,\delta n_{\mathbf{G}}$.  This induced potential 
 then acts back on the electrons, modifying the single-particle levels via a shift of the 
 self-consistent potential (Hartree term).  Within DFT, the induced density itself is encoded 
 in the **irreducible polarisability** $\chi^0$: electrons respond to both the external field 
 (through the commutator $[\hat{H}_{KS},\hat{\mathbf{r}}]$) and the self-consistent Hartree 
 potential they generate.  The total density response is thus 
-$\delta n = \chi^0(\phi_\text{ext} + \phi_\text{ind}) = \chi^0(\phi_\text{ext} + v\,\delta n)$, 
+$\delta n = \chi^0(\phi_{\text{ext}} + \phi_{\text{ind}}) = \chi^0(\phi_{\text{ext}} + v\,\delta n)$, 
 where $v$ is the bare Coulomb potential.  Rearranging gives the relation between $\chi^0$ and 
 the full dielectric function via
 
@@ -227,12 +227,12 @@ $$
 = \frac{1}{\hbar i}\int d\omega' \int \frac{d\mathbf{r}\,d\mathbf{r}'}{(2\pi)^6}
   e^{-i(\mathbf{q}+\mathbf{G})\cdot\mathbf{r}}
   e^{i(\mathbf{q}+\mathbf{G}')\cdot\mathbf{r}'}
-  G^0_>(\mathbf{r},\mathbf{r}',\omega+\omega')
-  G^0_<(\mathbf{r}',\mathbf{r},\omega'),
+  G^0_{>}(\mathbf{r},\mathbf{r}',\omega+\omega')
+  G^0_{<}(\mathbf{r}',\mathbf{r},\omega'),
 $$
 </div>
 
-where the $>$ and $<$ subscripts denote retarded/advanced components of the Keldysh Green's 
+where the $>$ and $<$ subscripts denote the greater and lesser components of the Keldysh Green's 
 function.  For equilibrium systems at $T=0$, using the spectral representation, this reduces to 
 the **Adler-Wiser** formula: inserting a complete set of (occupied, empty) Kohn-Sham states and 
 performing the frequency integrations gives
