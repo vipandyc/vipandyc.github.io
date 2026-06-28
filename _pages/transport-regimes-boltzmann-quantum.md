@@ -44,6 +44,87 @@ $$
 $$
 </div>
 
+For thermoelectrics, we use the same BTE but keep the full energy dependence (instead of jumping directly to Drude). Linearizing around $f_0$ gives
+
+<div class="math-display">
+$$
+\delta f_{n\mathbf k}
+=
+-\tau_{n\mathbf k}\,
+\mathbf v_{n\mathbf k}\!\cdot\!
+\left[
+-e\mathbf E
++\frac{\varepsilon_{n\mathbf k}-\mu}{T}\nabla T
+\right]
+\left(-\frac{\partial f_0}{\partial \varepsilon}\right),
+$$
+</div>
+
+and therefore the transport moments
+
+<div class="math-display">
+$$
+\mathcal L_{\alpha\beta}^{(m)}
+=
+\frac{1}{N_k\Omega}
+\sum_{n\mathbf k}
+\tau_{n\mathbf k}\,
+v_{n\mathbf k,\alpha}v_{n\mathbf k,\beta}
+(\varepsilon_{n\mathbf k}-\mu)^m
+\left(-\frac{\partial f_0}{\partial \varepsilon}\right).
+$$
+</div>
+
+Using Onsager form for charge/heat currents,
+
+<div class="math-display">
+$$
+\begin{pmatrix}\mathbf J\\ \mathbf J_Q\end{pmatrix}
+=
+\begin{pmatrix}
+e^2\mathcal L^{(0)} & \dfrac{e}{T}\mathcal L^{(1)} \\
+e\mathcal L^{(1)} & \dfrac{1}{T}\mathcal L^{(2)}
+\end{pmatrix}
+\begin{pmatrix}\mathbf E\\ -\nabla T\end{pmatrix},
+$$
+</div>
+
+the electronic thermoelectric tensors are
+
+<div class="math-display">
+$$
+\sigma_{\alpha\beta}=e^2\mathcal L_{\alpha\beta}^{(0)},
+\qquad
+S_{\alpha\beta}
+=-\frac{1}{eT}
+\left(\mathcal L^{(0)-1}\mathcal L^{(1)}\right)_{\alpha\beta},
+$$
+</div>
+
+<div class="math-display">
+$$
+\kappa_{e,\alpha\beta}
+=\frac{1}{T}
+\left[
+\mathcal L^{(2)}
+-\mathcal L^{(1)}\mathcal L^{(0)-1}\mathcal L^{(1)}
+\right]_{\alpha\beta},
+\qquad
+\mathrm{PF}_{\alpha}=S_{\alpha}^2\sigma_{\alpha}.
+$$
+</div>
+
+Finally, the figure of merit is
+
+<div class="math-display">
+$$
+zT_{\alpha}
+=
+\frac{S_{\alpha}^2\sigma_{\alpha}T}
+{\kappa_{e,\alpha}+\kappa_{L,\alpha}}.
+$$
+</div>
+
 Use BTE when carriers can be treated as wave packets with well-defined momentum between scattering events.
 
 ## 2. Practical Boltzmann Implementations
@@ -54,6 +135,19 @@ For electronic materials from first principles, the two common BTE pipelines are
 - **EPW (electron-phonon Wannier):** compute $e$-ph matrix elements and scattering rates, then solve BTE with ab initio lifetimes.
 
 Both are still semiclassical BTE frameworks; they differ mainly in how accurately $\tau$ and scattering are modeled.
+
+For an ab initio thermoelectric workflow (RTA):
+
+1. **Electronic structure from DFT:** compute $\varepsilon_{n\mathbf k}$ on dense meshes (often via Wannier/Fourier interpolation).
+2. **Band velocities:** evaluate $\mathbf v_{n\mathbf k}=\hbar^{-1}\nabla_{\mathbf k}\varepsilon_{n\mathbf k}$.
+3. **Lifetimes $\tau_{n\mathbf k}$:**
+   - constant-$\tau$ / fitted-$\tau$ (BoltzTraP-style), or
+   - explicit $e$-ph scattering from supercell finite-displacement data (e.g., VASP + phono3py style) or Wannier interpolation (EPW-style), e.g. from Fermi's golden rule.
+4. **Transport moments:** build $\mathcal L^{(0,1,2)}(\mu,T)$ and obtain $\sigma$, $S$, $\kappa_e$, and PF.
+5. **Lattice thermal conductivity:** compute $\kappa_L$ from phonon BTE using 2nd/3rd-order IFCs (typically finite-displacement supercells).
+6. **Figure of merit:** combine to get $zT(\mu,T)$ and map optimal carrier concentration/temperature windows.
+
+This is the standard ab initio route used in recent RTA thermoelectric studies (including the methodology of arXiv:2511.15249), with differences mainly in how $\tau_{n\mathbf k}$ and $\kappa_L$ are treated.
 
 ## 3. Quantum Transport (Landauer + NEGF)
 
