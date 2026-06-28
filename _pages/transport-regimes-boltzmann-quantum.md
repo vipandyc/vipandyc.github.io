@@ -177,7 +177,7 @@ e\mathcal L^{(1)} & \dfrac{1}{T}\mathcal L^{(2)}
 $$
 </div>
 
-the electronic thermoelectric tensors are
+the electronic thermoelectric tensors are obtained by taking $\sigma$ from $\mathbf J$ vs $\mathbf E$ at $\nabla T=0$, $S$ from the open-circuit condition $\mathbf J=0$, and $\kappa_e$ from $\mathbf J_Q$ vs $-\nabla T$ at $\mathbf J=0$:
 
 <div class="math-display">
 $$
