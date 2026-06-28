@@ -112,7 +112,21 @@ $$
 $$
 </div>
 
-and therefore the transport moments
+Why this directly gives transport properties: electric and heat currents are moments of the nonequilibrium part $\delta f$:
+
+<div class="math-display">
+$$
+J_\alpha
+=
+\frac{-e}{N_k\Omega}\sum_{n\mathbf k} v_{n\mathbf k,\alpha}\,\delta f_{n\mathbf k},
+\qquad
+J_{Q,\alpha}
+=
+\frac{1}{N_k\Omega}\sum_{n\mathbf k}(\varepsilon_{n\mathbf k}-\mu)\,v_{n\mathbf k,\alpha}\,\delta f_{n\mathbf k}.
+$$
+</div>
+
+Insert $\delta f_{n\mathbf k}$, collect terms proportional to $E_\beta$ and $-\nabla_\beta T$, and define the common moments
 
 <div class="math-display">
 $$
@@ -126,6 +140,28 @@ v_{n\mathbf k,\alpha}v_{n\mathbf k,\beta}
 \left(-\frac{\partial f_0}{\partial \varepsilon}\right).
 $$
 </div>
+
+Then
+
+<div class="math-display">
+$$
+J_\alpha
+=
+e^2\mathcal L_{\alpha\beta}^{(0)}E_\beta
++\frac{e}{T}\mathcal L_{\alpha\beta}^{(1)}(-\nabla_\beta T),
+$$
+</div>
+
+<div class="math-display">
+$$
+J_{Q,\alpha}
+=
+e\mathcal L_{\alpha\beta}^{(1)}E_\beta
++\frac{1}{T}\mathcal L_{\alpha\beta}^{(2)}(-\nabla_\beta T).
+$$
+</div>
+
+So the "$2\times2$ matrix" is just the compact Onsager form of these two coupled linear equations (charge and heat currents vs electric and thermal driving forces):
 
 Using Onsager form for charge/heat currents,
 
