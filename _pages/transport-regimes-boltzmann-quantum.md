@@ -44,7 +44,59 @@ $$
 $$
 </div>
 
-For thermoelectrics, we use the same BTE but keep the full energy dependence (instead of jumping directly to Drude). Linearizing around $f_0$ gives
+For thermoelectrics, we keep the full energy dependence and explicitly linearize around equilibrium:
+
+<div class="math-display">
+$$
+f_{n\mathbf k}=f_0(\varepsilon_{n\mathbf k})+\delta f_{n\mathbf k},
+\qquad
+|\delta f_{n\mathbf k}|\ll f_0.
+$$
+</div>
+
+For steady, weakly non-uniform transport (linear response), keep only first-order terms:
+
+<div class="math-display">
+$$
+\frac{\partial f}{\partial t}=0,\qquad
+\mathbf v\cdot\nabla_{\mathbf r}\delta f\approx 0,\qquad
+\left.\frac{\partial f}{\partial t}\right|_{\mathrm{coll}}
+=-\frac{\delta f}{\tau_{n\mathbf k}}.
+$$
+</div>
+
+So BTE becomes
+
+<div class="math-display">
+$$
+\mathbf v_{n\mathbf k}\cdot\nabla_{\mathbf r} f_0
++\frac{(-e)\mathbf E}{\hbar}\cdot\nabla_{\mathbf k} f_0
+=-\frac{\delta f_{n\mathbf k}}{\tau_{n\mathbf k}}.
+$$
+</div>
+
+Use chain rules
+
+<div class="math-display">
+$$
+\nabla_{\mathbf k} f_0
+=\frac{\partial f_0}{\partial \varepsilon}\nabla_{\mathbf k}\varepsilon_{n\mathbf k}
+=\hbar \mathbf v_{n\mathbf k}\frac{\partial f_0}{\partial \varepsilon},
+$$
+</div>
+
+and (taking $\nabla\mu=0$ in the common BoltzTraP-style setup)
+
+<div class="math-display">
+$$
+\nabla_{\mathbf r} f_0
+=\frac{\partial f_0}{\partial T}\nabla T
+=\frac{\varepsilon_{n\mathbf k}-\mu}{T}
+\left(-\frac{\partial f_0}{\partial \varepsilon}\right)\nabla T.
+$$
+</div>
+
+Substituting these into BTE gives the perturbation
 
 <div class="math-display">
 $$
