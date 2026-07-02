@@ -1,7 +1,7 @@
 ---
 permalink: /blog/x-ray-absorption-spectroscopy/
 title: "Reading X-ray Absorption Spectra: Edges, Regions, and First-Principles Models"
-excerpt: "A compact guide to pre-edge, XANES, EXAFS, core-level labels, and the calculations behind Materials Project spectra."
+excerpt: "A guide to pre-edge, XANES, EXAFS, core-level labels, and the calculations behind Materials Project spectra."
 author_profile: true
 ---
 
@@ -17,17 +17,23 @@ I(E,t)=I_0(E)e^{-\mu(E)t},
 $$
 </div>
 
-where $t$ is the sample thickness. Microscopically, absorption promotes a localized core electron into an unoccupied state. In the electric-dipole approximation,
+where $t$ is the sample thickness. Microscopically, absorption promotes a localized core electron into an unoccupied state. For an $N$-electron system in the electric-dipole approximation,
 
 <div class="math-display">
 $$
 \mu(\omega)\propto
-\sum_f \left|\langle f|\boldsymbol{\epsilon}\!\cdot\!\mathbf r|c\rangle\right|^2
-\delta(E_f-E_c-\hbar\omega).
+\sum_F
+\left\lvert
+\left\langle \Psi_F^N \right\rvert \hat D
+\left\lvert \Psi_0^N \right\rangle
+\right\rvert^2
+\delta(E_F^N-E_0^N-\hbar\omega),
+\qquad
+\hat D=\sum_{i=1}^{N}\boldsymbol{\epsilon}\cdot\mathbf r_i.
 $$
 </div>
 
-This compact expression already contains most of XAS: the core state $|c\rangle$ makes the measurement element-specific, the final states $|f\rangle$ contain the local electronic and geometric environment, and the polarization $\boldsymbol{\epsilon}$ makes orbital orientation visible.
+This compact expression already contains most of XAS. The initial state $\lvert\Psi_0^N\rangle$ contains the occupied core orbital, the many-body final states $\lvert\Psi_F^N\rangle$ contain the excited electron *and* the core hole, and the polarization $\boldsymbol{\epsilon}$ selects orbital directions. Element specificity comes from choosing which localized core orbital is excited.
 
 ## What does “Cr K-edge” mean?
 
@@ -84,52 +90,216 @@ $$
 
 Each neighbor shell $j$ contributes through its coordination number $N_j$, distance $R_j$, scattering amplitude $F_j$, disorder $\sigma_j^2$, and phase shift $\delta_j$. The mean free path $\lambda$ damps long trajectories, while $S_0^2$ accounts for many-electron amplitude loss. Fourier transforming $k^n\chi(k)$ produces peaks near coordination-shell distances, but phase shifts mean those peaks are **not** uncorrected radial-distribution functions.
 
-## How first-principles calculations see the same spectrum
+## Which method is reliable in which region?
 
-The golden-rule sum over final states can be rewritten using a retarded Green's function,
+The energy boundaries are approximate, and an unusually strong exciton can move them. Still, this is a useful working map.
+
+**Pre-edge and the first 10-20 eV above $E_0$.** Bound states, core excitons, dipole-forbidden channels, and multiplets are most visible here. For periodic solids, use a core-level **BSE** implementation such as **OCEAN** or **exciting** when peak positions and oscillator-strength transfer matter. For molecules and finite complexes, restricted-window linear-response **TDDFT** in **NWChem** is often practical; real-time TDDFT is available in **NWChem** and **Octopus**. **FDMNES** is valuable when full-potential shape, polarization, or quadrupole transitions control a K-edge pre-edge. A static core-hole DFT calculation can reproduce broad trends but is less trustworthy for a tightly bound exciton or several coherently mixed transitions.
+
+**Main XANES, roughly 10-50 eV above $E_0$.** Several-scattering paths overlap and the photoelectron wavelength is comparable to interatomic distances. **FEFF** with self-consistent potentials and full multiple scattering is a strong default for K-edge structure and rapid comparison of many candidate geometries. **FDMNES** is preferable when the muffin-tin potential is questionable or detailed dichroism matters. **XSpectra** in Quantum ESPRESSO and core-hole calculations in **VASP** provide plane-wave supercell alternatives. If an independent-particle calculation misses a sharp onset, white line, or strong intensity redistribution, move to **OCEAN/exciting BSE** rather than merely shifting the energy axis.
+
+**EXAFS, normally beyond about 50 eV.** The path expansion is controlled because the photoelectron wavelength is short and inelastic damping suppresses very long paths. **FEFF** is the standard scattering engine; **Larch/Larix** or **Athena/Artemis** performs normalization, background removal, Fourier transforms, and fitting of FEFF paths. This is the most quantitatively reliable region for extracting bond lengths and disorder. Coordination numbers are less independent because they correlate with $S_0^2$ and $\sigma^2$. BSE or TDDFT is unnecessary and inefficient for hundreds of eV of EXAFS oscillations.
+
+**Transition-metal $L_{2,3}$ and rare-earth $M$ edges need an extra warning.** The $2p$ or $3d$ core spin-orbit splitting and open-shell multiplets can dominate even if the photon energy is high. BSE codes can include spin-orbit coupling and some multiplet interactions, but strongly localized $d$ or $f$ shells may require ligand-field or charge-transfer multiplet calculations with **Quanty** or **CTM4XAS**. “Near edge” is therefore a statement about energy *relative to that edge*, not about hard versus soft X-rays.
+
+## From the exact many-body spectrum to a Green's function
+
+Let $E_\gamma=\hbar\omega$ be the photon energy, $n_{\rm abs}$ the number density of equivalent absorbers, and $\alpha$ the fine-structure constant. In atomic units, the dipole absorption cross section is
 
 <div class="math-display">
 $$
-\mu(E)\propto-\operatorname{Im}
-\langle c|D^\dagger G(E)D|c\rangle,
-\qquad D=\boldsymbol{\epsilon}\cdot\mathbf r.
+\sigma(E_\gamma)=4\pi^2\alpha E_\gamma
+\sum_F
+\left\lvert
+\left\langle \Psi_F^N \right\rvert \hat D
+\left\lvert \Psi_0^N \right\rangle
+\right\rvert^2
+\delta(E_F^N-E_0^N-E_\gamma),
+\qquad
+\mu(E_\gamma)=n_{\rm abs}\sigma(E_\gamma).
 $$
 </div>
 
-This is the natural language of **FEFF**. The code constructs an atomic cluster around a chosen absorber, obtains self-consistent scattering potentials, includes a screened core hole and inelastic losses, and evaluates the photoelectron Green's function. Full multiple scattering is important in XANES; a path expansion becomes intuitive and efficient in EXAFS.
+Here $\lvert\Psi_0^N\rangle$ is the interacting ground state, $\lvert\Psi_F^N\rangle$ is an exact final state with one core hole, and $\hat D$ is the many-electron dipole operator. Using $\delta(x)=-\pi^{-1}\operatorname{Im}(x+i0^+)^{-1}$ converts the explicit sum over final states into a resolvent:
+
+<div class="math-display">
+$$
+\sigma(E_\gamma)=
+-4\pi\alpha E_\gamma\,
+\operatorname{Im}
+\left\langle \Psi_0^N \right\rvert
+\hat D^\dagger
+\frac{1}{E_0^N+E_\gamma-\hat H+i\Gamma}
+\hat D
+\left\lvert \Psi_0^N \right\rangle .
+$$
+</div>
+
+$\hat H$ is the full electronic Hamiltonian. The positive broadening $\Gamma$ represents the core-hole lifetime, photoelectron lifetime, instrumental resolution, or a convolution of them; formally one takes $\Gamma\rightarrow0^+$. This equation is still exact. Its propagator is a many-body electron-hole response, so core excitons, multiplets, shake-up, and shake-off channels are present if the final states are solved exactly. FEFF, TDDFT, and BSE differ mainly in how they approximate this propagator.
+
+## FEFF: a one-photoelectron Green's function
+
+FEFF reduces the many-electron resolvent to a quasiparticle moving in the potential of the nuclei, the other electrons, and a screened core hole. If $\phi_c$ is the selected core orbital and $d=\boldsymbol{\epsilon}\cdot\mathbf r$ is its one-electron dipole operator, the working form is
+
+<div class="math-display">
+$$
+\mu(E_\gamma)\propto
+-E_\gamma\operatorname{Im}
+\left\langle \phi_c\right\rvert
+d^\dagger G^R(E)d
+\left\lvert\phi_c\right\rangle,
+\qquad
+G^R(E)=
+\left[E-h_{\rm ch}-\Sigma(E)+i\Gamma_c\right]^{-1}.
+$$
+</div>
+
+$E=E_c+E_\gamma$ is the final one-electron energy in the code's energy convention, $h_{\rm ch}$ is the effective Hamiltonian including the screened core-hole potential, $\Gamma_c$ is the intrinsic core-level width, and the complex self-energy $\Sigma(E)$ describes quasiparticle shifts and inelastic losses. Its real part moves spectral features; its imaginary part limits the mean free path. The matrix element projects the full final-state propagator onto waves that can be launched from, and return to, the absorbing atom.
+
+FEFF builds $G^R$ in real space from single-site scattering matrices $t_i$:
+
+<div class="math-display">
+$$
+G^R=G_c+G_c tG_c+G_c tG_c tG_c+\cdots .
+$$
+</div>
+
+$G_c$ propagates in the central-atom reference potential, and each $t_i$ scatters the photoelectron from site $i$. Near the edge, FEFF sums this series by a full multiple-scattering matrix inversion over a finite cluster. At high kinetic energy it reorganizes the same series into geometrical paths, which leads to the EXAFS equation above.
+
+The efficiency comes with identifiable approximations: a one-active-electron or sudden picture; self-consistent but usually spherical muffin-tin scattering potentials; a static screened core hole; model or many-pole $GW$-like self-energies; phenomenological or calculated lifetime and vibrational damping; and an amplitude factor $S_0^2$ for spectral weight lost to many-electron channels. FEFF therefore handles continuum propagation and EXAFS exceptionally well, and often gives useful K-edge XANES, but it does not explicitly diagonalize a correlated electron-hole Hamiltonian. Deep bound excitons, strong charge-transfer multiplets, and delicate pre-edge intensities are the places to be cautious.
 
 This is also how the XAS data associated with the **Materials Project** were generated. The high-throughput workflow used crystal structures from MP, selected every symmetrically distinct absorbing site, built a local cluster, and ran FEFF9. The original release contained hundreds of thousands of site-resolved K-edge XANES spectra. So the MP curves are first-principles real-space multiple-scattering calculations—not TDDFT trajectories. They are excellent for comparing candidate structures and local environments, but finite-temperature disorder, defects, surface chemistry, and energy alignment can still separate a calculated ideal crystal from an experiment.
 
-### Where BSE and TDDFT enter
+## TDDFT: approximate the density-response kernel
 
-Very close to the edge, treating the electron and core hole as independent particles can fail. The Bethe-Salpeter equation (BSE) instead diagonalizes an effective electron-hole Hamiltonian,
+TDDFT keeps the many-electron response at the density level. The interacting density-response function $\chi$ satisfies the Dyson-like equation
 
 <div class="math-display">
 $$
-H^{\mathrm{BSE}}=H^{\mathrm{diag}}+K^x-K^d,
+\chi(\omega)=\chi_s(\omega)
++\chi_s(\omega)\left[v_C+f_{\rm xc}(\omega)\right]\chi(\omega),
 \qquad
-\epsilon_2(\omega)\propto\sum_\lambda
-\left|\sum_{ca\mathbf k}X^\lambda_{ca\mathbf k}d_{ca\mathbf k}\right|^2
-\delta(\omega-\Omega_\lambda).
+f_{\rm xc}(\mathbf r,\mathbf r',\omega)
+=\frac{\delta v_{\rm xc}(\mathbf r,\omega)}
+{\delta n(\mathbf r',\omega)}.
 $$
 </div>
 
-The attractive direct term $-K^d$ binds and redshifts core excitons; off-diagonal terms mix transitions and redistribute oscillator strength. **OCEAN** and **exciting** are prominent BSE routes for near-edge core spectra.
+$\chi_s$ is the independent Kohn-Sham response, $v_C$ is the bare Coulomb interaction, and $f_{\rm xc}$ is the exchange-correlation kernel. Spatial integrations between neighboring factors are implicit. The polarization-resolved polarizability is obtained by projecting $\chi$ with the dipole operator,
 
-Time-dependent DFT (TDDFT) is another linear-response route: one perturbs the electron density and computes its frequency-dependent response. It can work well, especially for molecules and selected edges, but core spectroscopy places severe demands on the exchange-correlation kernel, relativistic core levels, and core-hole treatment. **FDMNES** includes TDDFT for edges where its usual DFT treatment is insufficient. TDDFT and BSE are therefore alternatives for near-edge electron-hole physics; neither is the method behind the Materials Project FEFF database.
+<div class="math-display">
+$$
+\alpha_{\epsilon\epsilon}(\omega)
+=-\int d\mathbf r\,d\mathbf r'
+(\boldsymbol{\epsilon}\cdot\mathbf r)
+\chi(\mathbf r,\mathbf r',\omega)
+(\boldsymbol{\epsilon}\cdot\mathbf r'),
+\qquad
+\mu(\omega)\propto\omega\operatorname{Im}\alpha_{\epsilon\epsilon}(\omega).
+$$
+</div>
 
-## A practical package map
+In linear-response TDDFT, one commonly restricts the transition space to a chosen core orbital $c$ and unoccupied orbitals $a$. In the Tamm-Dancoff form,
 
-| Goal | Useful tools | Main idea |
-|---|---|---|
-| Fast XANES/EXAFS simulation and path analysis | **FEFF** | Real-space Green's functions and multiple scattering |
-| Full-potential near-edge simulation, dichroism | **FDMNES** | Finite differences or multiple scattering; DFT/TDDFT options |
-| Plane-wave/pseudopotential XAS | **XSpectra** in Quantum ESPRESSO, **VASP** | Core-hole supercells and reconstructed transition matrix elements |
-| Explicit core excitons | **OCEAN**, **exciting** | DFT plus BSE electron-hole Hamiltonian |
-| Multi-code input generation | **Lightshow** | Builds consistent inputs for FEFF, VASP, OCEAN, exciting, and XSpectra |
-| Experimental reduction and EXAFS fitting | **Larch/Larix**, **Athena/Artemis** | Normalize $\mu(E)$, subtract background, Fourier transform, and fit FEFF paths |
+<div class="math-display">
+$$
+\sum_{c'a'}A_{ca,c'a'}X_{c'a'}^S=\Omega_S X_{ca}^S,
+\qquad
+A_{ca,c'a'}=(\varepsilon_a-\varepsilon_c)
+\delta_{cc'}\delta_{aa'}+K^{\rm Hxc}_{ca,c'a'}.
+$$
+</div>
 
-A sensible workflow is to identify the absorber and edge, align and normalize the measured spectrum, use standards or calculated XANES to test oxidation and geometry, then fit EXAFS paths for distances and disorder. If the first few eV contain unexplained sharp peaks, that is the moment to suspect core excitons and move from an independent-particle or multiple-scattering picture toward BSE or TDDFT.
+$K^{\rm Hxc}$ contains matrix elements of $v_C+f_{\rm xc}$, so TDDFT shifts and mixes the bare Kohn-Sham core transitions. Restricted excitation window or core-valence separation removes the enormous number of irrelevant valence excitations; this is the **REW-TDDFT** route implemented in NWChem.
+
+Real-time TDDFT computes the same linear response differently. After a weak impulsive field $\delta v_{\rm ext}(t)=-\kappa\,\boldsymbol{\epsilon}\cdot\mathbf r\,\delta(t)$, it propagates
+
+<div class="math-display">
+$$
+i\frac{\partial\varphi_n(t)}{\partial t}
+=\left[-\frac{\nabla^2}{2}+v_{\rm ext}(t)
++v_H[n(t)]+v_{\rm xc}[n(t)]\right]\varphi_n(t),
+$$
+</div>
+
+and Fourier transforms the induced dipole,
+
+<div class="math-display">
+$$
+\alpha_{\epsilon\epsilon}(\omega)=
+\frac{1}{\kappa}\int_0^T dt\,
+e^{i\omega t-\eta t}\left[d_\epsilon(t)-d_\epsilon(0)\right].
+$$
+</div>
+
+One kick yields a continuous spectrum for that polarization. The cost is a very small time step for high-frequency core motion and a long propagation for fine energy resolution.
+
+TDDFT's weak point is now visible: the answer depends on $f_{\rm xc}$. Adiabatic semilocal kernels often underestimate core excitation energies, suffer self-interaction error, and poorly represent a long-range electron-core-hole attraction; they also miss genuine double excitations and many shake-up satellites. Hybrid or range-separated functionals, a relaxed core-hole reference, and scalar or fully relativistic Hamiltonians improve matters. In practice, TDDFT is strongest for molecular K-edge XANES and time-resolved finite-system problems. It is not the normal tool for long-range EXAFS.
+
+## BSE: propagate an explicit electron-hole pair
+
+BSE starts from single-particle orbitals, usually DFT states corrected toward quasiparticle energies by $GW$ or an approximate scissors/self-energy model. A core exciton $S$ is expanded in core-to-conduction transitions,
+
+<div class="math-display">
+$$
+\left\lvert S\right\rangle=
+\sum_{ca\mathbf k}X^S_{ca\mathbf k}
+a^\dagger_{a\mathbf k}a_c
+\left\lvert 0\right\rangle.
+$$
+</div>
+
+$c$ labels a localized core spinor, $a\mathbf k$ an empty Bloch state, and $X^S_{ca\mathbf k}$ the correlated transition amplitude. In the Tamm-Dancoff approximation the amplitudes obey
+
+<div class="math-display">
+$$
+\sum_{c'a'\mathbf k'}
+H^{\rm BSE}_{ca\mathbf k,c'a'\mathbf k'}
+X^S_{c'a'\mathbf k'}
+=\Omega_S X^S_{ca\mathbf k},
+$$
+</div>
+
+with
+
+<div class="math-display">
+$$
+H^{\rm BSE}_{ca\mathbf k,c'a'\mathbf k'}=
+(\varepsilon^{\rm QP}_{a\mathbf k}-\varepsilon_c)
+\delta_{cc'}\delta_{aa'}\delta_{\mathbf k\mathbf k'}
++K^x_{ca\mathbf k,c'a'\mathbf k'}
+-K^d_{ca\mathbf k,c'a'\mathbf k'}.
+$$
+</div>
+
+$K^d$ is the matrix element of the statically screened Coulomb interaction $W(0)=\epsilon^{-1}(0)v_C$ and attracts the excited electron to the core hole. $K^x$ uses the bare Coulomb interaction and describes exchange and local-field effects. Their off-diagonal elements mix independent transitions. The spectrum is
+
+<div class="math-display">
+$$
+\mu(E_\gamma)\propto E_\gamma
+\sum_S
+\left\lvert
+\sum_{ca\mathbf k}X^S_{ca\mathbf k}
+d_{ca\mathbf k}
+\right\rvert^2
+L_{\Gamma_S}(E_\gamma-\Omega_S),
+\qquad
+d_{ca\mathbf k}=\left\langle a\mathbf k\right\rvert d
+\left\lvert c\right\rangle.
+$$
+</div>
+
+The amplitudes add *before* squaring. This coherent sum is why an exciton can borrow intensity, split a peak, or make a transition dark; a projected density of states cannot do that. $L_{\Gamma_S}$ is a normalized Lorentzian or other broadening function containing the core-hole width, excited-electron damping, and experimental resolution.
+
+**OCEAN** combines plane-wave DFT, PAW-reconstructed core transition matrix elements, a core BSE solver, spin-orbit coupling, and a many-pole $GW$ self-energy model. **exciting** solves core BSE in an all-electron LAPW framework. Their main controlled errors are convergence with empty bands, $k$ points, screening cutoff, and transition subspace. Their physical approximations include static screening, usually the Tamm-Dancoff approximation, a quasiparticle picture, and incomplete vibrational or multi-electron satellite physics. BSE is generally the most systematic of these methods for bound core excitons and near-edge oscillator strengths, but it is more expensive than FEFF and is not designed for long-range EXAFS fitting.
+
+## A compact decision rule
+
+- For a **Cr K-edge oxide**, begin with FEFF or FDMNES for geometry and broad XANES; use OCEAN/exciting BSE if the pre-edge or white-line intensity is central.
+- For a **molecular C, N, or O K-edge**, REW-TDDFT in NWChem is economical; test the functional and absolute-energy shift against a standard.
+- For a **strongly correlated transition-metal $L_{2,3}$ edge**, expect spin-orbit and multiplet physics; compare BSE with Quanty or another charge-transfer multiplet calculation.
+- For **bond lengths, coordination shells, and thermal disorder**, use FEFF paths fitted to EXAFS with Larch or Artemis.
+- For **Materials Project XAS**, remember that the underlying method is FEFF real-space multiple scattering, not TDDFT or BSE.
 
 ## Takeaway
 
@@ -140,9 +310,14 @@ XAS is local because the excitation begins in a compact core orbital. The pre-ed
 - [Materials Project: how its XAS spectra are calculated](https://docs.materialsproject.org/methodology/materials-methodology/x-ray-absorption-spectra)
 - [Mathew et al., high-throughput computational XAS](https://doi.org/10.1038/sdata.2018.151)
 - [FEFF documentation and theory overview](https://feff.phys.washington.edu/feff/wiki/static/f/e/f/FEFF_Synopsis_0bea.html)
+- [Rehr et al., parameter-free X-ray spectra with FEFF9](https://doi.org/10.1039/B926434E)
 - [exciting tutorial: XAS using the BSE](https://www.exciting-code.org/uploads/exciting/tutorial_notebooks/xray_absorption_spectra_using_bse.html)
 - [FDMNES theory overview](https://fdmnes.neel.cnrs.fr/theory/)
 - [OCEAN at NIST](https://www.nist.gov/services-resources/software/ocean)
+- [Vinson et al., core-level BSE theory](https://doi.org/10.1103/PhysRevB.83.115106)
+- [NWChem restricted-window TDDFT documentation](https://nwchemgit.github.io/Excited-State-Calculations.html)
+- [Lopata et al., linear-response and real-time TDDFT for XAS](https://www.pnnl.gov/publications/linear-response-and-real-time-time-dependent-density-functional-theory-studies-core)
+- [Quanty $L_{2,3}$-edge multiplet tutorial](https://www.quanty.org/documentation/tutorials/nio_crystal_field/xas_l23)
 - [Quantum ESPRESSO user guide (XSpectra)](https://www.quantum-espresso.org/wp-content/uploads/2022/03/user_guide.pdf)
 - [Larch documentation for XAFS analysis](https://xraypy.github.io/xraylarch/)
 - [Lightshow multi-code input generator](https://doi.org/10.21105/joss.05182)
