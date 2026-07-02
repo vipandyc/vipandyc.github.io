@@ -94,13 +94,13 @@ Each neighbor shell $j$ contributes through its coordination number $N_j$, dista
 
 The energy boundaries are approximate, and an unusually strong exciton can move them. Still, this is a useful working map.
 
-**Pre-edge and the first 10-20 eV above $E_0$.** Bound states, core excitons, dipole-forbidden channels, and multiplets are most visible here. For periodic solids, use a core-level **BSE** implementation such as **OCEAN** or **exciting** when peak positions and oscillator-strength transfer matter. For molecules and finite complexes, restricted-window linear-response **TDDFT** in **NWChem** is often practical; real-time TDDFT is available in **NWChem** and **Octopus**. **FDMNES** is valuable when full-potential shape, polarization, or quadrupole transitions control a K-edge pre-edge. A static core-hole DFT calculation can reproduce broad trends but is less trustworthy for a tightly bound exciton or several coherently mixed transitions.
+**Pre-edge and the first 10-20 eV above $E_0$.** Bound states, core excitons, dipole-forbidden channels, and multiplets are most visible here. **exciting** provides an all-electron core-level BSE treatment when peak positions and oscillator-strength transfer matter. **VASP** also offers core BSE and a cheaper supercell core-hole route; **XSpectra** in Quantum ESPRESSO provides a core-hole DFT route. Real-time TDDFT in **Octopus** is possible only when the target core states are represented explicitly. A pseudopotential that freezes the relevant core shell cannot produce its absorption edge.
 
-**Main XANES, roughly 10-50 eV above $E_0$.** Several-scattering paths overlap and the photoelectron wavelength is comparable to interatomic distances. **FEFF** with self-consistent potentials and full multiple scattering is a strong default for K-edge structure and rapid comparison of many candidate geometries. **FDMNES** is preferable when the muffin-tin potential is questionable or detailed dichroism matters. **XSpectra** in Quantum ESPRESSO and core-hole calculations in **VASP** provide plane-wave supercell alternatives. If an independent-particle calculation misses a sharp onset, white line, or strong intensity redistribution, move to **OCEAN/exciting BSE** rather than merely shifting the energy axis.
+**Main XANES, roughly 10-50 eV above $E_0$.** Several-scattering paths overlap and the photoelectron wavelength is comparable to interatomic distances. **FEFF** with self-consistent potentials and full multiple scattering is a strong default for K-edge structure and rapid comparison of many candidate geometries. **XSpectra** in Quantum ESPRESSO and supercell core-hole calculations in **VASP** provide plane-wave alternatives that include valence relaxation around a static core hole. If those approaches miss a sharp onset, white line, or strong intensity redistribution, move to core BSE in **exciting** or **VASP** rather than merely shifting the energy axis.
 
-**EXAFS, normally beyond about 50 eV.** The path expansion is controlled because the photoelectron wavelength is short and inelastic damping suppresses very long paths. **FEFF** is the standard scattering engine; **Larch/Larix** or **Athena/Artemis** performs normalization, background removal, Fourier transforms, and fitting of FEFF paths. This is the most quantitatively reliable region for extracting bond lengths and disorder. Coordination numbers are less independent because they correlate with $S_0^2$ and $\sigma^2$. BSE or TDDFT is unnecessary and inefficient for hundreds of eV of EXAFS oscillations.
+**EXAFS, normally beyond about 50 eV.** The path expansion is controlled because the photoelectron wavelength is short and inelastic damping suppresses very long paths. **FEFF** is the natural choice: it generates the scattering amplitudes and phases for individual paths and sums them into $\chi(k)$. This is the most quantitatively reliable region for extracting bond lengths and disorder. Coordination numbers are less independent because they correlate with $S_0^2$ and $\sigma^2$. BSE, TDDFT, and explicit empty-band sums in VASP or Quantum ESPRESSO are unnecessary and inefficient for hundreds of eV of EXAFS oscillations.
 
-**Transition-metal $L_{2,3}$ and rare-earth $M$ edges need an extra warning.** The $2p$ or $3d$ core spin-orbit splitting and open-shell multiplets can dominate even if the photon energy is high. BSE codes can include spin-orbit coupling and some multiplet interactions, but strongly localized $d$ or $f$ shells may require ligand-field or charge-transfer multiplet calculations with **Quanty** or **CTM4XAS**. “Near edge” is therefore a statement about energy *relative to that edge*, not about hard versus soft X-rays.
+**Transition-metal $L_{2,3}$ and rare-earth $M$ edges need an extra warning.** The $2p$ or $3d$ core spin-orbit splitting and open-shell multiplets can dominate even if the photon energy is high. An all-electron BSE calculation in **exciting** can resolve core spin-orbit channels. VASP's current XAS implementation includes spin-orbit coupling in valence and conduction states but not the core-level splitting, so it does not separately reproduce $L_2$ and $L_3$. Strong localized-shell multiplets may remain difficult for all five packages considered here. “Near edge” is therefore a statement about energy *relative to that edge*, not about hard versus soft X-rays.
 
 ## From the exact many-body spectrum to a Green's function
 
@@ -210,9 +210,9 @@ A_{ca,c'a'}=(\varepsilon_a-\varepsilon_c)
 $$
 </div>
 
-$K^{\rm Hxc}$ contains matrix elements of $v_C+f_{\rm xc}$, so TDDFT shifts and mixes the bare Kohn-Sham core transitions. Restricted excitation window or core-valence separation removes the enormous number of irrelevant valence excitations; this is the **REW-TDDFT** route implemented in NWChem.
+$K^{\rm Hxc}$ contains matrix elements of $v_C+f_{\rm xc}$, so TDDFT shifts and mixes the bare Kohn-Sham core transitions. In a linear-response implementation, restricting the transition space to the selected core shell removes the enormous number of irrelevant valence excitations.
 
-Real-time TDDFT computes the same linear response differently. After a weak impulsive field $\delta v_{\rm ext}(t)=-\kappa\,\boldsymbol{\epsilon}\cdot\mathbf r\,\delta(t)$, it propagates
+**Octopus** computes the same linear response in real time. After a weak impulsive field $\delta v_{\rm ext}(t)=-\kappa\,\boldsymbol{\epsilon}\cdot\mathbf r\,\delta(t)$, it propagates
 
 <div class="math-display">
 $$
@@ -234,7 +234,7 @@ $$
 
 One kick yields a continuous spectrum for that polarization. The cost is a very small time step for high-frequency core motion and a long propagation for fine energy resolution.
 
-TDDFT's weak point is now visible: the answer depends on $f_{\rm xc}$. Adiabatic semilocal kernels often underestimate core excitation energies, suffer self-interaction error, and poorly represent a long-range electron-core-hole attraction; they also miss genuine double excitations and many shake-up satellites. Hybrid or range-separated functionals, a relaxed core-hole reference, and scalar or fully relativistic Hamiltonians improve matters. In practice, TDDFT is strongest for molecular K-edge XANES and time-resolved finite-system problems. It is not the normal tool for long-range EXAFS.
+TDDFT's weak point is now visible: the answer depends on $f_{\rm xc}$. Adiabatic semilocal kernels often underestimate core excitation energies, suffer self-interaction error, and poorly represent a long-range electron-core-hole attraction; they also miss genuine double excitations and many shake-up satellites. Core XAS in Octopus additionally requires an all-electron description or a pseudopotential that leaves the selected core shell active, together with a very small time step. It is not the normal tool for long-range EXAFS.
 
 ## BSE: propagate an explicit electron-hole pair
 
@@ -291,14 +291,14 @@ $$
 
 The amplitudes add *before* squaring. This coherent sum is why an exciton can borrow intensity, split a peak, or make a transition dark; a projected density of states cannot do that. $L_{\Gamma_S}$ is a normalized Lorentzian or other broadening function containing the core-hole width, excited-electron damping, and experimental resolution.
 
-**OCEAN** combines plane-wave DFT, PAW-reconstructed core transition matrix elements, a core BSE solver, spin-orbit coupling, and a many-pole $GW$ self-energy model. **exciting** solves core BSE in an all-electron LAPW framework. Their main controlled errors are convergence with empty bands, $k$ points, screening cutoff, and transition subspace. Their physical approximations include static screening, usually the Tamm-Dancoff approximation, a quasiparticle picture, and incomplete vibrational or multi-electron satellite physics. BSE is generally the most systematic of these methods for bound core excitons and near-edge oscillator strengths, but it is more expensive than FEFF and is not designed for long-range EXAFS fitting.
+**exciting** solves core BSE in an all-electron LAPW framework. **VASP** reconstructs PAW core transition matrix elements and offers both $GW$-BSE and supercell core-hole workflows. Their main controlled errors are convergence with empty bands, $k$ points, screening cutoff, and transition subspace. Their physical approximations include static screening, usually the Tamm-Dancoff approximation, a quasiparticle picture, and incomplete vibrational or multi-electron satellite physics. BSE is generally the most systematic of these methods for bound core excitons and near-edge oscillator strengths, but it is more expensive than FEFF and is not designed for long-range EXAFS fitting.
 
 ## A compact decision rule
 
-- For a **Cr K-edge oxide**, begin with FEFF or FDMNES for geometry and broad XANES; use OCEAN/exciting BSE if the pre-edge or white-line intensity is central.
-- For a **molecular C, N, or O K-edge**, REW-TDDFT in NWChem is economical; test the functional and absolute-energy shift against a standard.
-- For a **strongly correlated transition-metal $L_{2,3}$ edge**, expect spin-orbit and multiplet physics; compare BSE with Quanty or another charge-transfer multiplet calculation.
-- For **bond lengths, coordination shells, and thermal disorder**, use FEFF paths fitted to EXAFS with Larch or Artemis.
+- For a **Cr K-edge oxide**, begin with FEFF for geometry and broad XANES; compare VASP or Quantum ESPRESSO core-hole calculations when the self-consistent charge response matters.
+- If the **pre-edge or white-line intensity** is central, use core BSE in exciting or VASP and converge the screening and transition subspace.
+- Use **Octopus TDDFT** only when the target core shell is explicitly active and the time step resolves the core excitation energy.
+- For **bond lengths, coordination shells, and thermal disorder**, use FEFF's EXAFS path expansion.
 - For **Materials Project XAS**, remember that the underlying method is FEFF real-space multiple scattering, not TDDFT or BSE.
 
 ## Takeaway
@@ -312,13 +312,7 @@ XAS is local because the excitation begins in a compact core orbital. The pre-ed
 - [FEFF documentation and theory overview](https://feff.phys.washington.edu/feff/wiki/static/f/e/f/FEFF_Synopsis_0bea.html)
 - [Rehr et al., parameter-free X-ray spectra with FEFF9](https://doi.org/10.1039/B926434E)
 - [exciting tutorial: XAS using the BSE](https://www.exciting-code.org/uploads/exciting/tutorial_notebooks/xray_absorption_spectra_using_bse.html)
-- [FDMNES theory overview](https://fdmnes.neel.cnrs.fr/theory/)
-- [OCEAN at NIST](https://www.nist.gov/services-resources/software/ocean)
-- [Vinson et al., core-level BSE theory](https://doi.org/10.1103/PhysRevB.83.115106)
-- [NWChem restricted-window TDDFT documentation](https://nwchemgit.github.io/Excited-State-Calculations.html)
-- [Lopata et al., linear-response and real-time TDDFT for XAS](https://www.pnnl.gov/publications/linear-response-and-real-time-time-dependent-density-functional-theory-studies-core)
-- [Quanty $L_{2,3}$-edge multiplet tutorial](https://www.quanty.org/documentation/tutorials/nio_crystal_field/xas_l23)
+- [VASP XAS theory and tutorials](https://vasp.at/wiki/XAS)
 - [Quantum ESPRESSO user guide (XSpectra)](https://www.quantum-espresso.org/wp-content/uploads/2022/03/user_guide.pdf)
-- [Larch documentation for XAFS analysis](https://xraypy.github.io/xraylarch/)
-- [Lightshow multi-code input generator](https://doi.org/10.21105/joss.05182)
+- [Octopus real-time TDDFT absorption tutorial](https://octopus-code.org/main/tutorials/2-optical-response/1-optical_spectra_from_time_propagation.html)
 - [Chromium edge-energy reference](https://www.esrf.fr/UsersAndScience/Experiments/CRG/BM30B/Mendeleev/24-Cr.html)
