@@ -23,7 +23,7 @@ Y_t = \alpha_t X_0 + \sigma_t \varepsilon,
 \qquad
 \varepsilon\sim\mathcal N(0,I),
 \qquad
-p_{t|0}(y|x)=\mathcal N(y;\alpha_t x,\sigma_t^2 I).
+p_{t\mid 0}(y\mid x)=\mathcal N(y;\alpha_t x,\sigma_t^2 I).
 $$
 </div>
 
@@ -31,7 +31,7 @@ The marginal noised density is
 
 <div class="math-display">
 $$
-p_t(y)=\int p_0(x)\,p_{t|0}(y|x)\,\mathrm dx.
+p_t(y)=\int p_0(x)\,p_{t\mid 0}(y\mid x)\,\mathrm dx.
 $$
 </div>
 
@@ -55,7 +55,7 @@ $$
 s_t(y)
 =
 \mathbb E\!\left[
-\nabla_y\log p_{t|0}(y|X_0)
+\nabla_y\log p_{t\mid 0}(y\mid X_0)
 \mid Y_t=y
 \right]
 }
@@ -84,7 +84,7 @@ Since
 
 <div class="math-display">
 $$
-\nabla_y\log p_{t|0}(y|x)
+\nabla_y\log p_{t\mid 0}(y\mid x)
 =
 \frac{\alpha_t x-y}{\sigma_t^2},
 $$
@@ -105,7 +105,7 @@ $$
 
 The important point is not that these formulas look similar. They use different information:
 
-- DSI uses only the known noising kernel $p_{t|0}(y|x)$ and paired samples $(X_0,Y_t)$.
+- DSI uses only the known noising kernel $p_{t\mid 0}(y\mid x)$ and paired samples $(X_0,Y_t)$.
 - TSI uses the score of the clean target density, $s_0(x)=\nabla_x\log p_0(x)$.
 
 So DSI is natural for ordinary data-driven diffusion training. TSI is natural when $p_0$ is an energy, posterior, Boltzmann distribution, or any differentiable target whose log-gradient is available up to a normalizing constant.
@@ -116,7 +116,7 @@ Start from the marginal density
 
 <div class="math-display">
 $$
-p_t(y)=\int p_0(x)\,p_{t|0}(y|x)\,\mathrm dx.
+p_t(y)=\int p_0(x)\,p_{t\mid 0}(y\mid x)\,\mathrm dx.
 $$
 </div>
 
@@ -126,18 +126,18 @@ Differentiate under the integral:
 $$
 \nabla_y p_t(y)
 =
-\int p_0(x)\,\nabla_y p_{t|0}(y|x)\,\mathrm dx.
+\int p_0(x)\,\nabla_y p_{t\mid 0}(y\mid x)\,\mathrm dx.
 $$
 </div>
 
-Rewrite $\nabla_y p_{t|0}=p_{t|0}\nabla_y\log p_{t|0}$:
+Rewrite $\nabla_y p_{t\mid 0}=p_{t\mid 0}\nabla_y\log p_{t\mid 0}$:
 
 <div class="math-display">
 $$
 \nabla_y p_t(y)
 =
-\int p_0(x)\,p_{t|0}(y|x)
-\nabla_y\log p_{t|0}(y|x)\,\mathrm dx.
+\int p_0(x)\,p_{t\mid 0}(y\mid x)
+\nabla_y\log p_{t\mid 0}(y\mid x)\,\mathrm dx.
 $$
 </div>
 
@@ -145,9 +145,9 @@ Divide by $p_t(y)$ and recognize Bayes' posterior
 
 <div class="math-display">
 $$
-p_{0|t}(x|y)
+p_{0\mid t}(x\mid y)
 =
-\frac{p_0(x)p_{t|0}(y|x)}{p_t(y)}.
+\frac{p_0(x)p_{t\mid 0}(y\mid x)}{p_t(y)}.
 $$
 </div>
 
@@ -158,8 +158,8 @@ $$
 \nabla_y\log p_t(y)
 =
 \int
-\nabla_y\log p_{t|0}(y|x)\,
-p_{0|t}(x|y)\,\mathrm dx.
+\nabla_y\log p_{t\mid 0}(y\mid x)\,
+p_{0\mid t}(x\mid y)\,\mathrm dx.
 $$
 </div>
 
@@ -171,9 +171,9 @@ TSI uses integration by parts. Assume $p_0$ is differentiable and boundary terms
 
 <div class="math-display">
 $$
-\nabla_x p_{t|0}(y|x)
+\nabla_x p_{t\mid 0}(y\mid x)
 =
--\alpha_t \nabla_y p_{t|0}(y|x).
+-\alpha_t \nabla_y p_{t\mid 0}(y\mid x).
 $$
 </div>
 
@@ -184,7 +184,7 @@ $$
 \mathbb E[s_0(X_0)\mid Y_t=y]
 =
 \frac{1}{p_t(y)}
-\int \nabla_x\log p_0(x)\,p_0(x)\,p_{t|0}(y|x)\,\mathrm dx.
+\int \nabla_x\log p_0(x)\,p_0(x)\,p_{t\mid 0}(y\mid x)\,\mathrm dx.
 $$
 </div>
 
@@ -195,7 +195,7 @@ $$
 \mathbb E[s_0(X_0)\mid Y_t=y]
 =
 \frac{1}{p_t(y)}
-\int \nabla_x p_0(x)\,p_{t|0}(y|x)\,\mathrm dx.
+\int \nabla_x p_0(x)\,p_{t\mid 0}(y\mid x)\,\mathrm dx.
 $$
 </div>
 
@@ -203,20 +203,20 @@ Integrate by parts:
 
 <div class="math-display">
 $$
-\int \nabla_x p_0(x)\,p_{t|0}(y|x)\,\mathrm dx
+\int \nabla_x p_0(x)\,p_{t\mid 0}(y\mid x)\,\mathrm dx
 =
--\int p_0(x)\,\nabla_x p_{t|0}(y|x)\,\mathrm dx.
+-\int p_0(x)\,\nabla_x p_{t\mid 0}(y\mid x)\,\mathrm dx.
 $$
 </div>
 
-Use $\nabla_x p_{t|0}=-\alpha_t\nabla_y p_{t|0}$:
+Use $\nabla_x p_{t\mid 0}=-\alpha_t\nabla_y p_{t\mid 0}$:
 
 <div class="math-display">
 $$
-\int \nabla_x p_0(x)\,p_{t|0}(y|x)\,\mathrm dx
+\int \nabla_x p_0(x)\,p_{t\mid 0}(y\mid x)\,\mathrm dx
 =
 \alpha_t
-\int p_0(x)\,\nabla_y p_{t|0}(y|x)\,\mathrm dx
+\int p_0(x)\,\nabla_y p_{t\mid 0}(y\mid x)\,\mathrm dx
 =
 \alpha_t \nabla_y p_t(y).
 $$
@@ -322,7 +322,7 @@ Suppose we train a network $s_\theta(y,t)$ with squared loss. DSI uses the targe
 $$
 b(X_0,Y_t,t)
 =
-\nabla_y\log p_{t|0}(Y_t|X_0)
+\nabla_y\log p_{t\mid 0}(Y_t\mid X_0)
 =
 \frac{\alpha_tX_0-Y_t}{\sigma_t^2}.
 $$
@@ -355,7 +355,7 @@ Therefore, for either target $U\in\{b,c\}$, the minimizer of
 <div class="math-display">
 $$
 \mathbb E\left[
-\lambda(t)\|s_\theta(Y_t,t)-U\|^2
+\lambda(t)\lVert s_\theta(Y_t,t)-U\rVert^2
 \right]
 $$
 </div>
