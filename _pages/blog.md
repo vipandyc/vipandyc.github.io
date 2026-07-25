@@ -19,3 +19,4 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 
 - [Time-Dependent NNQMC, LVM, and Canonical AFQMC](/blog/td-nnqmc-lvm-afqmc/)
 - [Radon-Nikodym, Girsanov, and Diffusion Flow Cheat Sheet](/blog/radon-nikodym-girsanov-diffusion-flows/)
+- [Target Score Identity and Denoising Score Identity in Diffusion Models](/blog/target-denoising-score-identity-diffusion/)
