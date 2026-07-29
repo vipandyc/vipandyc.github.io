@@ -9,7 +9,7 @@ author_profile: true
 
 Short technical notes on computational physics, many-body algorithms, and numerical methods.
 
-## sth quantum
+## Something (more) quantum
 
 - [A Tutorial Introduction to the Transmon Qubit](/blog/transmon-qubit-tutorial/)
 
