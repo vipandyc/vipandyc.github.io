@@ -140,7 +140,7 @@ $$
 $$
 </div>
 
-The negative anharmonicity means the $\lvert1\rangle\to\lvert2\rangle$ transition is lower in frequency than the $\lvert0\rangle\to\lvert1\rangle$ transition. If you know a desired $f_{01}=\omega_{01}/2\pi$ and anharmonicity $\alpha/2\pi<0$, a quick design estimate is $E_C/h\approx |\alpha|/2\pi$ and $E_J/h\approx (f_{01}+E_C/h)^2/[8(E_C/h)]$.
+The negative anharmonicity means the $\lvert1\rangle\to\lvert2\rangle$ transition is lower in frequency than the $\lvert0\rangle\to\lvert1\rangle$ transition. If you know a desired $f_{01}=\omega_{01}/2\pi$ and anharmonicity $\alpha/2\pi<0$, a quick design estimate is $E_C/h\approx \lvert\alpha\rvert/2\pi$ and $E_J/h\approx (f_{01}+E_C/h)^2/[8(E_C/h)]$.
 
 The stronger statement is about charge dispersion. For level $m$, the residual modulation with offset charge is exponentially small:
 
@@ -172,7 +172,7 @@ The design compromise is now clear:
 | decreases relative anharmonicity | more leakage to $\lvert2\rangle$ |
 | localizes phase | better oscillator picture |
 
-The transmon is a good qubit because it sits in the sweet spot: charge noise is strongly reduced, but $|\alpha|$ is still large compared with pulse bandwidths, so the qubit transition remains spectrally resolvable.
+The transmon is a good qubit because it sits in the sweet spot: charge noise is strongly reduced, but $\lvert\alpha\rvert$ is still large compared with pulse bandwidths, so the qubit transition remains spectrally resolvable.
 
 ## 5. Quantizing the Transmon as a Weakly Anharmonic Oscillator
 
@@ -203,7 +203,7 @@ H_{\rm transmon}
 $$
 </div>
 
-Equivalently, if $N=b^\dagger b$, then $E_N/\hbar\approx \omega_qN+\alpha N(N-1)/2$. This form makes leakage transparent: $\omega_{12}=\omega_{01}+\alpha$, so a pulse with bandwidth comparable to $|\alpha|$ can unintentionally drive $\lvert1\rangle\to\lvert2\rangle$.
+Equivalently, if $N=b^\dagger b$, then $E_N/\hbar\approx \omega_qN+\alpha N(N-1)/2$. This form makes leakage transparent: $\omega_{12}=\omega_{01}+\alpha$, so a pulse with bandwidth comparable to $\lvert\alpha\rvert$ can unintentionally drive $\lvert1\rangle\to\lvert2\rangle$.
 
 If we restrict to the two lowest levels, $\lvert0\rangle$ and $\lvert1\rangle$, then the qubit Hamiltonian is $H_q=-(\hbar\omega_q/2)Z$ under the convention $Z\lvert0\rangle=+\lvert0\rangle$ and $Z\lvert1\rangle=-\lvert1\rangle$, up to an irrelevant constant. Many papers write $+\hbar\omega_q\sigma_z/2$ with the opposite ground/excited eigenvalue convention; either is fine if used consistently. The full oscillator model is still important in simulations because strong pulses can populate $\lvert2\rangle$ and higher states.
 
@@ -220,7 +220,7 @@ H_{\rm int}\propto V_r n
 $$
 </div>
 
-More explicitly, $V_r=V_{\rm zpf}(a+a^\dagger)$ and $H_{\rm int}=2e\beta V_{\rm zpf}(a+a^\dagger)n$, where $\beta$ is a capacitance-divider factor. The adjacent-level coupling is $g_j=(2e\beta V_{\rm zpf}/\hbar)\langle j|n|j+1\rangle$. In a two-level approximation and after the rotating-wave approximation, this becomes the Jaynes-Cummings Hamiltonian:
+More explicitly, $V_r=V_{\rm zpf}(a+a^\dagger)$ and $H_{\rm int}=2e\beta V_{\rm zpf}(a+a^\dagger)n$, where $\beta$ is a capacitance-divider factor. The adjacent-level coupling is $g_j=(2e\beta V_{\rm zpf}/\hbar)\langle j\rvert n\lvert j+1\rangle$. In a two-level approximation and after the rotating-wave approximation, this becomes the Jaynes-Cummings Hamiltonian:
 
 <div class="math-display">
 $$
@@ -236,7 +236,7 @@ The cavity is useful in several distinct ways.
 
 ### Readout
 
-When the qubit and cavity are detuned, $\Delta=\omega_q-\omega_r$ and $|\Delta|\gg g$, they do not resonantly exchange excitations. Instead, the qubit shifts the cavity frequency. The effective dispersive Hamiltonian is
+When the qubit and cavity are detuned, $\Delta=\omega_q-\omega_r$ and $\lvert\Delta\rvert\gg g$, they do not resonantly exchange excitations. Instead, the qubit shifts the cavity frequency. The effective dispersive Hamiltonian is
 
 <div class="math-display">
 $$
@@ -336,7 +336,31 @@ The most common superconducting two-qubit gates include:
 | cross-resonance (CR) | drive one fixed-frequency transmon at the other qubit's frequency | approximately $e^{-i\theta Z\otimes X/2}$ |
 | iSWAP / fSim | exchange interaction between near-resonant qubits | swaps excitation with phases |
 
-The controlled-NOT can be built from CZ and Hadamards: $\mathrm{CNOT}_{1\to2}=(I\otimes H)\,\mathrm{CZ}\,(I\otimes H)$. A useful phase form is $\mathrm{CZ}=e^{-i\pi(I-Z_1)(I-Z_2)/4}$ up to single-qubit and global phases. For an exchange gate, $U_{\rm iSWAP}(\theta)=\exp[-i\theta(X_1X_2+Y_1Y_2)/2]$.
+The controlled-NOT can be built from CZ and Hadamards:
+
+<div class="math-display">
+$$
+\mathrm{CNOT}_{1\to2}
+=
+(I\otimes H)\,\mathrm{CZ}\,(I\otimes H).
+$$
+</div>
+
+A useful phase form is
+
+<div class="math-display">
+$$
+\mathrm{CZ}
+\sim
+e^{-i\pi(I-Z_1)(I-Z_2)/4},
+\qquad
+U_{\rm iSWAP}(\theta)
+=
+\exp\!\left[-i\frac{\theta}{2}(X_1X_2+Y_1Y_2)\right],
+$$
+</div>
+
+where $\sim$ means equal up to single-qubit and global phases.
 
 Why is this universal? Any $N$-qubit unitary can be decomposed into a sequence of one-qubit gates and CNOTs. Equivalently, arbitrary single-qubit rotations plus any entangling two-qubit gate generate a universal gate set. In practical language: single-qubit rotations plus one entangling two-qubit gate imply universal quantum gates.
 
@@ -381,7 +405,7 @@ e^{-iHt}
 $$
 </div>
 
-The leading error comes from noncommuting terms: schematically $\|U-U_{\rm Trotter}\|=O[t^2 r^{-1}\sum_{\ell<m}\|[H_\ell,H_m]\|]$. A common symmetric second-order step is
+The leading error comes from noncommuting terms: schematically $\lVert U-U_{\rm Trotter}\rVert=O[t^2 r^{-1}\sum_{\ell<m}\lVert[H_\ell,H_m]\rVert]$. A common symmetric second-order step is
 
 <div class="math-display">
 $$
