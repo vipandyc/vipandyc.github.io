@@ -9,6 +9,10 @@ author_profile: true
 
 Short technical notes on computational physics, many-body algorithms, and numerical methods.
 
+## sth quantum
+
+- [A Tutorial Introduction to the Transmon Qubit](/blog/transmon-qubit-tutorial/)
+
 ## Materials
 
 - [Transport Regimes: When Boltzmann Breaks Down](/blog/transport-regimes-boltzmann-quantum/)
