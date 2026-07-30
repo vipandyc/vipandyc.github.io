@@ -157,6 +157,27 @@ The free-energy difference is $\Delta F_{ij}=\beta^{-1}(\hat f_j-\hat f_i)$. The
 
 For alchemical calculations, MBAR is especially natural. One simulates a ladder of intermediate Hamiltonians $U_{\lambda_k}$, evaluates all reduced potentials $u_i(x_n)$ for all saved samples, and lets MBAR combine information across the ladder. This is usually more stable than doing independent FEP estimates window by window, because MBAR uses the entire overlap graph rather than only neighboring pairs.
 
+**Flexible generalization.**
+The index $k$ in MBAR does not have to mean an alchemical coupling value. It labels any thermodynamic state whose reduced potential $u_k(x)$ can be evaluated on the pooled samples. For replica-exchange or parallel-tempering MCMC, the physical potential may be fixed while the temperature changes:
+
+<div class="math-display">
+$$
+u_k(x)=\beta_k U(x).
+\notag
+$$
+</div>
+
+Then MBAR combines samples from many temperatures to estimate free-energy differences, expectations, heat capacities, or results at intermediate temperatures. Alchemical MBAR is the corresponding case $u_k(x)=\beta U_{\lambda_k}(x)$, and mixed grids are possible too:
+
+<div class="math-display">
+$$
+u_k(x)=\beta_k U_{\lambda_k}(x)+b_k(x),
+\notag
+$$
+</div>
+
+where $b_k(x)$ could be an umbrella bias or another known biasing term. The requirement is not that the states differ by a potential parameter only; the requirement is overlap plus the ability to evaluate the reduced potential of each saved configuration in each target state.
+
 ## 5. TI Compared with FEP and MBAR
 
 TI estimates an integral of ensemble averages. FEP estimates an exponential reweighting identity. MBAR estimates the same partition-function ratios by optimally combining samples from multiple ensembles. They agree in the infinite-sampling limit if they use the same end states and a valid path.
@@ -274,7 +295,7 @@ One can think of SSCHA as free-energy calculation by optimized reference design.
 
 ## 8. A Practical Decision Map
 
-Use TI when the derivative with respect to the coupling parameter is available, the path is smooth, and you want direct interpretability. Use FEP when the perturbation is small or when configurations from one state already represent the other well. Use BAR or MBAR when you have samples from several states and can evaluate cross energies. Use alchemical MBAR for binding, solvation, mutation, and chemical-transformation problems, but watch overlap diagnostics rather than trusting dense formulas.
+Use TI when the derivative with respect to the coupling parameter is available, the path is smooth, and you want direct interpretability. Use FEP when the perturbation is small or when configurations from one state already represent the other well. Use BAR or MBAR when you have samples from several states and can evaluate cross reduced potentials. Use MBAR flexibly across alchemical states, temperature ladders from parallel tempering, umbrella windows, or mixed thermodynamic grids, but watch overlap diagnostics rather than trusting dense formulas.
 
 Use SSCHA when the problem is an anharmonic vibrational free energy, especially in crystals where phonons are strongly renormalized by temperature. The central object is not a path integral over $\lambda$ but a variationally optimized harmonic ensemble.
 
