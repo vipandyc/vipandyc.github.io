@@ -27,7 +27,27 @@ Introduce a path of potentials $U_\lambda(x)$ with $\lambda\in[0,1]$, where $U_0
 
 ## 2. Thermodynamic Integration
 
-TI differentiates the free energy along the path. Since $F_\lambda=-\beta^{-1}\log Z_\lambda$, the proof is just differentiation under the integral sign: $\partial_\lambda Z_\lambda=\int dx\,[-\beta\,\partial_\lambda U_\lambda(x)]\exp[-\beta U_\lambda(x)]$. Substituting this into $\partial_\lambda F_\lambda=-\beta^{-1}(\partial_\lambda Z_\lambda/Z_\lambda)$ turns the ratio of integrals into the $\lambda$-ensemble average:
+TI differentiates the free energy along the path. Since $F_\lambda=-\beta^{-1}\log Z_\lambda$, the whole method comes from differentiating the partition function rather than estimating $Z_\lambda$ itself.
+
+**Proof note.**
+Differentiate under the integral sign, then substitute into $\partial_\lambda F_\lambda=-\beta^{-1}(\partial_\lambda Z_\lambda/Z_\lambda)$. The ratio that appears is exactly a Boltzmann average in the $\lambda$ ensemble:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\partial_\lambda Z_\lambda
+&=
+\int dx\,[-\beta\,\partial_\lambda U_\lambda(x)]e^{-\beta U_\lambda(x)},\\
+\partial_\lambda F_\lambda
+&=
+\frac{1}{Z_\lambda}
+\int dx\,\partial_\lambda U_\lambda(x)e^{-\beta U_\lambda(x)} .
+\end{aligned}
+\notag
+$$
+</div>
+
+This gives the TI integrand:
 
 <div class="math-display">
 $$
@@ -37,7 +57,7 @@ $$
 $$
 </div>
 
-Integrating this derivative from $\lambda=0$ to $\lambda=1$ gives the free-energy difference. This is just the fundamental theorem of calculus applied to $F_\lambda$:
+The free-energy difference follows by integrating this derivative from $\lambda=0$ to $\lambda=1$. No new statistical identity is needed here; it is just the fundamental theorem of calculus applied to the scalar function $F_\lambda$:
 
 <div class="math-display">
 $$
@@ -54,7 +74,28 @@ TI is often the most interpretable method. You can plot the integrand and see ex
 
 ## 3. Free-Energy Perturbation
 
-FEP estimates the same difference without explicitly integrating a path. The identity follows by rewriting the target partition function using the reference Boltzmann weight: $Z_B=\int dx\,\exp[-\beta U_A(x)]\exp[-\beta(U_B(x)-U_A(x))]$. After division by $Z_A$, the first factor becomes the normalized $A$ ensemble, so $Z_B/Z_A$ is an exponential average over samples from $A$:
+FEP estimates the same difference without explicitly integrating a path. The move is to express the target partition function $Z_B$ using the reference Boltzmann weight from $A$.
+
+**Proof note.**
+Insert and remove $U_A$ inside the exponential, then divide by $Z_A$. The normalized factor $Z_A^{-1}\exp[-\beta U_A(x)]$ turns the remaining integral into an expectation over state $A$:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\frac{Z_B}{Z_A}
+&=
+\frac{1}{Z_A}\int dx\,e^{-\beta U_B(x)}\\
+&=
+\frac{1}{Z_A}\int dx\,e^{-\beta U_A(x)}
+e^{-\beta[U_B(x)-U_A(x)]}\\
+&=
+\left\langle e^{-\beta(U_B-U_A)}\right\rangle_A .
+\end{aligned}
+\notag
+$$
+</div>
+
+Taking $-\beta^{-1}\log$ gives the Zwanzig formula:
 
 <div class="math-display">
 $$
@@ -79,7 +120,27 @@ FEP is very efficient when $A$ already samples the important configurations of $
 
 Bennett's acceptance ratio (BAR) improves on one-direction FEP by using samples from both states. MBAR generalizes this idea to many states and is now the standard estimator when simulations are available at several $\lambda$ windows.
 
-Suppose we sample $K$ reduced potentials $u_k(x)=\beta U_k(x)$ and collect $N_k$ samples from each state. The proof idea is to treat the pooled data as coming from a mixture of the $K$ normalized ensembles. The probability of observing configuration $x_n$ in that mixture is proportional to $\sum_k N_k\exp[f_k-u_k(x_n)]$, while reweighting that same pooled data to state $i$ requires the factor $\exp[-u_i(x_n)]$. Enforcing normalization of state $i$ gives the MBAR self-consistency condition for the dimensionless free energies $f_k=-\log Z_k$:
+Suppose we sample $K$ reduced potentials $u_k(x)=\beta U_k(x)$ and collect $N_k$ samples from each state. MBAR treats all saved configurations as pooled samples from a mixture distribution, then asks how much each configuration should count for each target state.
+
+**Proof note.**
+The normalized density of state $k$ is proportional to $\exp[f_k-u_k(x)]$, because $f_k=-\log Z_k$. Therefore the pooled sampling density is proportional to $\sum_k N_k\exp[f_k-u_k(x)]$. To estimate the normalization of state $i$, each sample receives the target weight $\exp[-u_i(x_n)]$ divided by this pooled density:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\text{pooled weight for }x_n
+&\propto
+\sum_{k=1}^{K}N_k\exp[f_k-u_k(x_n)],\\
+\text{target contribution to }Z_i
+&\propto
+\frac{\exp[-u_i(x_n)]}
+{\sum_{k=1}^{K}N_k\exp[f_k-u_k(x_n)]}.
+\end{aligned}
+\notag
+$$
+</div>
+
+Enforcing this normalization self-consistently gives the MBAR equations for the dimensionless free energies:
 
 <div class="math-display">
 $$
@@ -110,7 +171,7 @@ Another useful distinction is data reuse. TI mainly needs the derivative $\parti
 
 The SSCHA route starts from a different question. Instead of asking for $\Delta F$ between two sampled systems, ask: can we approximate the anharmonic free energy by the best harmonic density matrix?
 
-For a quantum or classical system with Hamiltonian $H$, the exact equilibrium free energy is obtained by minimizing the Gibbs functional over density matrices $\rho$:
+For a quantum or classical system with Hamiltonian $H$, the exact equilibrium free energy is obtained by minimizing the Gibbs functional over density matrices $\rho$. At the minimum, the density is the Boltzmann density $\rho_\ast=e^{-\beta H}/Z$, but the variational form is more useful because it lets us restrict the search space:
 
 <div class="math-display">
 $$
@@ -124,7 +185,25 @@ F
 $$
 </div>
 
-The upper-bound statement comes from restricting this exact minimization. Let $\rho_{\mathcal R,\Phi}$ be the exact thermal density matrix of a trial harmonic Hamiltonian with potential $V_{\mathcal R,\Phi}$. Evaluating the Gibbs functional at this trial density gives $F_{\mathcal R,\Phi}$ for the harmonic reference plus the trial average of the difference between the true and harmonic potentials. Since the exact $F$ is the unrestricted minimum, this restricted value cannot be lower than $F$:
+The upper-bound statement comes from restricting this exact minimization. Let $\rho_{\mathcal R,\Phi}$ be the exact thermal density matrix of a trial harmonic Hamiltonian with potential $V_{\mathcal R,\Phi}$.
+
+**Proof note.**
+Evaluate the Gibbs functional for the true potential $V$ at the trial harmonic density. Split $V$ into the trial potential plus a correction. The part containing the trial Hamiltonian gives the harmonic free energy $F_{\mathcal R,\Phi}$, and the leftover part is the trial average of the anharmonic correction:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\operatorname{Tr}(\rho_{\mathcal R,\Phi}H)
++\beta^{-1}\operatorname{Tr}(\rho_{\mathcal R,\Phi}\log\rho_{\mathcal R,\Phi})
+&=
+F_{\mathcal R,\Phi}
++\left\langle V-V_{\mathcal R,\Phi}\right\rangle_{\mathcal R,\Phi}.
+\end{aligned}
+\notag
+$$
+</div>
+
+Since the exact $F$ is the unrestricted minimum over all $\rho$, this trial value is an upper bound:
 
 <div class="math-display">
 $$
@@ -138,13 +217,48 @@ V(\mathbf R)-V_{\mathcal R,\Phi}(\mathbf R)
 $$
 </div>
 
-This is the Gibbs-Bogoliubov variational principle. $F_{\mathcal R,\Phi}$ is the free energy of the trial harmonic system, $V$ is the true Born-Oppenheimer potential, and $V_{\mathcal R,\Phi}$ is the harmonic trial potential. It is also useful to view it as the first-cumulant, or first-order, version of FEP: the exact perturbative identity would contain $-\beta^{-1}\log\langle\exp[-\beta(V-V_{\mathcal R,\Phi})]\rangle_{\mathcal R,\Phi}$, while the variational approximation keeps only the average correction. Jensen's inequality is what upgrades that first-order-looking expression into an upper bound rather than merely an approximation. The best approximation is found by minimizing $\mathcal F(\mathcal R,\Phi)$ over both centroids and force constants.
+This is the Gibbs-Bogoliubov variational principle. $F_{\mathcal R,\Phi}$ is the free energy of the trial harmonic system, $V$ is the true Born-Oppenheimer potential, and $V_{\mathcal R,\Phi}$ is the harmonic trial potential.
+
+It is also useful to compare the bound with FEP. If the harmonic system is the reference, the exact reweighting correction would be
+
+<div class="math-display">
+$$
+\Delta F
+=
+-\beta^{-1}\log
+\left\langle
+e^{-\beta(V-V_{\mathcal R,\Phi})}
+\right\rangle_{\mathcal R,\Phi}.
+\notag
+$$
+</div>
+
+The variational expression replaces this logarithmic exponential average by the first cumulant $\langle V-V_{\mathcal R,\Phi}\rangle_{\mathcal R,\Phi}$. Jensen's inequality, $-\log\langle e^{-X}\rangle\le\langle X\rangle$, is what makes this first-order-looking expression an upper bound rather than merely a Taylor approximation. The best approximation is found by minimizing $\mathcal F(\mathcal R,\Phi)$ over both centroids and force constants.
 
 SSCHA is the stochastic implementation of this minimization. It samples ionic configurations from the trial harmonic density, evaluates true energies and forces, and updates $\mathcal R$ and $\Phi$ so that the trial harmonic system becomes the best Gaussian representation of the anharmonic solid at temperature $T$.
 
 ## 7. SSCHA in the Same Language
 
-SSCHA is not usually described as TI, FEP, or MBAR, but it belongs to the same free-energy family. The variational functional contains an exact free energy of a reference system plus a correction averaged over that reference. To prove the compact bound below, take a trial Hamiltonian $H_0$ with exact thermal density $\rho_0$. Plugging $\rho_0$ into the Gibbs functional for $H$ gives $F_0+\langle H-H_0\rangle_0$, and the exact $F$ is lower because it minimizes the same functional over all $\rho$. Equivalently, start from the FEP identity $F=F_0-\beta^{-1}\log\langle\exp[-\beta(H-H_0)]\rangle_0$ and apply Jensen's inequality; expanding the logarithm to first order gives the same linear correction:
+SSCHA is not usually described as TI, FEP, or MBAR, but it belongs to the same free-energy family. The variational functional contains an exact free energy of a reference system plus a correction averaged over that reference.
+
+**Proof note.**
+Take any trial Hamiltonian $H_0$ with exact thermal density $\rho_0$ and free energy $F_0$. Plugging $\rho_0$ into the Gibbs functional for the true Hamiltonian $H$ gives $F_0+\langle H-H_0\rangle_0$. Because the exact $F$ minimizes the same functional over all densities, it must be no larger than that trial value. Equivalently, the FEP identity plus Jensen gives the same inequality:
+
+<div class="math-display">
+$$
+\begin{aligned}
+F
+&=
+F_0-\beta^{-1}\log
+\left\langle e^{-\beta(H-H_0)}\right\rangle_0\\
+&\le
+F_0+\left\langle H-H_0\right\rangle_0 .
+\end{aligned}
+\notag
+$$
+</div>
+
+This gives the compact variational bound:
 
 <div class="math-display">
 $$
