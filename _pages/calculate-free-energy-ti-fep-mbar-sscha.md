@@ -123,16 +123,33 @@ Bennett's acceptance ratio (BAR) improves on one-direction FEP by using samples 
 Suppose we sample $K$ reduced potentials $u_k(x)=\beta U_k(x)$ and collect $N_k$ samples from each state. MBAR treats all saved configurations as pooled samples from a mixture distribution, then asks how much each configuration should count for each target state.
 
 **Proof note.**
-The normalized density of state $k$ is proportional to $\exp[f_k-u_k(x)]$, because $f_k=-\log Z_k$. Therefore the pooled sampling density is proportional to $\sum_k N_k\exp[f_k-u_k(x)]$. To estimate the normalization of state $i$, each sample receives the target weight $\exp[-u_i(x_n)]$ divided by this pooled density:
+Define the unnormalized density $q_k(x)=\exp[-u_k(x)]$ and the normalized density $p_k(x)=q_k(x)/Z_k=\exp[f_k-u_k(x)]$, where $f_k=-\log Z_k$. If we pool all samples, the effective sampling distribution is the mixture of the sampled state densities:
+
+<div class="math-display">
+$$
+p_{\mathrm{mix}}(x)
+=
+\frac{1}{N}\sum_{k=1}^{K}N_k p_k(x)
+=
+\frac{1}{N}\sum_{k=1}^{K}N_k\exp[f_k-u_k(x)] .
+\notag
+$$
+</div>
+
+Now estimate the target normalization constant $Z_i=\int dx\,q_i(x)$ by importance sampling from this pooled distribution. Insert $p_{\mathrm{mix}}(x)/p_{\mathrm{mix}}(x)$ into the integral:
 
 <div class="math-display">
 $$
 \begin{aligned}
-\text{pooled weight for }x_n
-&\propto
-\sum_{k=1}^{K}N_k\exp[f_k-u_k(x_n)],\\
-\text{target contribution to }Z_i
-&\propto
+Z_i
+&=
+\int dx\,p_{\mathrm{mix}}(x)
+\frac{q_i(x)}{p_{\mathrm{mix}}(x)}\\
+&\approx
+\frac{1}{N}\sum_{n=1}^{N}
+\frac{\exp[-u_i(x_n)]}{p_{\mathrm{mix}}(x_n)}\\
+&=
+\sum_{n=1}^{N}
 \frac{\exp[-u_i(x_n)]}
 {\sum_{k=1}^{K}N_k\exp[f_k-u_k(x_n)]}.
 \end{aligned}
@@ -140,7 +157,7 @@ $$
 $$
 </div>
 
-Enforcing this normalization self-consistently gives the MBAR equations for the dimensionless free energies:
+This is why each configuration contributes its target Boltzmann weight divided by the pooled probability of having sampled that configuration. Since $Z_i=\exp[-f_i]$, enforcing this relation for every state gives the MBAR self-consistency equations:
 
 <div class="math-display">
 $$
@@ -154,6 +171,8 @@ $$
 </div>
 
 The free-energy difference is $\Delta F_{ij}=\beta^{-1}(\hat f_j-\hat f_i)$. The formula looks heavier than FEP, but the idea is simple: every sampled configuration contributes to every state according to its statistical weight. If a configuration is plausible under state $i$, it helps estimate $f_i$; if it is implausible, MBAR automatically downweights it.
+
+This weighting is not just a convenient heuristic. MBAR can be derived from extended bridge sampling or maximum likelihood, and in the large-sample limit it is asymptotically unbiased and has the lowest variance among the standard estimators that combine equilibrium samples from multiple states. The practical translation is: once the simulations have already been run, MBAR is close to the statistically best way to reuse all of those samples, provided the states have adequate overlap.
 
 For alchemical calculations, MBAR is especially natural. One simulates a ladder of intermediate Hamiltonians $U_{\lambda_k}$, evaluates all reduced potentials $u_i(x_n)$ for all saved samples, and lets MBAR combine information across the ladder. This is usually more stable than doing independent FEP estimates window by window, because MBAR uses the entire overlap graph rather than only neighboring pairs.
 
@@ -300,3 +319,7 @@ Use TI when the derivative with respect to the coupling parameter is available, 
 Use SSCHA when the problem is an anharmonic vibrational free energy, especially in crystals where phonons are strongly renormalized by temperature. The central object is not a path integral over $\lambda$ but a variationally optimized harmonic ensemble.
 
 In short: TI integrates mean generalized forces, FEP exponentiates energy differences, MBAR combines all reweighting information across many ensembles, and SSCHA minimizes a variational free-energy upper bound. They are different answers to the same question: how do we estimate a partition-function ratio without ever computing the full partition function directly?
+
+## References
+
+Michael R. Shirts and John D. Chodera, [Statistically optimal analysis of samples from multiple equilibrium states](https://www.choderalab.org/s/MBAR-paper.pdf), *Journal of Chemical Physics* **129**, 124105 (2008), DOI: [10.1063/1.2978177](https://doi.org/10.1063/1.2978177).
