@@ -416,6 +416,52 @@ This is the envelope theorem in its most useful form. To differentiate the optim
 
 This cancellation is often a major computational simplification. If the inner problem is a variational Monte Carlo optimization, a relaxed structure, a fitted auxiliary model, a free-energy variational bound, or a control/action minimization, differentiating through every optimizer step may be unnecessary when the outer objective is the optimized value itself.
 
+### Min versus Argmin
+
+There are two different targets here, and they require different gradients.
+
+The **minimum value** is
+
+<div class="math-display">
+$$
+v(\theta)=\min_y f(\theta,y)=f(\theta,y_\ast(\theta)).
+$$
+</div>
+
+For this target, the envelope theorem applies: at a regular interior optimum, $\partial_y f(\theta,y_\ast)=0$, so the derivative of $y_\ast(\theta)$ does not contribute to $dv/d\theta$.
+
+The **minimizer itself** is
+
+<div class="math-display">
+$$
+y_\ast(\theta)=\arg\min_y f(\theta,y).
+$$
+</div>
+
+For this target, the sensitivity of the optimizer is the object of interest. The first-order condition defines $y_\ast$ implicitly:
+
+<div class="math-display">
+$$
+\nabla_y f(\theta,y_\ast(\theta))=0.
+$$
+</div>
+
+Differentiating this stationarity equation gives
+
+<div class="math-display">
+$$
+\nabla_{yy}^2 f\,\frac{dy_\ast}{d\theta}+\nabla_{y\theta}^2 f=0,
+\qquad
+\frac{dy_\ast}{d\theta}=-(\nabla_{yy}^2 f)^{-1}\nabla_{y\theta}^2 f.
+$$
+</div>
+
+with all derivatives evaluated at $(\theta,y_\ast)$. Thus:
+
+- if the outer objective is the optimized value, use the envelope theorem;
+- if the outer objective depends on the optimizer location, use implicit differentiation of the stationarity equation;
+- if the finite optimizer trajectory is part of the algorithm being trained, unroll it, usually with checkpointing.
+
 ### Constraints
 
 For constrained problems, the same idea holds with the Lagrangian. Suppose
@@ -470,14 +516,16 @@ $$
 
 Then the backward pass is a linear solve at the converged solution rather than a replay of every solver iteration.
 
-Use the **envelope theorem** when the outer quantity is an optimized value,
+For inner optimization, distinguish the **minimum value** from the **minimizer**:
 
 <div class="math-display">
 $$
-v(\theta)=\min_y f(\theta,y).
+v(\theta)=\min_y f(\theta,y),
+\qquad
+y_\ast(\theta)=\arg\min_y f(\theta,y).
 $$
 </div>
 
-At a regular optimum, the derivative of $y_\ast(\theta)$ drops out of $dv/d\theta$; the inner optimizer matters only through the point it returns.
+Use the envelope theorem for $dv/d\theta$. Use implicit differentiation of the stationarity or KKT equations for $dy_\ast/d\theta$. Use unrolling only when the optimizer trajectory itself is part of the modeled computation.
 
 The main habit is to ask what defines the output: a finite program, a continuous flow, an equation, or an optimum. Long-step gradients become manageable once the derivative is matched to that object rather than to the entire computation history.
