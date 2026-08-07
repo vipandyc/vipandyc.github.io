@@ -21,6 +21,7 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 
 ## Methods
 
+- [Long-Step Gradients: Checkpointing, Adjoints, Implicit Differentiation, and Envelope Theorems](/blog/long-step-gradients-checkpointing-adjoints-implicit/)
 - [How to Calculate Free Energy: TI, FEP, MBAR, and SSCHA](/blog/calculate-free-energy-ti-fep-mbar-sscha/)
 - [Time-Dependent NNQMC, LVM, and Canonical AFQMC](/blog/td-nnqmc-lvm-afqmc/)
 - [Radon-Nikodym, Girsanov, and Diffusion Flow Cheat Sheet](/blog/radon-nikodym-girsanov-diffusion-flows/)
