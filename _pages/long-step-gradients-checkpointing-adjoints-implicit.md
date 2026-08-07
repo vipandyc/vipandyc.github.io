@@ -1,11 +1,11 @@
 ---
 permalink: /blog/long-step-gradients-checkpointing-adjoints-implicit/
-title: "Long-Step Gradients"
+title: "How to Tackle Long-Step Gradients"
 excerpt: "A methods note on what to do when direct backpropagation through many steps is too expensive: rematerialization, chunking, neural ODE adjoints, fixed-point implicit gradients, and argmin/envelope gradients."
 author_profile: true
 ---
 
-# Long-Step Gradients
+# How to Tackle Long-Step Gradients
 
 Many modern algorithms are secretly long computations wrapped inside a loss. A neural network is applied for hundreds of diffusion steps. A simulator takes many time steps. An optimizer runs inside a meta-objective. A fixed-point solver iterates until self-consistency. A variational inner problem is minimized before the outer parameters are updated.
 
