@@ -416,34 +416,6 @@ This is the envelope theorem in its most useful form. To differentiate the optim
 
 This cancellation is often a major computational simplification. If the inner problem is a variational Monte Carlo optimization, a relaxed structure, a fitted auxiliary model, a free-energy variational bound, or a control/action minimization, differentiating through every optimizer step may be unnecessary when the outer objective is the optimized value itself.
 
-### Relation to Implicit Differentiation
-
-The optimizer satisfies the stationarity equation
-
-<div class="math-display">
-$$
-\nabla_y f(\theta,y_\ast)=0.
-$$
-</div>
-
-If we need the derivative of $y_\ast$ itself, implicit differentiation gives
-
-<div class="math-display">
-$$
-\frac{dy_\ast}{d\theta}
-=
--
-\left(\nabla_{yy}^2 f(\theta,y_\ast)\right)^{-1}
-\nabla_{y\theta}^2 f(\theta,y_\ast).
-$$
-</div>
-
-For the optimized value $v(\theta)=f(\theta,y_\ast(\theta))$, this sensitivity is multiplied by the zero first-order condition. Thus:
-
-- need the optimized value gradient: use envelope;
-- need how the optimizer changes: use implicit differentiation;
-- need gradient through a finite optimizer as an algorithm: unroll, probably with checkpointing.
-
 ### Constraints
 
 For constrained problems, the same idea holds with the Lagrangian. Suppose
