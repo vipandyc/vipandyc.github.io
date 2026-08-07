@@ -1,11 +1,11 @@
 ---
 permalink: /blog/long-step-gradients-checkpointing-adjoints-implicit/
-title: "Long-Step Gradients: Checkpointing, Adjoints, Implicit Differentiation, and Envelope Theorems"
+title: "Long-Step Gradients"
 excerpt: "A methods note on what to do when direct backpropagation through many steps is too expensive: rematerialization, chunking, neural ODE adjoints, fixed-point implicit gradients, and argmin/envelope gradients."
 author_profile: true
 ---
 
-# Long-Step Gradients: Checkpointing, Adjoints, Implicit Differentiation, and Envelope Theorems
+# Long-Step Gradients
 
 Many modern algorithms are secretly long computations wrapped inside a loss. A neural network is applied for hundreds of diffusion steps. A simulator takes many time steps. An optimizer runs inside a meta-objective. A fixed-point solver iterates until self-consistency. A variational inner problem is minimized before the outer parameters are updated.
 
@@ -143,9 +143,9 @@ The distinction is philosophical as much as technical:
 
 If the goal is a reliable derivative of a scientific objective, truncation should be treated carefully. It can optimize a different problem than the one written down. If the goal is representation learning or control, the biased signal may be acceptable because the final trained behavior matters more than exact differentiation of the bookkeeping.
 
-## 4. Neural ODE Adjoints: Backpropagating Through Time Without Storing Time
+## 4. Neural ODE Adjoints
 
-For a continuous-time model,
+For a continuous-time model, let the state be $z(t)\in\mathbb R^n$ and the parameters be $\theta\in\mathbb R^p$:
 
 <div class="math-display">
 $$
@@ -157,7 +157,17 @@ L=\ell(z(T)),
 $$
 </div>
 
-one can view the forward pass as an ODE solve rather than a very deep residual network. The adjoint method introduces
+Assume for the moment that $z_0$ does not depend on $\theta$ and that the loss has no running cost. I will write Jacobians as
+
+<div class="math-display">
+$$
+f_z(t)=\partial_z f(z(t),t,\theta)\in\mathbb R^{n\times n},
+\qquad
+f_\theta(t)=\partial_\theta f(z(t),t,\theta)\in\mathbb R^{n\times p}.
+$$
+</div>
+
+The adjoint is the gradient of the final loss with respect to the state at time $t$:
 
 <div class="math-display">
 $$
@@ -165,43 +175,105 @@ a(t)=\frac{\partial L}{\partial z(t)}.
 $$
 </div>
 
-The continuous adjoint equation is
+Here $a(t)$ is treated as a column vector in $\mathbb R^n$. The continuous adjoint equation is
 
 <div class="math-display">
 $$
 \frac{da(t)}{dt}
 =
--
-\left(\partial_z f(z(t),t,\theta)\right)^T a(t),
+-f_z(t)^T a(t),
 \qquad
 a(T)=\nabla_{z(T)}\ell.
 $$
 </div>
 
-The parameter gradient is accumulated along the reverse-time trajectory:
+The minus sign is the whole point: the adjoint is solved backward from $T$ to $0$. To see the formula, perturb the parameters by $\delta\theta$. The induced state perturbation $\delta z(t)$ satisfies the tangent equation
 
 <div class="math-display">
 $$
-\frac{dL}{d\theta}
+\frac{d}{dt}\delta z(t)
 =
-\int_T^0
--
-a(t)^T\partial_\theta f(z(t),t,\theta)\,dt.
+f_z(t)\delta z(t)+f_\theta(t)\delta\theta,
+\qquad
+\delta z(0)=0.
 $$
 </div>
 
-Equivalently, integrating from $0$ to $T$,
+Now look at the scalar product $a(t)^T\delta z(t)$. Differentiate it:
 
 <div class="math-display">
 $$
-\frac{dL}{d\theta}
+\begin{aligned}
+\frac{d}{dt}\left[a(t)^T\delta z(t)\right]
+&=
+\left(\frac{da}{dt}\right)^T\delta z
++
+a^T\frac{d\delta z}{dt}\\
+&=
+(-f_z^T a)^T\delta z
++
+a^T(f_z\delta z+f_\theta\delta\theta)\\
+&=
+a^T f_\theta\,\delta\theta.
+\end{aligned}
+$$
+</div>
+
+The terms involving $f_z\delta z$ cancel. This cancellation is why the adjoint method avoids explicitly forming the full sensitivity matrix $dz(T)/d\theta$.
+
+Integrating from $0$ to $T$ gives
+
+<div class="math-display">
+$$
+a(T)^T\delta z(T)-a(0)^T\delta z(0)
 =
 \int_0^T
-a(t)^T\partial_\theta f(z(t),t,\theta)\,dt.
+a(t)^T f_\theta(t)\,\delta\theta\,dt.
 $$
 </div>
 
-The memory appeal is obvious. Instead of saving every internal solver state, solve the state-adjoint system backward. In the ideal mathematical picture, the forward trajectory can be reconstructed by reversing the ODE from $z(T)$.
+Since $\delta z(0)=0$ and $a(T)=\nabla_{z(T)}\ell$, the left side is exactly the first-order loss variation. Therefore
+
+<div class="math-display">
+$$
+\boxed{
+\nabla_\theta L
+=
+\int_0^T
+f_\theta(t)^T a(t)\,dt
+}
+$$
+</div>
+
+if $\ell$ has no explicit $\theta$ dependence. With explicit dependence, add $\partial_\theta\ell(z(T),\theta)$. If the initial condition also depends on $\theta$, add $\left(\partial_\theta z_0\right)^T a(0)$.
+
+In code, one often integrates an augmented reverse-time system for $(z(t),a(t),q(t))$, where $q$ accumulates the parameter gradient while the clock runs backward. Let
+
+<div class="math-display">
+$$
+q(T)=0,
+\qquad
+\frac{dq(t)}{dt}=-f_\theta(t)^T a(t).
+$$
+</div>
+
+Then, after integrating from $T$ down to $0$,
+
+<div class="math-display">
+$$
+q(0)
+=
+\int_T^0 -f_\theta(t)^T a(t)\,dt
+=
+\int_0^T f_\theta(t)^T a(t)\,dt
+=
+\nabla_\theta L.
+$$
+</div>
+
+This is a common source of sign mistakes: the mathematical gradient is the forward-time integral, while the implementation may accumulate the same quantity by integrating a negative source term backward in time.
+
+The memory appeal is obvious. Instead of saving every internal solver state, solve the state-adjoint system backward and accumulate $q$. In the ideal mathematical picture, the forward trajectory can be reconstructed by reversing the ODE from $z(T)$.
 
 This is elegant, but the elegance hides practical traps. Numerical ODE solvers are not perfectly reversible. Adaptive solvers choose step sizes based on local error estimates, and those choices are themselves part of the discretized computation. Chaotic or stiff dynamics can make backward reconstruction unstable. In those cases, the continuous adjoint may be a gradient of the ideal ODE flow, while direct autodiff through the solver gives a gradient of the discrete numerical algorithm.
 
@@ -451,82 +523,34 @@ $$
 
 The multipliers carry the effect of active constraints. The derivative of $y_\ast$ still does not need to be explicitly computed for the value gradient.
 
-## 8. How to Choose the Strategy
+## 8. Choosing the Right Gradient
 
-Here is the decision tree I actually find useful.
+The strategies above are not rivals. They answer slightly different questions.
 
-If the finite computation is the model, differentiate the finite computation. If memory is too large, use checkpointing or exact chunking. This is the default for deep networks, finite unrolled samplers, and algorithms whose step count is part of the definition.
+Use **checkpointing** when the finite sequence of operations is the thing you truly want to differentiate, but storing all intermediates is too expensive. This preserves the exact unrolled gradient and trades memory for recomputation.
 
-If the finite computation is only a solver for a fixed point or root, differentiate the fixed-point or residual equation. Store the converged solution, not the whole history. The backward pass becomes a linear solve involving Jacobian-vector or vector-Jacobian products.
+Use **truncation** when exact long-range credit assignment is less important than a cheap local training signal. This is an optimization choice, not an exact-gradient trick.
 
-If the finite computation is an optimizer and the outer objective is the optimized value, try the envelope theorem first. Do not pay for $dy_\ast/d\theta$ unless the outer loss actually depends on $y_\ast$ in a way that survives stationarity.
+Use **continuous adjoints** when the mathematical object is an ODE flow. Be explicit about whether you want the gradient of the continuous model or the gradient of the discretized solver; for stiff, chaotic, or adaptive solves, checkpointed adjoints are often more reliable than pure trajectory reconstruction.
 
-If the computation approximates a continuous-time flow, decide whether the target is the continuous model or the discretized solver. Continuous adjoints are natural for the former. Solver autodiff is natural for the latter. In difficult dynamics, checkpointed adjoints are often the practical middle ground.
-
-The four strategies are not rivals. They are different answers to "what should be differentiated?"
-
-## 9. A Small Translation Table
-
-For a long unrolled computation,
+Use **implicit differentiation** when the output is defined by an equation such as
 
 <div class="math-display">
 $$
-x_T=F_{T-1}\circ\cdots\circ F_0(x_0,\theta),
+G(z_\ast,\theta)=0.
 $$
 </div>
 
-use full reverse-mode AD when $T$ is moderate and memory is fine. Use checkpointing when $T$ is large but the exact unrolled derivative is wanted. Use truncation when a biased local signal is acceptable.
+Then the backward pass is a linear solve at the converged solution, not a replay of every solver iteration.
 
-For an ODE,
+Use the **envelope theorem** when the outer quantity is an optimized value,
 
 <div class="math-display">
 $$
-\dot z=f(z,t,\theta),
+v(\theta)=\min_y f(\theta,y).
 $$
 </div>
 
-use adjoint equations when the continuous trajectory is the mathematical model. Add checkpoints when reversibility or stiffness makes pure backward reconstruction unreliable.
+At a regular optimum, the derivative of $y_\ast(\theta)$ drops out of $dv/d\theta$. This is the cleanest case: the inner optimizer matters only through the point it returns.
 
-For a fixed point,
-
-<div class="math-display">
-$$
-z_\ast=\Phi(z_\ast,\theta),
-$$
-</div>
-
-solve
-
-<div class="math-display">
-$$
-\left(I-\partial_z\Phi\right)^Tv=\nabla_z\ell
-$$
-</div>
-
-and compute the parameter gradient from local derivatives at $z_\ast$.
-
-For an inner minimization,
-
-<div class="math-display">
-$$
-v(\theta)=\min_y f(\theta,y),
-$$
-</div>
-
-use
-
-<div class="math-display">
-$$
-\nabla_\theta v=\partial_\theta f(\theta,y_\ast)
-$$
-</div>
-
-when the optimum is regular and the outer objective is the optimized value.
-
-## 10. The Main Moral
-
-Long-step gradients become manageable when we stop treating every algorithm as a tape that must be replayed backward.
-
-Sometimes the tape is real, and checkpointing is the right memory strategy. Sometimes the tape is a numerical route to an endpoint, and the endpoint is defined by an equation; then the implicit function theorem is the right language. Sometimes the endpoint is the value of an optimized problem, and the envelope theorem removes the derivative of the optimizer. Sometimes the path is continuous, and adjoint equations express the gradient more naturally than a stack of discrete activations.
-
-The common pattern is to replace "differentiate everything that happened" with "differentiate the object that matters." That small shift is often the difference between an elegant method on paper and a method that can actually run.
+The main habit is to ask what defines the output: a finite program, a continuous flow, an equation, or an optimum. Long-step gradients become manageable once we stop differentiating every event in the computation history and instead differentiate the object that actually matters.
