@@ -169,6 +169,25 @@ $$
 $$
 </div>
 
+Here is the quick proof. Let $J=\mathbf 1u^T$. Since $u^T\mathbf 1=1$, we have $J^2=J$. Therefore two uniform kernels multiply as
+
+<div class="math-display">
+$$
+\begin{aligned}
+(\alpha I+(1-\alpha)J)(\eta I+(1-\eta)J)
+&=
+\alpha\eta I+
+\left[
+\alpha(1-\eta)+(1-\alpha)\eta+(1-\alpha)(1-\eta)
+\right]J \\
+&=
+\alpha\eta I+(1-\alpha\eta)J.
+\end{aligned}
+$$
+</div>
+
+Applying this identity inductively over $Q_1,\ldots,Q_t$ gives the same form with $\bar\alpha_t=\prod_{s=1}^t\alpha_s$.
+
 At $t=0$, $\bar\alpha_0=1$ and the token is clean. At large $t$, $\bar\alpha_t\approx 0$ and the token is nearly uniform. A schedule can be chosen directly through $\bar\alpha_t$, just as continuous DDPMs often schedule $\bar\alpha_t$ or signal-to-noise ratio. The D3PM inverse-linear choice $\beta_t=1/(T-t+1)$ is a simple discrete schedule that reaches the uniform distribution exactly at the final step because $\beta_T=1$.
 
 ### Training
