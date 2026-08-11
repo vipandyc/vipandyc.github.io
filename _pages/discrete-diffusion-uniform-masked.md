@@ -86,10 +86,29 @@ Training usually needs the exact forward posterior $q(x_{t-1}\mid x_t,x_0)$. For
 
 <div class="math-display">
 $$
+\begin{aligned}
 q(x_{t-1}=j\mid x_t=k,x_0=i)
-=
+&=
+\frac{
+q(x_t=k\mid x_{t-1}=j)\,
+q(x_{t-1}=j\mid x_0=i)
+}{
+q(x_t=k\mid x_0=i)
+} \\
+&=
 \frac{[\bar Q_{t-1}]_{ij}[Q_t]_{jk}}
 {[\bar Q_t]_{ik}}.
+\end{aligned}
+$$
+</div>
+
+The denominator is the total probability of reaching $k$ from $i$ in $t$ steps:
+
+<div class="math-display">
+$$
+[\bar Q_t]_{ik}
+=
+\sum_j [\bar Q_{t-1}]_{ij}[Q_t]_{jk}.
 $$
 </div>
 
