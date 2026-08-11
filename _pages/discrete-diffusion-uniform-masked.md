@@ -407,7 +407,7 @@ The same D3PM posterior formula covers both. The difference is what information 
 
 There is also a useful modeling tradeoff. Uniform diffusion gives every position a value at every step, so the model can revise all positions throughout sampling. But the network must learn under noisy false tokens. Masked diffusion gives cleaner conditioning context, but a monotone sampler can commit too early unless confidence scheduling or remasking is used.
 
-For language, masked diffusion often feels more natural because text already has a strong infilling interpretation. For scientific categorical states, uniform diffusion can be more symmetric: one spin, atom type, residue, or cluster label can be corrupted into another without introducing a special missing symbol. In applications, the best choice is often about what "noise" should mean physically.
+In applications, the best choice is often about what "noise" should mean physically.
 
 ## 6. Relation to Discrete Scores
 
