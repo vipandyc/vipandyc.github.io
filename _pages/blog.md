@@ -22,6 +22,7 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 
 ## Methods
 
+- [Discrete Diffusion: Uniform Noise and Masked Noise](/blog/discrete-diffusion-uniform-masked/)
 - [How to Tackle Long-Step Gradients](/blog/long-step-gradients-checkpointing-adjoints-implicit/)
 - [How to Calculate Free Energy: TI, FEP, MBAR, and SSCHA](/blog/calculate-free-energy-ti-fep-mbar-sscha/)
 - [Radon-Nikodym, Girsanov, and Diffusion Flow Cheat Sheet](/blog/radon-nikodym-girsanov-diffusion-flows/)
