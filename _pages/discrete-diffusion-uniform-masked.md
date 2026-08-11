@@ -7,6 +7,34 @@ author_profile: true
 
 # Discrete Diffusion: Uniform Noise and Masked Noise
 
+<style>
+.algorithm-box {
+  border-top: 1px solid #555;
+  border-bottom: 1px solid #555;
+  margin: 1.25rem 0;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.92em;
+}
+.algorithm-title {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 0.45rem;
+}
+.algorithm-box p {
+  margin: 0.25rem 0;
+}
+.algorithm-box ol {
+  margin: 0.35rem 0 0.15rem 1.35rem;
+}
+.algorithm-box li {
+  margin: 0.2rem 0;
+}
+.algorithm-rule {
+  border-top: 1px solid #aaa;
+  margin: 0.45rem 0;
+}
+</style>
+
 Diffusion on images is easy to picture: add Gaussian noise, learn how to remove it, then reverse the noising process. Diffusion on tokens is less obvious. There is no token halfway between `cat` and `the`, and adding a real-valued Gaussian to a vocabulary index is usually the wrong geometry.
 
 The clean way to move the idea to discrete data is to replace Gaussian kernels by categorical transition matrices. Let a sequence be $x_0=(x_0^1,\ldots,x_0^L)$ with each token in a vocabulary of size $K$. For now assume the forward process factorizes over positions. At each diffusion step,
@@ -151,20 +179,23 @@ $$
 
 because predicting $x_0$ directly gives a strong denoising signal. A compact training loop is:
 
-```text
-Algorithm 1: Uniform discrete diffusion training
+<div class="algorithm-box" markdown="1">
+<div class="algorithm-title">Algorithm 1. Uniform Discrete Diffusion Training</div>
 
-Input: data distribution p_data, schedule {Q_t}_{t=1}^T
-Repeat:
-  1. Sample clean sequence x_0 ~ p_data.
-  2. Sample timestep t uniformly or from a loss-weighted distribution.
-  3. Sample x_t ~ q(x_t | x_0) using the cumulative matrix \bar Q_t.
-  4. Run the network to get clean-token logits p_theta(x_0 | x_t, t).
-  5. Form p_theta(x_{t-1} | x_t) by mixing the analytic
-     posterior q(x_{t-1} | x_t, \hat x_0) over \hat x_0.
-  6. Minimize the KL term, often plus an auxiliary cross entropy
-     -log p_theta(x_0 | x_t, t).
-```
+**Input:** data law $p_{\rm data}$, transition matrices $\{Q_t\}_{t=1}^T$, timestep law $\pi(t)$, loss weights $\lambda_t,\gamma_t$.
+
+**Repeat until convergence:**
+
+1. Draw $x_0\sim p_{\rm data}$ and $t\sim\pi(t)$.
+2. Corrupt directly with the cumulative kernel:
+   $x_t\sim q(x_t\mid x_0)=\prod_{\ell=1}^L\operatorname{Cat}(x_t^\ell;\,x_0^\ell\bar Q_t)$.
+3. Predict clean-token probabilities:
+   $\rho_\theta(\hat x_0\mid x_t,t)=p_\theta(\hat x_0\mid x_t,t)$.
+4. Construct the reverse kernel by marginalizing over clean-token predictions:
+   $p_\theta(x_{t-1}\mid x_t)=\sum_{\hat x_0}q(x_{t-1}\mid x_t,\hat x_0)\rho_\theta(\hat x_0\mid x_t,t)$.
+5. Take a gradient step on
+   $\lambda_tD_{\rm KL}\!\left(q(x_{t-1}\mid x_t,x_0)\Vert p_\theta(x_{t-1}\mid x_t)\right)-\gamma_t\log\rho_\theta(x_0\mid x_t,t)$.
+</div>
 
 Uniform diffusion is attractive when all tokens are allowed to become all other tokens. It is also natural for categorical images, segmentation maps, amino-acid sequences, or any finite alphabet where a wrong visible symbol should be treated as noisy evidence rather than as a missing value.
 
@@ -172,19 +203,18 @@ Uniform diffusion is attractive when all tokens are allowed to become all other 
 
 Sampling starts from the stationary noise distribution and runs the learned reverse chain:
 
-```text
-Algorithm 2: Uniform discrete diffusion sampling
+<div class="algorithm-box" markdown="1">
+<div class="algorithm-title">Algorithm 2. Uniform Discrete Diffusion Sampling</div>
 
-Input: trained p_theta, schedule {Q_t}_{t=1}^T
-1. Sample x_T independently from Uniform({1,...,K}) at every position.
-2. For t = T, T-1, ..., 1:
-     a. Compute p_theta(\hat x_0 | x_t, t).
-     b. Build p_theta(x_{t-1} | x_t)
-        = sum_{\hat x_0} q(x_{t-1} | x_t, \hat x_0)
-          p_theta(\hat x_0 | x_t, t).
-     c. Sample x_{t-1} from this categorical reverse distribution.
-3. Return x_0.
-```
+**Input:** trained predictor $\rho_\theta(\hat x_0\mid x_t,t)$, transition matrices $\{Q_t\}_{t=1}^T$.
+
+1. Initialize $x_T^\ell\sim\operatorname{Unif}(\{1,\ldots,K\})$ independently for $\ell=1,\ldots,L$.
+2. **For** $t=T,T-1,\ldots,1$ **do**
+   1. Compute $\rho_\theta(\hat x_0\mid x_t,t)$.
+   2. Form $p_\theta(x_{t-1}\mid x_t)=\sum_{\hat x_0}q(x_{t-1}\mid x_t,\hat x_0)\rho_\theta(\hat x_0\mid x_t,t)$.
+   3. Sample $x_{t-1}\sim p_\theta(x_{t-1}\mid x_t)$.
+3. **Return** $x_0$.
+</div>
 
 The model sees a fully populated sequence at every step. Even at high noise, every position contains some token. That makes the problem different from masked language modeling: the model must decide which visible symbols are meaningful and which are accidental substitutions.
 
@@ -255,19 +285,21 @@ $$
 
 The weight $w(t)$ depends on whether one uses a discrete-time ELBO, a continuous-time limit, or a Rao-Blackwellized variant. The important structural point is stable: the prediction target is the original clean token at masked sites. This is why modern masked diffusion objectives can look like mixtures of classical masked language modeling losses, with the mask rate playing the role of diffusion time.
 
-```text
-Algorithm 3: Masked discrete diffusion training
+<div class="algorithm-box" markdown="1">
+<div class="algorithm-title">Algorithm 3. Masked Discrete Diffusion Training</div>
 
-Input: data distribution p_data, mask survival schedule \bar alpha_t
-Repeat:
-  1. Sample clean sequence x_0 ~ p_data.
-  2. Sample timestep or continuous noise level t.
-  3. For each position, keep x_0^\ell with probability \bar alpha_t
-     and replace it by [MASK] otherwise, producing x_t.
-  4. Run the network on the partially masked sequence x_t.
-  5. Apply cross entropy on masked positions, optionally with the
-     ELBO or continuous-time weight w(t).
-```
+**Input:** data law $p_{\rm data}$, survival schedule $\bar\alpha_t$, timestep law $\pi(t)$, weight $w(t)$.
+
+**Repeat until convergence:**
+
+1. Draw $x_0\sim p_{\rm data}$ and $t\sim\pi(t)$.
+2. For each position $\ell$, sample $b_\ell\sim\operatorname{Bernoulli}(\bar\alpha_t)$ and set
+   $x_t^\ell=b_\ell x_0^\ell+(1-b_\ell)m$, where $m=[\mathrm{MASK}]$.
+3. Predict clean tokens at masked positions:
+   $\rho_\theta^\ell(\cdot\mid x_t,t)=p_\theta(x_0^\ell=\cdot\mid x_t,t)$.
+4. Take a gradient step on
+   $\displaystyle w(t)\sum_{\ell:x_t^\ell=m}-\log\rho_\theta^\ell(x_0^\ell\mid x_t,t)$.
+</div>
 
 This objective is usually easier to implement than the full uniform D3PM posterior. It also matches the inductive bias of bidirectional Transformers: condition on all currently visible context and predict the missing pieces.
 
@@ -275,24 +307,21 @@ This objective is usually easier to implement than the full uniform D3PM posteri
 
 The ancestral sampler uses the posterior probabilities above. A practical sampler often reveals a controlled number of tokens per step, sometimes choosing the most confident predictions first.
 
-```text
-Algorithm 4: Masked discrete diffusion sampling
+<div class="algorithm-box" markdown="1">
+<div class="algorithm-title">Algorithm 4. Masked Discrete Diffusion Sampling</div>
 
-Input: trained p_theta, decreasing mask schedule \bar alpha_T,...,\bar alpha_0
-1. Initialize x_T as all [MASK].
-2. For t = T, T-1, ..., 1:
-     a. Run p_theta(\hat x_0 | x_t, t).
-     b. For each currently masked position, compute the probability
-        of becoming unmasked at this step:
-        r_t = \bar alpha_{t-1} beta_t / (1 - \bar alpha_t).
-     c. Select positions to reveal, either by sampling Bernoulli(r_t)
-        or by matching the next target mask rate.
-     d. Fill selected positions with samples or argmax tokens from
-        p_theta(\hat x_0^\ell | x_t, t). Leave the rest masked.
-     e. Keep already visible positions fixed, unless using a remasking
-        sampler that deliberately revises low-confidence tokens.
-3. Return the fully unmasked sequence x_0.
-```
+**Input:** trained predictor $\rho_\theta^\ell(\hat x_0^\ell\mid x_t,t)$, decreasing survival schedule $\bar\alpha_T,\ldots,\bar\alpha_0$.
+
+1. Initialize $x_T^\ell=m$ for all positions $\ell=1,\ldots,L$.
+2. **For** $t=T,T-1,\ldots,1$ **do**
+   1. Compute $\rho_\theta^\ell(\hat x_0^\ell\mid x_t,t)$ for each masked position.
+   2. Set the reveal probability
+      $r_t=q(x_{t-1}=x_0\mid x_t=m,x_0)=\bar\alpha_{t-1}\beta_t/(1-\bar\alpha_t)$.
+   3. Choose a reveal set $R_t\subseteq\{\ell:x_t^\ell=m\}$ by Bernoulli sampling with rate $r_t$, or by matching the target mask rate $1-\bar\alpha_{t-1}$.
+   4. For $\ell\in R_t$, sample $x_{t-1}^\ell\sim\rho_\theta^\ell(\cdot\mid x_t,t)$; for $\ell\notin R_t$, set $x_{t-1}^\ell=m$.
+   5. Keep visible coordinates fixed: if $x_t^\ell\ne m$, set $x_{t-1}^\ell=x_t^\ell$.
+3. **Return** $x_0$.
+</div>
 
 The simplest absorbing sampler is monotone: once a token is revealed, it stays revealed. More flexible samplers allow remasking and resampling, which gives the model a way to revise earlier decisions. That revision step moves masked diffusion closer in spirit to uniform diffusion, where every visible token can be questioned throughout the reverse chain.
 
