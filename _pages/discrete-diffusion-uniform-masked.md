@@ -61,6 +61,8 @@ q(x_t\mid x_0)
 $$
 </div>
 
+The product over $\ell$ is an assumption about the **forward corruption**, not a claim that tokens are semantically independent. During training, the corruption is sampled token-wise independently, but the denoising network can look at the whole corrupted environment around a token: surrounding words in a sentence, neighboring nodes in a graph, residues in a protein sequence, or whatever context the architecture exposes. The factorization says each site has its own categorical transition once that context has been encoded.
+
 This note focuses on two useful choices:
 
 - **Uniform diffusion:** a token is gradually replaced by a random vocabulary token.
@@ -129,7 +131,32 @@ p_\theta(\hat x_0\mid x_t,t).
 $$
 </div>
 
-The model does not need to learn the forward noising algebra. It only needs to infer which clean tokens are plausible under the corrupted observation.
+This full-sequence sum is the formal expression. For length $L$ and vocabulary size $K$, summing over all $\hat x_0\in\{1,\ldots,K\}^L$ is prohibitive. The token-wise forward posterior is what makes the practical computation local.
+
+In a contextual model, this prediction is still made site by site but not in isolation. More explicitly, one often writes
+
+<div class="math-display">
+$$
+p_\theta(\hat x_0\mid x_t,t)
+=
+\prod_{\ell=1}^L
+p_\theta(\hat x_0^\ell\mid x_t,t,\ell),
+$$
+</div>
+
+where the factor for site $\ell$ is produced after the network has processed the full corrupted sentence, graph, or sequence. Then the reverse distribution is assembled by a vocabulary-sized sum at each site:
+
+<div class="math-display">
+$$
+p_\theta(x_{t-1}^\ell=b\mid x_t)
+=
+\sum_{a=1}^K
+q(x_{t-1}^\ell=b\mid x_t^\ell,\hat x_0^\ell=a)\,
+p_\theta(\hat x_0^\ell=a\mid x_t,t,\ell).
+$$
+</div>
+
+This is the practical reason the per-token reverse probabilities are meaningful: the output distribution factorizes, while the features used to compute each factor do not have to. The model avoids a global sum over clean sequences and only sums over possible token identities at each position.
 
 ## 3. Uniform Diffusion
 
@@ -228,11 +255,11 @@ because predicting $x_0$ directly gives a strong denoising signal. A compact tra
 2. Corrupt directly with the cumulative kernel:
    $x_t\sim q(x_t\mid x_0)=\prod_{\ell=1}^L\operatorname{Cat}(x_t^\ell;\,x_0^\ell\bar Q_t)$.
 3. Predict clean-token probabilities:
-   $\rho_\theta(\hat x_0\mid x_t,t)=p_\theta(\hat x_0\mid x_t,t)$.
-4. Construct the reverse kernel by marginalizing over clean-token predictions:
-   $p_\theta(x_{t-1}\mid x_t)=\sum_{\hat x_0}q(x_{t-1}\mid x_t,\hat x_0)\rho_\theta(\hat x_0\mid x_t,t)$.
+   $\rho_\theta^\ell(a\mid x_t,t)=p_\theta(\hat x_0^\ell=a\mid x_t,t,\ell)$.
+4. Construct each reverse token kernel by marginalizing over vocabulary values:
+   $p_\theta(x_{t-1}^\ell=b\mid x_t)=\sum_{a=1}^Kq(x_{t-1}^\ell=b\mid x_t^\ell,\hat x_0^\ell=a)\rho_\theta^\ell(a\mid x_t,t)$.
 5. Take a gradient step on
-   $\lambda_tD_{\rm KL}\!\left(q(x_{t-1}\mid x_t,x_0)\Vert p_\theta(x_{t-1}\mid x_t)\right)-\gamma_t\log\rho_\theta(x_0\mid x_t,t)$.
+   $\lambda_tD_{\rm KL}\!\left(q(x_{t-1}\mid x_t,x_0)\Vert p_\theta(x_{t-1}\mid x_t)\right)-\gamma_t\sum_{\ell=1}^L\log\rho_\theta^\ell(x_0^\ell\mid x_t,t)$.
 </div>
 
 Uniform diffusion is attractive when all tokens are allowed to become all other tokens. It is also natural for categorical images, segmentation maps, amino-acid sequences, or any finite alphabet where a wrong visible symbol should be treated as noisy evidence rather than as a missing value.
@@ -248,9 +275,9 @@ Sampling starts from the stationary noise distribution and runs the learned reve
 
 1. Initialize $x_T^\ell\sim\operatorname{Unif}(\{1,\ldots,K\})$ independently for $\ell=1,\ldots,L$.
 2. **For** $t=T,T-1,\ldots,1$ **do**
-   1. Compute $\rho_\theta(\hat x_0\mid x_t,t)$.
-   2. Form $p_\theta(x_{t-1}\mid x_t)=\sum_{\hat x_0}q(x_{t-1}\mid x_t,\hat x_0)\rho_\theta(\hat x_0\mid x_t,t)$.
-   3. Sample $x_{t-1}\sim p_\theta(x_{t-1}\mid x_t)$.
+   1. Compute $\rho_\theta^\ell(a\mid x_t,t)$ for each position $\ell$ and vocabulary value $a$.
+   2. Form $p_\theta(x_{t-1}^\ell=b\mid x_t)=\sum_{a=1}^Kq(x_{t-1}^\ell=b\mid x_t^\ell,\hat x_0^\ell=a)\rho_\theta^\ell(a\mid x_t,t)$.
+   3. Sample $x_{t-1}\sim\prod_{\ell=1}^Lp_\theta(x_{t-1}^\ell\mid x_t)$.
 3. **Return** $x_0$.
 </div>
 
