@@ -95,7 +95,32 @@ e^{-\beta\Delta F}
 $$
 </div>
 
-In practice, it is often better to run both directions. A forward protocol $A\to B$ and a backward protocol $B\to A$ produce two work distributions. Their hysteresis diagnoses dissipation, while Crooks-style bidirectional estimators use the overlap between forward and backward work values. This is the logic behind nonequilibrium free-energy calculations with forward/backward switching paths, including the LAMMPS solid-free-energy workflows of Freitas, Asta, and de Koning.
+In practice, it is often better to run both directions. A forward protocol $A\to B$ and a backward protocol $B\to A$ produce two work distributions. With the convention that $W_{B\to A}$ is the work measured along the reverse switch, the backward estimate of $\Delta F_{A\to B}$ is $-W_{B\to A}$. A simple hysteresis-corrected midpoint estimate is therefore
+
+<div class="math-display">
+$$
+\Delta F_{A\to B}
+\approx
+\frac{1}{2}
+\left(
+\langle W_{A\to B}\rangle
+-
+\langle W_{B\to A}\rangle
+\right),
+\qquad
+W_{\mathrm{diss}}
+\approx
+\frac{1}{2}
+\left(
+\langle W_{A\to B}\rangle
++
+\langle W_{B\to A}\rangle
+\right).
+\notag
+$$
+</div>
+
+Equivalently, if one stores the reverse result already sign-flipped as an $A\to B$ estimate, this is just the average of the forward and backward estimates. The hysteresis diagnoses dissipation, while Crooks-style bidirectional estimators use the overlap between forward and backward work values. This is the logic behind nonequilibrium free-energy calculations with forward/backward switching paths, including the LAMMPS solid-free-energy workflows of Freitas, Asta, and de Koning.
 
 TI is often the most interpretable method. You can plot the integrand and see exactly where the transformation becomes hard. Its weakness is that it needs simulations at intermediate $\lambda$ values and a smooth path. Singular endpoints, disappearing atoms, and poorly chosen alchemical paths can create sharp integrands that require many windows or soft-core potentials.
 
