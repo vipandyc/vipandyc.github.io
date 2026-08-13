@@ -120,7 +120,7 @@ W_{\mathrm{diss}}
 $$
 </div>
 
-Equivalently, if one stores the reverse result already sign-flipped as an $A\to B$ estimate, this is just the average of the forward and backward estimates. The hysteresis diagnoses dissipation, while Crooks-style bidirectional estimators use the overlap between forward and backward work values. This is the logic behind nonequilibrium free-energy calculations with forward/backward switching paths, including the LAMMPS solid-free-energy workflows of Freitas, Asta, and de Koning.
+Equivalently, if one stores the reverse result already sign-flipped as an $A\to B$ estimate, this is just the average of the forward and backward estimates. The hysteresis diagnoses dissipation, while Crooks-style bidirectional estimators use the overlap between forward and backward work values. The simple midpoint formula can be further improved by BAR; see Section 8 for the trajectory-level interpretation. This is the logic behind nonequilibrium free-energy calculations with forward/backward switching paths, including the LAMMPS solid-free-energy workflows of Freitas, Asta, and de Koning.
 
 TI is often the most interpretable method. You can plot the integrand and see exactly where the transformation becomes hard. Its weakness is that it needs simulations at intermediate $\lambda$ values and a smooth path. Singular endpoints, disappearing atoms, and poorly chosen alchemical paths can create sharp integrands that require many windows or soft-core potentials.
 
@@ -364,7 +364,109 @@ The inequality is both the power and the limitation. It avoids the exponential-o
 
 One can think of SSCHA as free-energy calculation by optimized reference design. TI and MBAR ask how to connect known endpoints with good sampling overlap. SSCHA asks which harmonic reference makes the anharmonic target as variationally close as possible.
 
-## 8. A Practical Decision Map
+## 8. BAR for Nonequilibrium Switching
+
+The forward/backward midpoint estimate above uses only two numbers: the mean forward work and the mean reverse work. BAR improves on it by using the full overlap of the two work distributions.
+
+The phrase "work distribution" can be confusing because the simulation does not directly sample work space. It samples trajectories. For one forward trajectory $\Gamma_F$, the accumulated work is a single scalar:
+
+<div class="math-display">
+$$
+W_F[\Gamma_F]
+=
+\int_0^\tau dt\,
+\dot\lambda(t)\,
+\partial_\lambda U_{\lambda(t)}(x_t).
+\notag
+$$
+</div>
+
+Running many forward switches gives a list $W_F^{(1)},\ldots,W_F^{(N_F)}$. The ideal infinite-sample histogram of that list is $P_F(W)$. Running many reverse switches gives $W_R^{(1)},\ldots,W_R^{(N_R)}$ and a reverse work distribution $P_R(W_R)$. BAR never requires explicitly building these histograms; it sums directly over the trajectory work values.
+
+The bridge between the two lists is Crooks' fluctuation theorem. With the reverse work sign-flipped so that both distributions are compared on the $A\to B$ work axis,
+
+<div class="math-display">
+$$
+\frac{P_F(W)}
+{P_R(-W)}
+=
+\exp[\beta(W-\Delta F)].
+\notag
+$$
+</div>
+
+This equation says that work values near the crossing of the forward and sign-flipped reverse distributions are the most informative about $\Delta F$. Values far in the tails mostly tell us that the trajectory came from one direction rather than the other.
+
+**Proof note.**
+Suppose a work value $W$ is drawn from the pooled dataset. Bayes' rule gives the probability that this value came from the forward ensemble:
+
+<div class="math-display">
+$$
+P(F\mid W)
+=
+\frac{N_F P_F(W)}
+{N_F P_F(W)+N_R P_R(-W)}.
+\notag
+$$
+</div>
+
+Using Crooks to replace $P_F(W)/P_R(-W)$ turns this into a logistic weight:
+
+<div class="math-display">
+$$
+P(F\mid W)
+=
+\frac{1}
+{1+\frac{N_R}{N_F}\exp[-\beta(W-\Delta F)]}.
+\notag
+$$
+</div>
+
+The complementary probability that the same work-axis value belongs to the sign-flipped reverse ensemble is
+
+<div class="math-display">
+$$
+P(R\mid W)
+=
+\frac{1}
+{1+\frac{N_F}{N_R}\exp[\beta(W-\Delta F)]}.
+\notag
+$$
+</div>
+
+BAR chooses $\Delta F$ so that these two-sided logistic weights are self-consistent for the actual sampled work values. In the sign convention used here, the equation is
+
+<div class="math-display">
+$$
+\sum_{n=1}^{N_F}
+\frac{1}
+{1+\frac{N_F}{N_R}\exp[\beta(W_F^{(n)}-\Delta F)]}
+=
+\sum_{m=1}^{N_R}
+\frac{1}
+{1+\frac{N_R}{N_F}\exp[\beta(W_R^{(m)}+\Delta F)]}.
+\notag
+$$
+</div>
+
+For equal numbers of forward and reverse trajectories, this becomes especially clean:
+
+<div class="math-display">
+$$
+\sum_{n=1}^{N_F}
+\frac{1}
+{1+\exp[\beta(W_F^{(n)}-\Delta F)]}
+=
+\sum_{m=1}^{N_R}
+\frac{1}
+{1+\exp[\beta(W_R^{(m)}+\Delta F)]}.
+\notag
+$$
+</div>
+
+The sums are therefore not over microscopic states or time steps. They are over complete switching trajectories: each trajectory contributes one work value. The midpoint formula estimates $\Delta F$ from the two means; BAR estimates it from the statistically useful overlap of the two work lists. When the forward and reverse work distributions overlap well, BAR is usually much more efficient. When they barely overlap, no estimator can fully rescue the calculation; the protocol is too dissipative or too poorly sampled.
+
+## 9. A Practical Decision Map
 
 Use TI when the derivative with respect to the coupling parameter is available, the path is smooth, and you want direct interpretability. Use FEP when the perturbation is small or when configurations from one state already represent the other well. Use BAR or MBAR when you have samples from several states and can evaluate cross reduced potentials. Use MBAR flexibly across alchemical states, temperature ladders from parallel tempering, umbrella windows, or mixed thermodynamic grids, but watch overlap diagnostics rather than trusting dense formulas.
 
@@ -374,10 +476,14 @@ In short: TI integrates mean generalized forces, FEP exponentiates energy differ
 
 ## References
 
+Charles H. Bennett, [Efficient estimation of free energy differences from Monte Carlo data](https://doi.org/10.1016/0021-9991(76)90078-4), *Journal of Computational Physics* **22**, 245-268 (1976), DOI: [10.1016/0021-9991(76)90078-4](https://doi.org/10.1016/0021-9991(76)90078-4).
+
 Rodrigo Freitas, Mark Asta, and Maurice de Koning, [Nonequilibrium free-energy calculation of solids using LAMMPS](https://doi.org/10.1016/j.commatsci.2015.10.050), *Computational Materials Science* **112**, 333-341 (2016), DOI: [10.1016/j.commatsci.2015.10.050](https://doi.org/10.1016/j.commatsci.2015.10.050).
 
 Christopher Jarzynski, [Nonequilibrium Equality for Free Energy Differences](https://doi.org/10.1103/PhysRevLett.78.2690), *Physical Review Letters* **78**, 2690-2693 (1997), DOI: [10.1103/PhysRevLett.78.2690](https://doi.org/10.1103/PhysRevLett.78.2690).
 
 Gavin E. Crooks, [Entropy production fluctuation theorem and the nonequilibrium work relation for free energy differences](https://doi.org/10.1103/PhysRevE.60.2721), *Physical Review E* **60**, 2721-2726 (1999), DOI: [10.1103/PhysRevE.60.2721](https://doi.org/10.1103/PhysRevE.60.2721).
+
+Michael R. Shirts, Eric Bair, Giles Hooker, and Vijay S. Pande, [Equilibrium free energies from nonequilibrium measurements using maximum-likelihood methods](https://doi.org/10.1103/PhysRevLett.91.140601), *Physical Review Letters* **91**, 140601 (2003), DOI: [10.1103/PhysRevLett.91.140601](https://doi.org/10.1103/PhysRevLett.91.140601).
 
 Michael R. Shirts and John D. Chodera, [Statistically optimal analysis of samples from multiple equilibrium states](https://www.choderalab.org/s/MBAR-paper.pdf), *Journal of Chemical Physics* **129**, 124105 (2008), DOI: [10.1063/1.2978177](https://doi.org/10.1063/1.2978177).
