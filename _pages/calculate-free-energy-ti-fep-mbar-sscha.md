@@ -70,6 +70,33 @@ $$
 
 In practice, choose a schedule $\lambda_0,\ldots,\lambda_K$, sample each ensemble, estimate $\langle\partial_\lambda U_\lambda\rangle_{\lambda_k}$, then integrate numerically. If $U_\lambda=(1-\lambda)U_A+\lambda U_B$, the integrand is simply $\langle U_B-U_A\rangle_\lambda$.
 
+**Nonequilibrium switching.**
+There is also a dynamic cousin of TI. Instead of equilibrating at each $\lambda$, one drives $\lambda(t)$ from 0 to 1 in finite time and records the work along each trajectory:
+
+<div class="math-display">
+$$
+W_F
+=
+\int_0^\tau dt\,
+\dot\lambda(t)\,
+\partial_\lambda U_{\lambda(t)}(x_t).
+\notag
+$$
+</div>
+
+In the infinitely slow limit, the trajectory stays reversible and the work approaches the TI free-energy difference. At finite switching speed, the forward work is dissipative and depends on the nonequilibrium flow of trajectories. One can still recover an equilibrium free energy from many such switches using the Jarzynski equality:
+
+<div class="math-display">
+$$
+e^{-\beta\Delta F}
+=
+\left\langle e^{-\beta W_F}\right\rangle_F .
+\notag
+$$
+</div>
+
+In practice, it is often better to run both directions. A forward protocol $A\to B$ and a backward protocol $B\to A$ produce two work distributions. Their hysteresis diagnoses dissipation, while Crooks-style bidirectional estimators use the overlap between forward and backward work values. This is the logic behind nonequilibrium free-energy calculations with forward/backward switching paths, including the LAMMPS solid-free-energy workflows of Freitas, Asta, and de Koning.
+
 TI is often the most interpretable method. You can plot the integrand and see exactly where the transformation becomes hard. Its weakness is that it needs simulations at intermediate $\lambda$ values and a smooth path. Singular endpoints, disappearing atoms, and poorly chosen alchemical paths can create sharp integrands that require many windows or soft-core potentials.
 
 ## 3. Free-Energy Perturbation
@@ -321,5 +348,11 @@ Use SSCHA when the problem is an anharmonic vibrational free energy, especially 
 In short: TI integrates mean generalized forces, FEP exponentiates energy differences, MBAR combines all reweighting information across many ensembles, and SSCHA minimizes a variational free-energy upper bound. They are different answers to the same question: how do we estimate a partition-function ratio without ever computing the full partition function directly?
 
 ## References
+
+Rodrigo Freitas, Mark Asta, and Maurice de Koning, [Nonequilibrium free-energy calculation of solids using LAMMPS](https://doi.org/10.1016/j.commatsci.2015.10.050), *Computational Materials Science* **112**, 333-341 (2016), DOI: [10.1016/j.commatsci.2015.10.050](https://doi.org/10.1016/j.commatsci.2015.10.050).
+
+Christopher Jarzynski, [Nonequilibrium Equality for Free Energy Differences](https://doi.org/10.1103/PhysRevLett.78.2690), *Physical Review Letters* **78**, 2690-2693 (1997), DOI: [10.1103/PhysRevLett.78.2690](https://doi.org/10.1103/PhysRevLett.78.2690).
+
+Gavin E. Crooks, [Entropy production fluctuation theorem and the nonequilibrium work relation for free energy differences](https://doi.org/10.1103/PhysRevE.60.2721), *Physical Review E* **60**, 2721-2726 (1999), DOI: [10.1103/PhysRevE.60.2721](https://doi.org/10.1103/PhysRevE.60.2721).
 
 Michael R. Shirts and John D. Chodera, [Statistically optimal analysis of samples from multiple equilibrium states](https://www.choderalab.org/s/MBAR-paper.pdf), *Journal of Chemical Physics* **129**, 124105 (2008), DOI: [10.1063/1.2978177](https://doi.org/10.1063/1.2978177).
