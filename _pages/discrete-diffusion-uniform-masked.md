@@ -283,6 +283,29 @@ Sampling starts from the stationary noise distribution and runs the learned reve
 
 The model sees a fully populated sequence at every step. Even at high noise, every position contains some token. That makes the problem different from masked language modeling: the model must decide which visible symbols are meaningful and which are accidental substitutions.
 
+> **Side remark: uniform is only one possible prior.** Let $\pi$ be any fixed distribution on the same finite state space and replace $u$ above by $\pi$:
+>
+> <div class="math-display">
+> $$
+> Q_t=\alpha_t I+(1-\alpha_t)\mathbf 1\pi^T,
+> \qquad
+> \bar Q_t=\bar\alpha_t I+(1-\bar\alpha_t)\mathbf 1\pi^T.
+> $$
+> </div>
+>
+> Then a single coordinate has marginal
+>
+> <div class="math-display">
+> $$
+> q(x_t=j\mid x_0=i)
+> =
+> \bar\alpha_t\mathbf 1\{j=i\}
+> +(1-\bar\alpha_t)\pi_j,
+> $$
+> </div>
+>
+> so the forward process interpolates between the data and $\pi$, reaching $\pi$ as $\bar\alpha_t\to0$. A Bernoulli prior is the binary-state example; a nonuniform categorical prior can encode known base frequencies. The real requirement is slightly stronger than merely having a tractable likelihood: we want $\pi$ to be easy to sample and the forward marginal $q(x_t\mid x_0)$ and posterior $q(x_{t-1}\mid x_t,x_0)$ to be tractable (or otherwise efficiently computable). For the reset kernel above, all of these remain analytic. More general $Q_t$ are also allowed in D3PM, but may lose this convenient closed form.
+
 ## 4. Masked Diffusion
 
 Masked diffusion adds a special absorbing state $m=[\mathrm{MASK}]$. For an ordinary token $i$, define
