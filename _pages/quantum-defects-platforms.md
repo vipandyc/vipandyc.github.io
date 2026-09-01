@@ -102,7 +102,90 @@ $$
 
 Here $m_s=0$ is not a singlet. It is one component of the same $S=1$ triplet. In a collinear DFT calculation one often represents the triplet by the high-spin determinant with total moment near $2\mu_B$; the experimental spin Hamiltonian then describes the $m_s=0,\pm1$ sublevels inside that triplet.
 
-The optical cycle can be summarized by two probabilities. After green-laser excitation, the defect usually falls back to the ground triplet and emits a red photon. But the probability of emitting that photon depends on $m_s$:
+Now separate the electronic state from the spin projection. Write
+
+<div class="math-display">
+$$
+\lvert g,m_s\rangle
+\quad\text{and}\quad
+\lvert e,m_s\rangle
+$$
+</div>
+
+for the ground and optically excited triplet states with the same spin projection $m_s$. Green light mainly drives
+
+<div class="math-display">
+$$
+\lvert g,m_s\rangle
+\xrightarrow{\rm green}
+\lvert e,m_s\rangle .
+$$
+</div>
+
+This optical excitation is approximately spin-conserving: the photon changes the orbital/electronic configuration, but it usually does not flip $m_s$.
+
+After excitation, the defect can come down by two routes.
+
+First, the bright route emits a red photon:
+
+<div class="math-display">
+$$
+\lvert e,m_s\rangle
+\xrightarrow{k_{\rm rad}(m_s)}
+\lvert g,m_s\rangle+\gamma_{\rm red}.
+$$
+</div>
+
+Here $k_{\rm rad}$ is the radiative decay rate. Larger $k_{\rm rad}$ means more red photons.
+
+Second, the dark route goes through singlet states:
+
+<div class="math-display">
+$$
+\lvert e,m_s\rangle
+\xrightarrow{k_{\rm ISC}(m_s)}
+\lvert s\rangle
+\xrightarrow{k_s}
+\lvert g,0\rangle .
+$$
+</div>
+
+Here $\lvert s\rangle$ denotes intermediate singlet states, $k_{\rm ISC}$ is the intersystem-crossing rate from the excited triplet into those singlets, and $k_s$ is the decay rate from the singlets back to the ground triplet. This route is "dark" because the photons from this path are weak, shifted, or not collected in the same red fluorescence channel used for NV readout.
+
+The crucial NV fact is
+
+<div class="math-display">
+$$
+k_{\rm ISC}(m_s=\pm1)
+\gg
+k_{\rm ISC}(m_s=0).
+$$
+</div>
+
+This is why the $m_s=\pm1$ states are darker. They are not darker because they absorb much less green light. They are darker because after green excitation they are more likely to leave the bright triplet-to-triplet cycle:
+
+<div class="math-display">
+$$
+\lvert e,\pm1\rangle
+\longrightarrow
+\lvert s\rangle
+\longrightarrow
+\lvert g,0\rangle
+$$
+</div>
+
+instead of emitting the usual red photon. The microscopic reason is spin-orbit coupling: it couples the excited $m_s=\pm1$ triplet components more strongly to nearby singlet states than it couples the excited $m_s=0$ component. In a compact rate model, the photon probability from a spin projection is roughly
+
+<div class="math-display">
+$$
+p_\gamma(m_s)
+\approx
+\frac{k_{\rm rad}(m_s)}
+{k_{\rm rad}(m_s)+k_{\rm ISC}(m_s)+k_{\rm nr}(m_s)},
+$$
+</div>
+
+where $k_{\rm nr}$ is any other nonradiative decay rate. If $k_{\rm ISC}$ is larger, $p_\gamma$ is smaller. Therefore
 
 <div class="math-display">
 $$
@@ -120,43 +203,66 @@ $$
 
 That inequality is the whole reason optical readout works. A bright signal means the spin was more likely in $m_s=0$; a darker signal means it was more likely in $m_s=\pm1$.
 
-Why are the $m_s=\pm1$ states darker? Because they have a larger chance to leave the bright optical cycle through intermediate singlet states. In a rate-picture,
-
-<div class="math-display">
-$$
-k_{\rm singlet}(m_s=\pm1)
->
-k_{\rm singlet}(m_s=0).
-$$
-</div>
-
-The singlet path emits fewer useful red photons. It also tends to return population back to $m_s=0$. Therefore repeated laser cycles do two things at once:
+The same dark route also initializes the spin. The singlet path tends to decay back into $\lvert g,0\rangle$, so repeated laser cycles pump population into $m_s=0$:
 
 <div class="math-display">
 $$
 \rho
 \xrightarrow{\rm green\ laser}
-\rho_{00}\approx 1,
-\qquad
-N_\gamma \text{ tells us about } \rho_{00}.
+\rho_{00}\approx1 .
 $$
 </div>
 
-In words: the laser both initializes the spin into $m_s=0$ and makes $m_s=0$ brighter than $m_s=\pm1$.
-
-Now add microwaves. A microwave drive near the spin transition mixes $m_s=0$ with $m_s=\pm1$:
+Here $\rho$ is the spin density matrix and $\rho_{00}$ is the population in $\lvert g,0\rangle$. In words, the laser does two useful things at once:
 
 <div class="math-display">
 $$
-\lvert0\rangle
-\leftrightarrow
-\lvert m_s=\pm1\rangle,
+\text{initialize: }\rho_{00}\rightarrow1,
 \qquad
-f_{\rm mw}\approx f_\pm .
+\text{read out: }N_\gamma\propto\rho_{00}.
 $$
 </div>
 
-If the microwave is off resonance, the laser keeps the population mostly in bright $m_s=0$, so fluorescence is high. If the microwave is on resonance, it moves population into darker $m_s=\pm1$, so fluorescence drops:
+Now add microwaves. A microwave does not vaguely "mix" states. It resonantly drives population back and forth between two spin sublevels when its frequency matches their energy splitting:
+
+<div class="math-display">
+$$
+h f_{\rm mw}
+\approx
+E(g,\pm1)-E(g,0)
+\equiv
+h f_\pm .
+$$
+</div>
+
+On resonance, the driven two-level Hamiltonian is
+
+<div class="math-display">
+$$
+H_{\rm mw}
+=
+\frac{\hbar\Omega}{2}
+\left(
+\lvert g,0\rangle\langle g,\pm1\rvert
++
+\lvert g,\pm1\rangle\langle g,0\rvert
+\right).
+$$
+</div>
+
+so population oscillates as
+
+<div class="math-display">
+$$
+P_{\pm1}(t)
+=
+\sin^2\left(\frac{\Omega t}{2}\right)
+\quad
+\text{if the spin started in }m_s=0 .
+$$
+</div>
+
+Here $\Omega$ is the Rabi frequency. If the microwave is off resonance, it barely transfers population, the laser keeps the spin mostly in bright $m_s=0$, and fluorescence is high. If the microwave is on resonance, it transfers some population into darker $m_s=\pm1$, and fluorescence drops:
 
 <div class="math-display">
 $$
