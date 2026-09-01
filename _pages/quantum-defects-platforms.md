@@ -533,6 +533,8 @@ Here is the quick way to read the numbers. The ranges are not universal laws; th
 | $\mathbf A^{(K)}$ | coupling to nucleus $K$ | for memory nuclei, large enough for gates but not so large that the electron decoheres quickly; kHz-MHz is common |
 | $E_{\rm ZPL}$ | no-phonon optical transition energy | must lie inside the host gap; visible or telecom wavelengths are technologically convenient |
 | $\Gamma_{\rm rad}$, $\tau_{\rm rad}$ | photon emission rate and lifetime | large $\Gamma_{\rm rad}$, short but not broadened lifetime; ns-tens of ns is a useful optical scale |
+| $\Gamma_{\rm nr}$ | nonradiative optical decay rate | small for a bright single-photon emitter; large only if deliberately used as part of spin-selective readout |
+| $\Gamma_{\rm ISC}$ | triplet-singlet crossing rate | spin-dependent for NV-like readout; one spin channel should differ strongly from the other |
 | $S_{\rm HR}$, ${\rm DW}$ | electron-phonon coupling and ZPL fraction | small $S_{\rm HR}$ and large ${\rm DW}$; NV$^-$ has poor ${\rm DW}\sim0.03$, while network emitters often want $\gtrsim0.3$ |
 | $T_1$, $T_2$ | ground-state spin relaxation and dephasing times | large; gates/readout must be much faster than decoherence |
 | $C$ | spin-readout contrast | large; $C=0$ means no optical spin readout, while high-fidelity readout wants as close to $1$ as possible |
@@ -991,7 +993,121 @@ $$
 $$
 </div>
 
-Here $\Gamma_{\rm rad}$ is the photon-emitting decay rate, $\Gamma_{\rm nr}$ is a non-photon nonradiative optical decay rate inside the same spin manifold, and $\Gamma_{\rm ISC}$ is the rate for the excited triplet state to cross into singlet states. These are optical-cycle rates, not ground-state $T_1$ and $T_2$ rates. The readout contrast can be summarized by
+Here $\Gamma_{\rm rad}$ is the photon-emitting decay rate, $\Gamma_{\rm nr}$ is a non-photon nonradiative optical decay rate inside the same spin manifold, and $\Gamma_{\rm ISC}$ is the rate for the excited triplet state to cross into singlet states. These are optical-cycle rates, not ground-state $T_1$ and $T_2$ rates.
+
+The radiative rate is the easiest one. It comes from the optical transition dipole between an initial excited state $\Psi_i$ and a lower final state $\Psi_f$:
+
+<div class="math-display">
+$$
+\boldsymbol\mu_{if}
+=
+\langle \Psi_f | e\mathbf r | \Psi_i\rangle .
+$$
+</div>
+
+Then
+
+<div class="math-display">
+$$
+\Gamma_{\rm rad}
+\approx
+\frac{n\omega_{if}^3|\boldsymbol\mu_{if}|^2}
+{3\pi\epsilon_0\hbar c^3},
+\qquad
+\hbar\omega_{if}=E_i-E_f .
+$$
+</div>
+
+So a calculation needs the excited and final electronic wavefunctions, the transition energy, and the dipole matrix element. Larger $|\boldsymbol\mu_{if}|$ gives faster photon emission.
+
+The nonradiative rate is harder because the missing energy becomes phonons instead of a photon. For an initial electronic state $\Psi_i$ and final electronic state $\Psi_f$, Fermi's golden rule gives
+
+<div class="math-display">
+$$
+\Gamma_{\rm nr}
+=
+\frac{2\pi}{\hbar}
+\sum_{\nu,\mu}
+P_{i\nu}
+\left|
+\left\langle
+\Psi_f\chi_{f\mu}
+\left|
+H_{\rm ep}
+\right|
+\Psi_i\chi_{i\nu}
+\right\rangle
+\right|^2
+\delta(E_{i\nu}-E_{f\mu}).
+$$
+</div>
+
+Here $\chi_{i\nu}$ and $\chi_{f\mu}$ are vibrational wavefunctions on the initial and final electronic potential-energy surfaces, $\nu$ and $\mu$ label vibrational states, $P_{i\nu}$ is the thermal occupation of initial vibrational state $\nu$, and $H_{\rm ep}$ is the electron-phonon coupling operator.
+
+A common first-principles workflow rewrites this as
+
+<div class="math-display">
+$$
+\Gamma_{\rm nr}
+=
+\frac{2\pi}{\hbar}
+|W_{if}|^2
+F_{if}(\Delta E,T).
+$$
+</div>
+
+$W_{if}$ is the electronic coupling, often computed from the change of the Kohn-Sham potential along a configuration coordinate $Q$:
+
+<div class="math-display">
+$$
+W_{if}
+\approx
+\left\langle
+\psi_f
+\left|
+\frac{\partial V_{\rm KS}}{\partial Q}
+\right|
+\psi_i
+\right\rangle .
+$$
+</div>
+
+$F_{if}(\Delta E,T)$ is the Franck-Condon weighted phonon factor: it counts how well many-phonon vibrational states can conserve energy when the electronic gap is $\Delta E=E_i-E_f$. This is where the relaxed geometries, phonon frequencies, and Huang-Rhys factors enter. For a bright emitter, one wants
+
+<div class="math-display">
+$$
+\Gamma_{\rm nr}\ll\Gamma_{\rm rad}.
+$$
+</div>
+
+The intersystem-crossing rate is a special nonradiative rate where the electronic spin manifold changes, for example triplet to singlet. The electron-phonon part supplies vibrational overlap, while spin-orbit coupling supplies the spin change:
+
+<div class="math-display">
+$$
+\Gamma_{\rm ISC}
+=
+\frac{2\pi}{\hbar}
+\left|
+\langle \Psi_{\rm singlet}|H_{\rm SO}|\Psi_{\rm triplet}\rangle
+\right|^2
+F_{\rm ISC}(\Delta E,T).
+$$
+</div>
+
+Here $H_{\rm SO}$ is the spin-orbit coupling operator and $F_{\rm ISC}$ is again a vibrational overlap factor. To compute it, one needs triplet and singlet excited-state energies, spin-orbit matrix elements, relaxed geometries, and phonon overlaps. This is why $\Gamma_{\rm ISC}$ is usually a specialized NV-style calculation, not a standard line in ordinary defect screening tables.
+
+The optical quantum yield is then
+
+<div class="math-display">
+$$
+\eta
+=
+\frac{\Gamma_{\rm rad}}
+{\Gamma_{\rm rad}+\Gamma_{\rm nr}+\Gamma_{\rm ISC}} .
+$$
+</div>
+
+For a plain single-photon emitter, one wants $\eta\rightarrow1$. For NV-like sensing, one also wants $\Gamma_{\rm ISC}$ to depend strongly on $m_s$, because that spin dependence is what creates optical spin contrast.
 
 <div class="math-display">
 $$
@@ -1001,22 +1117,6 @@ C
 {N_\gamma(m_s=0)+N_\gamma(m_s=\pm1)}.
 $$
 </div>
-
-The intersystem-crossing rate is commonly modeled using Fermi's golden rule:
-
-<div class="math-display">
-$$
-\Gamma_{i\rightarrow f}
-=
-\frac{2\pi}{\hbar}
-\left|
-\langle \Psi_f | H_{\rm SO} | \Psi_i\rangle
-\right|^2
-F_{if}.
-$$
-</div>
-
-$H_{\rm SO}$ is the spin-orbit coupling operator, and $F_{if}$ is a vibrational overlap factor between initial and final nuclear wavefunctions. This is why this final step is harder: one needs excited triplet and singlet states, spin-orbit matrix elements, and electron-phonon coupling, not just a ground-state DFT calculation.
 
 For optical spin readout, the desired inequality is
 
@@ -1045,7 +1145,7 @@ So the practical order is:
 3. compute $\mathbf D$, $\mathbf g$, and $\mathbf A^{(K)}$ for the spin Hamiltonian;
 4. for coherence, compute or model spin-phonon coupling and spin-bath noise to estimate $T_1$ and $T_2$;
 5. compute $E_{\rm ZPL}$, $\boldsymbol\mu_{eg}$, $\Gamma_{\rm rad}$, $S_{\rm HR}$, and ${\rm DW}$ for optical emission;
-6. only for NV-like optical spin readout, compute or model the rates $\Gamma_{\rm rad}^{(m_s)}$, $\Gamma_{\rm ISC}^{(m_s)}$, and the contrast $C$.
+6. only for NV-like optical spin readout, compute or model the rates $\Gamma_{\rm rad}^{(m_s)}$, $\Gamma_{\rm nr}^{(m_s)}$, $\Gamma_{\rm ISC}^{(m_s)}$, and the contrast $C$.
 
 That is the loose-to-harsh rationale in computational language. Formation energy and spin density are relatively routine. ZFS, hyperfine, and $g$ are specialized but well-defined spin-Hamiltonian outputs. $T_1$ and $T_2$ require dynamical noise mechanisms, so they are less often predicted from a single static DFT calculation. ZPL and Huang-Rhys require excited-state geometries. Spin-selective readout requires the most detailed excited-state and vibronic information, and is usually done only for deeply studied platforms such as NV$^-$.
 
