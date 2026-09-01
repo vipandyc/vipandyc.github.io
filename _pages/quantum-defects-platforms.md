@@ -355,20 +355,18 @@ The full qubit checklist looks like this:
 
 NV$^-$ is excellent for room-temperature spin control and sensing. It is also a serious qubit and network node, especially with nuclear-spin memories and cryogenic resonant excitation. But it is not perfect: optical spectral diffusion, collection efficiency, and the small zero-phonon-line fraction motivate both nanophotonic engineering and the search for new defects.
 
-## 4. Computational Rationale: From Loose to Harsh Requirements
+## 4. What Defect Papers Actually Compute
 
-Computational discovery of quantum defects is a funnel. The first stages are mostly ground-state defect physics. The later stages require excited states, spin-dependent optical cycles, and coupling to real environments. Each stage is more expensive and less forgiving.
+The computational workflow is less mysterious if we separate the outputs by what calculation produces them. Most papers do not compute "a quantum technology score." They compute a table of defect quantities, then decide which application those numbers support.
 
-### Stage 1: Host and Ground-State Defect Stability
+### 4.1 Ground-State Supercell Calculations
 
-The loosest screen asks whether the host and defect can exist at all.
-
-For a defect $D$ in charge state $q$, a standard formation-energy expression is
+Start with a relaxed supercell containing the defect. For each charge state $q$ and spin constraint, calculate a total energy. The standard formation energy is
 
 <div class="math-display">
 $$
 \begin{aligned}
-E_f(D^q)
+E_f(D^q;E_F)
 &=
 E_{\rm tot}(D^q)-E_{\rm tot}({\rm bulk})-\sum_i n_i\mu_i \\
 &\quad
@@ -377,70 +375,302 @@ E_{\rm tot}(D^q)-E_{\rm tot}({\rm bulk})-\sum_i n_i\mu_i \\
 $$
 </div>
 
-This calculation tells us which charge states are thermodynamically plausible under given chemical potentials and Fermi levels. One also computes charge-transition levels, relaxed structures, and whether defect orbitals lie deep inside the band gap. Wide-band-gap hosts are favored because deep, localized optical and spin states need room in the gap without immediately hybridizing with bulk bands.
+Here $E_{\rm tot}(D^q)$ is the DFT total energy of the defective supercell, $E_{\rm tot}({\rm bulk})$ is the total energy of the pristine supercell, $n_i$ counts atoms of species $i$ added to the cell, $\mu_i$ is the atomic chemical potential, $E_F$ is the Fermi level measured from the valence-band maximum $E_{\rm VBM}$, and $E_{\rm corr}$ corrects finite-size electrostatics for charged defects.
 
-At this stage, semilocal DFT may be enough for rough structural and chemical screening, but hybrid functionals or beyond-DFT corrections are usually needed for reliable band gaps and defect levels. The goal is not yet a qubit. It is to eliminate defects that are unstable, shallow, metallic, or strongly delocalized.
+The charge-transition level between charge states $q$ and $q'$ is the Fermi level where their formation energies are equal:
 
-### Stage 2: Spin and Magnetic Parameters
+<div class="math-display">
+$$
+\epsilon(q/q')
+=
+\frac{
+E_f(D^q;E_F=0)-E_f(D^{q'};E_F=0)
+}{q'-q}.
+$$
+</div>
 
-For sensing and spin qubits, the defect should have a paramagnetic ground state that can be controlled. Computations now ask:
+This answers a concrete question: for which Fermi-level range is NV$^-$ stable rather than NV$^0$ or another charge state?
 
-- What is the spin multiplicity?
-- Is the spin density localized on a small set of atoms?
-- What are the zero-field splitting tensor, $g$ tensor, and hyperfine tensors?
-- How sensitive are these parameters to strain, electric fields, magnetic fields, and nearby nuclei?
-- Are there low-energy distortions or charge fluctuations that will destroy coherence?
+For the spin state, a collinear DFT calculation usually fixes or initializes
 
-For a spin-triplet defect, the zero-field splitting comes largely from electron spin-spin dipolar interactions, with spin-orbit effects also relevant in some systems. Hyperfine tensors identify nuclear spins that may act as decoherence sources or useful quantum memories.
+<div class="math-display">
+$$
+M_z=(N_\uparrow-N_\downarrow)\mu_B,
+\qquad
+S_z=\frac{N_\uparrow-N_\downarrow}{2}.
+$$
+</div>
 
-This stage already distinguishes many applications. For ensemble sensing, a large, stable spin contrast and long enough coherence may be sufficient. For a quantum register, one also wants individually resolvable hyperfine couplings, addressable transitions, and weak coupling to uncontrolled bath spins.
+For the NV$^-$ triplet, the usual high-spin representative has $N_\uparrow-N_\downarrow=2$, so $M_z\approx2\mu_B$. This is how VASP sees the $S=1$ electronic configuration. The experimental labels $m_s=0,\pm1$ are then sublevels of this same triplet in the effective spin Hamiltonian.
 
-### Stage 3: Optical Transitions and Single-Photon Quality
+One also checks whether the defect state is localized. A simple orbital localization measure is the inverse participation ratio
 
-A single-photon emitter needs a localized optical transition. Now the calculations become excited-state calculations. One wants:
+<div class="math-display">
+$$
+{\rm IPR}[\psi]
+=
+\frac{\int |\psi(\mathbf r)|^4\,d\mathbf r}
+{\left(\int |\psi(\mathbf r)|^2\,d\mathbf r\right)^2}.
+$$
+</div>
 
-- zero-phonon-line energy;
-- transition dipole moment and radiative lifetime;
-- Franck-Condon shift and Huang-Rhys factor;
-- Debye-Waller factor, meaning the fraction emitted into the zero-phonon line;
-- nonradiative recombination rates;
-- charge-state stability under illumination;
-- sensitivity of the optical transition to strain and electric-field noise.
+A more localized state has larger ${\rm IPR}$. In practice, papers also plot the defect Kohn-Sham orbitals or the spin density
 
-The configuration-coordinate picture is useful. The ground and excited electronic states each have their own relaxed geometry. If the displacement between them is large, much of the optical emission goes into phonons. If it is small, the Huang-Rhys factor is smaller and more emission stays in the zero-phonon line.
+<div class="math-display">
+$$
+\sigma(\mathbf r)=n_\uparrow(\mathbf r)-n_\downarrow(\mathbf r).
+$$
+</div>
 
-For a basic room-temperature emitter, phonon-sideband emission is acceptable. For photonic quantum computing, the requirement tightens: photons from separate emitters must be indistinguishable, so linewidth, spectral diffusion, cavity coupling, and transform-limited emission matter.
+At this level the calculation gives: stable charge state, relaxed geometry, spin multiplicity, gap levels, and localization. This is the loose screen.
 
-### Stage 4: Spin-Selective Excited-State Dynamics
+### 4.2 Spin-Hamiltonian Parameters
 
-The harshest screen is the one that makes NV$^-$ so special: a useful optical cycle can be spin selective. Optical pumping and readout do not follow from the mere existence of a triplet ground state and a bright transition. They require a particular network of excited triplets, intermediate singlets, spin-orbit coupling, electron-phonon coupling, and decay rates.
+After the electronic state is identified, compute the parameters in a spin Hamiltonian:
 
-For NV$^-$, the bright $m_s=0$ and darker $m_s=\pm1$ fluorescence channels arise because intersystem crossing is spin dependent. Spin-dependent decay creates both optical polarization and fluorescence contrast, which is exactly what initialization and readout need.
+<div class="math-display">
+$$
+H_{\rm spin}
+=
+\mathbf S\cdot \mathbf D\cdot \mathbf S
++\mu_B \mathbf B\cdot \mathbf g\cdot \mathbf S
++\sum_K \mathbf S\cdot \mathbf A^{(K)}\cdot \mathbf I_K .
+$$
+</div>
 
-Predicting this from first principles is much harder than predicting a formation energy. One needs excited-state ordering, spin-orbit matrix elements, vibronic coupling, radiative and nonradiative rates, and sometimes many-body electronic structure beyond ordinary DFT. This is also where errors compound: a wrong excited-state ordering can imply the wrong optical cycle, even if the ground-state spin looked promising.
+Every tensor in this equation is computable.
 
-### A Practical Screening Ladder
+The zero-field-splitting tensor $\mathbf D$ describes how the spin sublevels split even when $\mathbf B=0$. For the spin-spin contribution,
 
-The rationale for choosing defects can be summarized as a ladder. The early rungs are loose filters; the later rungs are harsh filters.
+<div class="math-display">
+$$
+D_{ab}
+\approx
+\frac{1}{2}\frac{\mu_0}{4\pi}g_e^2\mu_B^2
+\int \rho_2(\mathbf r_1,\mathbf r_2)
+\frac{r^2\delta_{ab}-3r_ar_b}{r^5}
+\,d\mathbf r_1d\mathbf r_2,
+\qquad
+\mathbf r=\mathbf r_1-\mathbf r_2 .
+$$
+</div>
 
-1. Host band gap, dielectric response, and isotope/spin bath: look for a quiet, wide-gap environment.
-2. Formation energies and charge-transition levels: require a stable and controllable charge state.
-3. Defect levels and spin multiplicity: require a localized paramagnetic state.
-4. ZFS, $g$ tensor, and hyperfine tensors: require an addressable and diagnosable spin.
-5. Strain, electric, and magnetic derivatives: require useful coupling to target fields for sensing.
-6. Optical ZPL, transition dipole, and Huang-Rhys factor: require bright antibunched emission.
-7. Nonradiative rates and photoionization: require stable optical cycling.
-8. Excited-state fine structure and intersystem crossing: require spin-selective initialization and readout.
-9. Spectral diffusion, interfaces, and cavities: require indistinguishable photons and controllable coupling.
-10. Reproducible creation and integration: require scalable yield rather than one beautiful device.
+Here $\rho_2$ is the two-electron spin density matrix. In DFT codes this is usually approximated from occupied Kohn-Sham orbitals. For an approximately axial $S=1$ defect, this tensor is often summarized by one number:
 
-Loose requirements mostly live near the top of the ladder: stability, localization, spin. Harsh requirements live near the bottom: optical coherence, spin-selective dynamics, reproducible devices, and environmental robustness.
+<div class="math-display">
+$$
+H_{\rm ZFS}
+=
+D\left(S_z^2-\frac{S(S+1)}{3}\right).
+$$
+</div>
 
-This is why computational work on quantum defects often proceeds in layers. DFT supercells and defect thermodynamics can screen many candidates. Hybrid functionals and many-body corrections refine levels and optical energies. Constrained DFT, Delta-SCF, GW/BSE, embedded correlated methods, or quantum chemistry treatments may be needed for excited states. Spin Hamiltonian parameters require specialized first-principles calculations. Nonradiative rates require electron-phonon coupling and configuration-coordinate models. Device-level usefulness requires surfaces, strain, charge traps, cavities, and statistical disorder.
+For NV$^-$, this is the origin of the $m_s=0$ versus $m_s=\pm1$ splitting near $2.87$ GHz.
 
-The physics is beautiful, but the screening logic is brutally practical: ground-state stability is necessary, while excited-state dynamics makes the platform.
+The $g$ tensor tells how a magnetic field shifts the spin levels:
 
-NV$^-$ survived this funnel almost accidentally: it is stable, optically bright, spin selective, coherent, and controllable at room temperature. The computational challenge now is to make that kind of discovery less accidental.
+<div class="math-display">
+$$
+H_Z=\mu_B\mathbf B\cdot\mathbf g\cdot\mathbf S.
+$$
+</div>
+
+If $\mathbf g=g_e\mathbf I$, the spin behaves like a free electron with $g_e\approx2.0023$. In a crystal, spin-orbit coupling and the local electronic structure make $\mathbf g$ slightly anisotropic. Formally,
+
+<div class="math-display">
+$$
+g_{ab}
+=
+\frac{1}{\mu_B}
+\left.
+\frac{\partial^2 E}{\partial B_a\,\partial S_b}
+\right|_{\mathbf B=0}.
+$$
+</div>
+
+So $\mathbf g$ is the derivative of the energy with respect to magnetic field direction and spin direction. Computationally it is a relativistic response property, often treated with PAW/GIPAW or related methods.
+
+The hyperfine tensor $\mathbf A^{(K)}$ tells how the defect electron spin couples to nucleus $K$:
+
+<div class="math-display">
+$$
+H_{\rm hf}^{(K)}
+=
+\mathbf S\cdot \mathbf A^{(K)}\cdot \mathbf I_K .
+$$
+</div>
+
+It has a contact part from spin density at the nucleus and a dipolar part from spin density around it:
+
+<div class="math-display">
+$$
+\begin{aligned}
+A_{ab}^{(K)}
+&=
+\frac{2\mu_0}{3}
+g_e\mu_B g_K\mu_N
+\frac{\sigma(\mathbf R_K)}{S}\delta_{ab} \\
+&\quad
++\frac{\mu_0}{4\pi}
+g_e\mu_B g_K\mu_N
+\frac{1}{S}
+\int
+\frac{3r_ar_b-r^2\delta_{ab}}{r^5}
+\sigma(\mathbf r+\mathbf R_K)\,d\mathbf r .
+\end{aligned}
+$$
+</div>
+
+Here $\mathbf R_K$ is the nuclear position, $\mathbf I_K$ is the nuclear spin operator, $g_K$ is the nuclear $g$ factor, and $\mu_N$ is the nuclear magneton. The vector $\mathbf r$ is measured from nucleus $K$. Large hyperfine couplings identify nearby nuclei that can either disturb the electron spin or act as memory qubits.
+
+### 4.3 Optical Quantities
+
+For single-photon emission, the next calculation is an excited-state calculation. Let $Q_g$ be the relaxed nuclear geometry of the electronic ground state, and $Q_e$ the relaxed geometry of the excited state. Then
+
+<div class="math-display">
+$$
+E_{\rm ZPL}
+=
+E_e(Q_e)-E_g(Q_g).
+$$
+</div>
+
+This is the zero-phonon-line energy: the photon energy if the electronic transition happens without changing vibrational quantum number.
+
+The vertical absorption and emission energies are
+
+<div class="math-display">
+$$
+E_{\rm abs}
+=
+E_e(Q_g)-E_g(Q_g),
+\qquad
+E_{\rm em}
+=
+E_e(Q_e)-E_g(Q_e).
+$$
+</div>
+
+From these one gets the relaxation energies
+
+<div class="math-display">
+$$
+\lambda_e=E_e(Q_g)-E_e(Q_e),
+\qquad
+\lambda_g=E_g(Q_e)-E_g(Q_g).
+$$
+</div>
+
+The transition dipole is
+
+<div class="math-display">
+$$
+\boldsymbol\mu_{eg}
+=
+\langle \Psi_e | e\mathbf r | \Psi_g\rangle .
+$$
+</div>
+
+It controls the radiative decay rate. A common estimate is
+
+<div class="math-display">
+$$
+\Gamma_{\rm rad}
+\approx
+\frac{n\omega^3|\boldsymbol\mu_{eg}|^2}
+{3\pi\epsilon_0\hbar c^3},
+\qquad
+\tau_{\rm rad}=1/\Gamma_{\rm rad},
+$$
+</div>
+
+where $\omega=E_{\rm ZPL}/\hbar$ and $n$ is the refractive index of the host.
+
+The Huang-Rhys factor measures how much the atoms move between the two electronic states. In a one-effective-mode approximation,
+
+<div class="math-display">
+$$
+\Delta Q^2
+=
+\sum_\alpha M_\alpha
+\left|\mathbf R_{e,\alpha}-\mathbf R_{g,\alpha}\right|^2,
+\qquad
+S_{\rm HR}
+=
+\frac{\Omega\,\Delta Q^2}{2\hbar}.
+$$
+</div>
+
+Here $\alpha$ labels atoms, $M_\alpha$ is the atomic mass, $\mathbf R_{g,\alpha}$ and $\mathbf R_{e,\alpha}$ are relaxed positions in the ground and excited states, and $\Omega$ is an effective phonon frequency. In a many-mode treatment,
+
+<div class="math-display">
+$$
+S_{\rm HR}=\sum_k S_k,
+\qquad
+S_k=\frac{\omega_k\Delta Q_k^2}{2\hbar}.
+$$
+</div>
+
+The Debye-Waller factor is the fraction of optical intensity in the zero-phonon line:
+
+<div class="math-display">
+$$
+{\rm DW}\approx e^{-S_{\rm HR}}.
+$$
+</div>
+
+Small $S_{\rm HR}$ means less phonon sideband and a larger zero-phonon-line fraction. For a simple single-photon source, one mainly wants a stable optical transition and antibunching. For photon-mediated quantum computing, one wants a large radiative rate into a narrow optical line, so $E_{\rm ZPL}$, $\boldsymbol\mu_{eg}$, $S_{\rm HR}$, and ${\rm DW}$ matter a lot.
+
+### 4.4 Spin-Dependent Optical Cycle
+
+The hardest part of NV-like physics is not "is there an optical transition?" It is whether the optical cycle distinguishes spin states. A minimal rate model uses
+
+<div class="math-display">
+$$
+\Gamma_{\rm rad}^{(m_s)},
+\qquad
+\Gamma_{\rm nr}^{(m_s)},
+\qquad
+\Gamma_{\rm ISC}^{(m_s)} .
+$$
+</div>
+
+Here $\Gamma_{\rm rad}$ is the photon-emitting decay rate, $\Gamma_{\rm nr}$ is a non-photon nonradiative decay rate, and $\Gamma_{\rm ISC}$ is the rate for the triplet state to cross into singlet states. The readout contrast can be summarized by
+
+<div class="math-display">
+$$
+C
+=
+\frac{N_\gamma(m_s=0)-N_\gamma(m_s=\pm1)}
+{N_\gamma(m_s=0)+N_\gamma(m_s=\pm1)}.
+$$
+</div>
+
+The intersystem-crossing rate is commonly modeled using Fermi's golden rule:
+
+<div class="math-display">
+$$
+\Gamma_{i\rightarrow f}
+=
+\frac{2\pi}{\hbar}
+\left|
+\langle \Psi_f | H_{\rm SO} | \Psi_i\rangle
+\right|^2
+F_{if}.
+$$
+</div>
+
+$H_{\rm SO}$ is the spin-orbit coupling operator, and $F_{if}$ is a vibrational overlap factor between initial and final nuclear wavefunctions. This is why this final step is harder: one needs excited triplet and singlet states, spin-orbit matrix elements, and electron-phonon coupling, not just a ground-state DFT calculation.
+
+So the practical order is:
+
+1. compute $E_f(D^q)$ and $\epsilon(q/q')$ to find stable charge states;
+2. compute $S$, $\sigma(\mathbf r)$, gap levels, and localization;
+3. compute $\mathbf D$, $\mathbf g$, and $\mathbf A^{(K)}$ for the spin Hamiltonian;
+4. compute $E_{\rm ZPL}$, $\boldsymbol\mu_{eg}$, $\Gamma_{\rm rad}$, $S_{\rm HR}$, and ${\rm DW}$ for optical emission;
+5. only for NV-like optical spin readout, compute or model the rates $\Gamma_{\rm rad}^{(m_s)}$, $\Gamma_{\rm ISC}^{(m_s)}$, and the contrast $C$.
+
+That is the loose-to-harsh rationale in computational language. Formation energy and spin density are relatively routine. ZFS, hyperfine, and $g$ are specialized but well-defined spin-Hamiltonian outputs. ZPL and Huang-Rhys require excited-state geometries. Spin-selective readout requires the most detailed excited-state and vibronic information.
 
 ## References
 
@@ -452,9 +682,10 @@ NV$^-$ survived this funnel almost accidentally: it is stable, optically bright,
 - E. Togan et al., "Quantum Entanglement Between an Optical Photon and a Solid-State Spin Qubit," *Nature* 466, 730-734 (2010): [DOI:10.1038/nature09256](https://doi.org/10.1038/nature09256).
 - L. Robledo et al., "High-Fidelity Projective Read-Out of a Solid-State Spin Quantum Register," *Nature* 477, 574-578 (2011): [DOI:10.1038/nature10401](https://doi.org/10.1038/nature10401).
 - M. W. Doherty, N. B. Manson, P. Delaney, F. Jelezko, J. Wrachtrup, and L. C. L. Hollenberg, "The Nitrogen-Vacancy Colour Centre in Diamond," *Physics Reports* 528, 1-45 (2013): [DOI:10.1016/j.physrep.2013.02.001](https://doi.org/10.1016/j.physrep.2013.02.001).
+- C. Freysoldt, B. Grabowski, T. Hickel, J. Neugebauer, G. Kresse, A. Janotti, and C. G. Van de Walle, "First-Principles Calculations for Point Defects in Solids," *Rev. Mod. Phys.* 86, 253-305 (2014): [DOI:10.1103/RevModPhys.86.253](https://doi.org/10.1103/RevModPhys.86.253).
 - A. Alkauskas, Q. Yan, and C. G. Van de Walle, "First-Principles Theory of Nonradiative Carrier Capture via Multiphonon Emission," *Phys. Rev. B* 90, 075202 (2014): [DOI:10.1103/PhysRevB.90.075202](https://doi.org/10.1103/PhysRevB.90.075202).
 - C. L. Degen, F. Reinhard, and P. Cappellaro, "Quantum Sensing," *Rev. Mod. Phys.* 89, 035002 (2017): [DOI:10.1103/RevModPhys.89.035002](https://doi.org/10.1103/RevModPhys.89.035002).
+- V. Ivady, I. A. Abrikosov, and A. Gali, "First Principles Calculation of Spin-Related Quantities for Point Defect Qubit Research," *npj Computational Materials* 4, 76 (2018): [DOI:10.1038/s41524-018-0132-5](https://doi.org/10.1038/s41524-018-0132-5).
 - A. Gali, "Ab Initio Theory of the Nitrogen-Vacancy Center in Diamond," *Nanophotonics* 8, 1907-1943 (2019): [DOI:10.1515/nanoph-2019-0154](https://doi.org/10.1515/nanoph-2019-0154).
-- A. Davidsson, V. Ivaady, R. Armiento, and I. A. Abrikosov, "First Principles Calculation of Spin-Related Quantities for Point Defect Qubit Research," *npj Computational Materials* 4, 75 (2018): [DOI:10.1038/s41524-018-0132-5](https://doi.org/10.1038/s41524-018-0132-5).
 - G. Wolfowicz et al., "Quantum Guidelines for Solid-State Spin Defects," *Nature Reviews Materials* 6, 906-925 (2021): [DOI:10.1038/s41578-021-00306-y](https://doi.org/10.1038/s41578-021-00306-y).
 - Z. Fang and Q. Yan, "Towards the Predictive Design of Quantum Defects for Next-Generation Quantum Technologies," *Communications Materials* 7, 155 (2026): [DOI:10.1038/s43246-026-01225-7](https://doi.org/10.1038/s43246-026-01225-7).
