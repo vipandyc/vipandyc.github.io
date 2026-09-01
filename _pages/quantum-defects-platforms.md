@@ -74,21 +74,120 @@ D/2\pi
 $$
 </div>
 
-Measuring the microwave resonance frequency is therefore a magnetometer. The physics is a solid-state version of atomic spectroscopy: the unknown field changes an energy splitting, and spectroscopy turns that splitting into a number.
+Measuring the microwave resonance frequency is therefore a magnetometer. The physics is a solid-state version of spectroscopy:
 
-What makes NV sensing especially powerful is optical spin readout. Green excitation pumps population through an excited triplet state. The $m_s=\pm1$ states have a higher probability of taking an intersystem-crossing path through singlet states, which both reduces fluorescence and preferentially returns population to $m_s=0$. After repeated optical cycles, the spin is polarized into $m_s=0$, and the number of collected photons depends on the spin state. This is optically detected magnetic resonance (ODMR): shine laser light, sweep microwaves, and watch fluorescence dip when the microwave drive transfers population out of the bright state.
+<div class="math-display">
+$$
+B_z
+\longrightarrow
+\Delta E_\pm(B_z)
+\longrightarrow
+f_\pm(B_z)
+\longrightarrow
+\text{measured signal}.
+$$
+</div>
 
-There are two common sensing modes.
+The remaining question is practical: how do we measure the spin state of one atomic-scale defect? The answer is that light gives different photon counts for different spin projections.
 
-### Continuous-Wave ODMR
+For this discussion, write the useful ground-state spin levels as
 
-In continuous-wave ODMR, laser and microwave fields are applied at the same time. A resonance shift reports the local field. This is experimentally simple and works well for wide-field imaging with NV ensembles. Each camera pixel can contain many defects, and each pixel returns a local magnetic-field or temperature estimate.
+<div class="math-display">
+$$
+\lvert 0\rangle \equiv \lvert S=1,m_s=0\rangle,
+\qquad
+\lvert 1\rangle \equiv \lvert S=1,m_s=-1\rangle .
+$$
+</div>
 
-The tradeoff is linewidth. Optical pumping, microwave power broadening, inhomogeneous strain, dipolar interactions among defects, and environmental noise all widen the resonance. The smallest detectable field roughly improves when the ODMR slope becomes steeper and the photon collection becomes larger. Ensembles win on photon number; single defects win on nanoscale spatial resolution.
+Here $m_s=0$ is not a singlet. It is one component of the same $S=1$ triplet. In a collinear DFT calculation one often represents the triplet by the high-spin determinant with total moment near $2\mu_B$; the experimental spin Hamiltonian then describes the $m_s=0,\pm1$ sublevels inside that triplet.
 
-### Ramsey, Echo, and Dynamical Decoupling
+The optical cycle can be summarized by two probabilities. After green-laser excitation, the defect usually falls back to the ground triplet and emits a red photon. But the probability of emitting that photon depends on $m_s$:
 
-In pulsed sensing, one prepares a coherent superposition such as
+<div class="math-display">
+$$
+p_\gamma(m_s=0) > p_\gamma(m_s=\pm1).
+$$
+</div>
+
+So the expected photon number during a short readout pulse satisfies
+
+<div class="math-display">
+$$
+N_\gamma(m_s=0) > N_\gamma(m_s=\pm1).
+$$
+</div>
+
+That inequality is the whole reason optical readout works. A bright signal means the spin was more likely in $m_s=0$; a darker signal means it was more likely in $m_s=\pm1$.
+
+Why are the $m_s=\pm1$ states darker? Because they have a larger chance to leave the bright optical cycle through intermediate singlet states. In a rate-picture,
+
+<div class="math-display">
+$$
+k_{\rm singlet}(m_s=\pm1)
+>
+k_{\rm singlet}(m_s=0).
+$$
+</div>
+
+The singlet path emits fewer useful red photons. It also tends to return population back to $m_s=0$. Therefore repeated laser cycles do two things at once:
+
+<div class="math-display">
+$$
+\rho
+\xrightarrow{\rm green\ laser}
+\rho_{00}\approx 1,
+\qquad
+N_\gamma \text{ tells us about } \rho_{00}.
+$$
+</div>
+
+In words: the laser both initializes the spin into $m_s=0$ and makes $m_s=0$ brighter than $m_s=\pm1$.
+
+Now add microwaves. A microwave drive near the spin transition mixes $m_s=0$ with $m_s=\pm1$:
+
+<div class="math-display">
+$$
+\lvert0\rangle
+\leftrightarrow
+\lvert m_s=\pm1\rangle,
+\qquad
+f_{\rm mw}\approx f_\pm .
+$$
+</div>
+
+If the microwave is off resonance, the laser keeps the population mostly in bright $m_s=0$, so fluorescence is high. If the microwave is on resonance, it moves population into darker $m_s=\pm1$, so fluorescence drops:
+
+<div class="math-display">
+$$
+I_{\rm PL}(f_{\rm mw})
+\quad \text{is minimal at} \quad
+f_{\rm mw}=f_\pm(B_z).
+$$
+</div>
+
+This is optically detected magnetic resonance, or ODMR. The name sounds heavier than the experiment: shine laser light, sweep microwave frequency, and record where the red fluorescence dips. The dip position gives $f_\pm$, and $f_\pm$ gives the local field.
+
+There are two common ways to use this physics.
+
+### Resonance-Shift Sensing
+
+The simplest mode measures the frequency of the fluorescence dip:
+
+<div class="math-display">
+$$
+B_z
+\approx
+\frac{2\pi}{\gamma_e}
+\left(f_+-D/2\pi\right).
+$$
+</div>
+
+This works with one NV center, but it is also natural for ensembles. With many NV centers in each camera pixel, one can image a spatially varying magnetic field by fitting the dip frequency pixel by pixel. The cost is that an ensemble usually has broader lines because different defects see slightly different strain, fields, and local environments.
+
+### Phase-Accumulation Sensing
+
+For weaker fields, it is often better to use the spin as an interferometer. Prepare
 
 <div class="math-display">
 $$
@@ -99,28 +198,52 @@ $$
 $$
 </div>
 
-lets it evolve, and then maps phase back to population. If the transition frequency is shifted by $\delta\omega$, the relative phase after time $\tau$ is
+wait for a time $\tau$, and then read out the spin optically. During the wait time, the field changes the relative phase:
 
 <div class="math-display">
 $$
+\lvert \psi(\tau)\rangle
+=
+\frac{1}{\sqrt 2}
+\left(
+\lvert0\rangle
++e^{-i\phi(\tau)}\lvert1\rangle
+\right),
+\qquad
 \phi(\tau)=\int_0^\tau \delta\omega(t)\,dt .
 $$
 </div>
 
-A Ramsey sequence is sensitive to slowly varying or dc fields, but its useful time is limited by dephasing, often called $T_2^\ast$. A Hahn echo cancels static disorder and extends the sensing window toward the homogeneous coherence time $T_2$. Multi-pulse dynamical-decoupling sequences act like frequency filters: they suppress low-frequency noise while enhancing sensitivity to ac fields near the pulse repetition frequency.
+The final microwave pulse converts this phase into population:
 
-This is the real platform logic:
+<div class="math-display">
+$$
+\phi
+\longrightarrow
+P_0
+\longrightarrow
+N_\gamma .
+$$
+</div>
 
-| Sensor ingredient | Physical role |
-|---|---|
-| localized spin | stores phase in a small spatial volume |
-| optical initialization | prepares a known spin state without cryogenic thermal polarization |
-| microwave control | creates and refocuses superpositions |
-| spin-dependent fluorescence | turns spin population into photons |
-| long coherence time | allows small shifts to accumulate measurable phase |
-| host crystal control | reduces magnetic, charge, strain, and surface noise |
+So the measured photon count is ultimately a measurement of accumulated phase. Ramsey, echo, and dynamical-decoupling sequences are different choices of microwave pulses during the wait time. They decide which time-dependence of $\delta\omega(t)$ the NV is most sensitive to.
 
-The sensor does not need a perfect optical transition. Many sensing experiments collect phonon-sideband fluorescence rather than relying only on the zero-phonon line. For magnetometry, a broad but bright room-temperature optical cycle can be enough, as long as it gives spin contrast and does not destroy the spin too quickly.
+The useful chain is therefore
+
+<div class="math-display">
+$$
+\begin{aligned}
+B(t) &\rightarrow \delta\omega(t),
+\qquad
+\Delta E=\hbar\delta\omega,\\
+\delta\omega(t) &\rightarrow
+\phi(\tau)=\int_0^\tau \delta\omega(t)\,dt,\\
+\phi &\rightarrow P_0 \rightarrow N_\gamma .
+\end{aligned}
+$$
+</div>
+
+The sensor does not need a perfect optical transition. For magnetometry, a broad but bright room-temperature optical cycle can be enough, as long as the photon count still depends on the spin state and the spin survives long enough to accumulate a measurable shift.
 
 ## 2. Single-Photon Emission
 
