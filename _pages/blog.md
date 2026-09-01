@@ -11,6 +11,7 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 
 ## Something (more) quantum
 
+- [Quantum Defects as Sensors, Single-Photon Emitters, and Qubits](/blog/quantum-defects-platforms/)
 - [A Tutorial Introduction to the Transmon Qubit](/blog/transmon-qubit-tutorial/)
 - [Time-Dependent NNQMC, LVM, and Canonical AFQMC](/blog/td-nnqmc-lvm-afqmc/)
 
