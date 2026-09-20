@@ -113,7 +113,7 @@ $$
 $$
 </div>
 
-Algorithms such as dimension sweep and WFG differ in how they construct $P_k$ and prune dominated subproblems. The number of cells grows rapidly with $m$ and $\lvert P\rvert$: exact hypervolume is routine for two or three objectives, but can dominate the cost in many-objective problems.
+Algorithms such as dimension sweep and WFG differ in how they construct $P_k$ and prune dominated subproblems. The number of cells grows rapidly with objective count $m$ and front size $n$: exact hypervolume is routine for two or three objectives, but can dominate the cost in many-objective problems.
 
 ## 2. Expected Hypervolume Improvement
 
