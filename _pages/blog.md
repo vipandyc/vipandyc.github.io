@@ -23,6 +23,7 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 
 ## Methods
 
+- [Multi-Objective Bayesian Optimization: Hypervolume, ParEGO, UCB, and Feasibility](/blog/multi-objective-bayesian-optimization/)
 - [Discrete Diffusion: Uniform Noise and Masked Noise](/blog/discrete-diffusion-uniform-masked/)
 - [How to Tackle Long-Step Gradients](/blog/long-step-gradients-checkpointing-adjoints-implicit/)
 - [How to Calculate Free Energy: TI, FEP, MBAR, and SSCHA](/blog/calculate-free-energy-ti-fep-mbar-sscha/)
