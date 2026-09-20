@@ -29,7 +29,7 @@ f_j(x')>f_j(x)\quad\text{for at least one }j.
 $$
 </div>
 
-The nondominated objective vectors form the Pareto front $P$. Bayesian optimization fits a surrogate to observations $\mathcal D_t$ and maximizes an acquisition function.
+We write $P$ for the **Pareto front**: the set of objective vectors $f(x)$ from feasible evaluated points that are not dominated by another evaluated point. Bayesian optimization fits a surrogate to observations $\mathcal D_t$ and maximizes an acquisition function.
 
 ## 1. Hypervolume
 
@@ -257,7 +257,7 @@ $$
 
 The GP mean $m(x)$ exploits and its uncertainty $s(x)$ explores; $\kappa>0$ controls the exploration strength. For multiple objectives, one must still scalarize the objectives or define a Pareto-aware UCB rule.
 
-**Strategy-level bandit.** Treat EHVI, ParEGO, GP-UCB, random search, and an LLM proposer as the arms. After an experiment, reward the selected strategy using hypervolume gain per unit cost,
+**Optional: use a bandit to choose the search method.** Here an arm is not a candidate $x$; it is an entire proposal method such as EHVI, ParEGO, GP-UCB, random search, or an LLM. At each iteration, the bandit chooses one method, that method proposes the next experiment, and the observed result gives the method a reward such as
 
 <div class="math-display">
 $$
@@ -267,7 +267,7 @@ $$
 $$
 </div>
 
-The bandit then learns which search strategy is productive for the current problem. This is a meta-controller, not a replacement for the objective surrogate.
+UCB can then allocate more future iterations to methods that have produced larger gains, while occasionally retrying the others. This optional outer controller does not replace the GP or acquisition functions; it only chooses which one to use on each iteration.
 
 ## 5. Feasibility Seeking and qLogPoF
 
