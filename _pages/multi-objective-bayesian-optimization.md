@@ -115,6 +115,43 @@ $$
 
 Algorithms such as dimension sweep and WFG differ in how they construct $P_k$ and prune dominated subproblems. The number of cells grows rapidly with objective count $m$ and front size $n$: exact hypervolume is routine for two or three objectives, but can dominate the cost in many-objective problems.
 
+### Monte Carlo estimate
+
+When exact decomposition is too costly, choose a box $B=[r,u]$ containing the dominated region, with volume $V_B=\prod_i(u_i-r_i)$. For independent samples $Z_s\sim\operatorname{Unif}(B)$,
+
+<div class="math-display">
+$$
+\widehat{\operatorname{HV}}_S(P;r)
+=
+\frac{V_B}{S}\sum_{s=1}^S
+\mathbf 1\!\left\{\exists y\in P:y\succeq Z_s\right\}.
+$$
+</div>
+
+This is unbiased. If $p=\operatorname{HV}(P;r)/V_B$, then
+
+<div class="math-display">
+$$
+\operatorname{SE}\!\left(\widehat{\operatorname{HV}}_S\right)
+=
+V_B\sqrt{\frac{p(1-p)}{S}},
+$$
+</div>
+
+so error decreases as $S^{-1/2}$. Using the same samples, the improvement from a candidate $y$ is estimated by
+
+<div class="math-display">
+$$
+\widehat{\operatorname{HVI}}_S(y)
+=
+\frac{V_B}{S}\sum_{s=1}^S
+\mathbf 1\{y\succeq Z_s\}
+\mathbf 1\{P\not\succeq Z_s\}.
+$$
+</div>
+
+This is ordinary classical Monte Carlo integration, unrelated to quantum Monte Carlo.
+
 ## 2. Expected Hypervolume Improvement
 
 At an unevaluated $x$, the surrogate makes $Y=f(x)$ random. Expected hypervolume improvement is
