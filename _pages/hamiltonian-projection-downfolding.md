@@ -7,13 +7,11 @@ author_profile: true
 
 # Hamiltonian Projection and Downfolding: One Framework for Many Techniques
 
-Microscopic Hamiltonians are usually much larger than the question we want to answer. A first-principles calculation may retain many atoms, orbitals, spins, and bands, while the physics near the Fermi level lives in a small subspace. A quantum-optics model may contain several excited levels even though only two states form the qubit. A Hubbard model may contain doubly occupied configurations even when the low-energy regime is primarily spin physics.
-
-The goal is therefore simple to state:
+Microscopic Hamiltonians are often much larger than the question of interest. A first-principles model may retain many orbitals and bands while the physics near the Fermi level lives in a small subspace. The goal is simple:
 
 > Construct a smaller Hamiltonian that preserves the physics of interest.
 
-The vocabulary is less simple. Papers speak of projection, truncation, downfolding, Löwdin partitioning, Feshbach projection, Schrieffer-Wolff transformations, Wannierization, disentanglement, $k\cdot p$ theory, and reduced-basis methods. These terms are sometimes used almost interchangeably even though they describe different operations.
+The vocabulary is not. Projection, downfolding, Löwdin partitioning, Feshbach projection, Schrieffer-Wolff transformations, Wannierization, and reduced-basis methods are often mixed together despite describing different operations.
 
 The cleanest taxonomy has only three entries:
 
@@ -27,7 +25,7 @@ $$
 $$
 </div>
 
-Most named methods are combinations of these three operations. This note develops that statement and uses a moiré continuum-model workflow as a compact example.
+Most named methods combine these operations. A moiré continuum-model workflow will serve as a compact example.
 
 ## 1. Operation I: Change the Basis
 
@@ -41,9 +39,7 @@ H'=U^\dagger H U.
 $$
 </div>
 
-This is a change of coordinates in the same Hilbert space. The dimension remains $N$, no state is discarded, and the spectrum is unchanged. Examples include rotating from real orbitals $(d_{xz},d_{yz})$ to angular-momentum combinations $(d_{xz}\pm i d_{yz})/\sqrt2$, moving between spin quantization axes, and changing the gauge among an isolated set of Bloch bands.
-
-A useful diagnostic is therefore:
+This changes coordinates in the same Hilbert space. The dimension and spectrum are unchanged; no state is discarded. Examples include rotating orbitals, changing the spin axis, or changing the gauge among isolated Bloch bands. Thus
 
 <div class="math-display">
 $$
@@ -51,7 +47,7 @@ $$
 $$
 </div>
 
-The matrix may become sparse, symmetry adapted, or physically transparent, but it has not become smaller.
+The matrix may become clearer, but it has not become smaller.
 
 ## 2. Operation II: Project onto a Smaller Subspace
 
@@ -90,7 +86,7 @@ This is genuine dimension reduction, but it is only **projection or truncation**
 
 ### What determines the reduced basis?
 
-Many apparently different methods share the formula $V^\dagger H V$. Their real difference is how they choose the columns of $V$.
+Many methods share $V^\dagger H V$; their real difference is how they choose $V$.
 
 | Method | Columns of $V$ | Main purpose |
 |---|---|---|
@@ -102,7 +98,7 @@ Many apparently different methods share the formula $V^\dagger H V$. Their real 
 | TAPW | selected atomic plane waves | compress a huge moiré Hamiltonian |
 | SVD/POD reduced basis | dominant singular vectors of snapshots | data-driven numerical compression |
 
-This leads to one of the most useful questions in effective-model construction:
+The essential question is therefore:
 
 <div class="math-display">
 $$
@@ -142,15 +138,7 @@ E_{\rm low}=-\frac{t^2}{\Delta}
 $$
 </div>
 
-The shift comes from a virtual path
-
-<div class="math-display">
-$$
-|L\rangle\longrightarrow|H\rangle\longrightarrow|L\rangle.
-$$
-</div>
-
-Although the high-energy state should not appear explicitly in the final model, its influence should. This is the distinction between **discarding** a state and **integrating it out**.
+The shift comes from the virtual path $L\rightarrow H\rightarrow L$. The high-energy state should disappear from the final basis, but not from the physics. That is the distinction between **discarding** and **integrating out** a state.
 
 ## 4. Operation III: Integrate Out the Complement
 
@@ -226,13 +214,13 @@ It modifies diagonal energies and can also generate new off-diagonal couplings b
 
 ## 5. Löwdin, Feshbach, Brillouin-Wigner, and the Schur Complement
 
-The preceding derivation has several names because it appears in several mathematical languages.
+The same elimination appears under several names:
 
-- **Löwdin partitioning** emphasizes the division of a quantum-mechanical basis into interacting classes.
-- **Feshbach projection** emphasizes the complementary projectors $P$ and $Q$.
-- **Brillouin-Wigner perturbation theory** emphasizes the energy-dependent effective eigenvalue problem.
-- **Resolvent downfolding** emphasizes $(E-H_{QQ})^{-1}$.
-- **Schur complementation** is the block-linear-algebra name for the same elimination.
+- **Löwdin partitioning:** interacting basis classes;
+- **Feshbach projection:** complementary projectors $P$ and $Q$;
+- **Brillouin-Wigner theory:** the energy-dependent eigenproblem;
+- **resolvent downfolding:** $(E-H_{QQ})^{-1}$;
+- **Schur complement:** the block-linear-algebra viewpoint.
 
 For example, applying block Gaussian elimination to $H-EI$ produces the Schur complement
 
@@ -242,7 +230,7 @@ H_{PP}-E-H_{PQ}(H_{QQ}-E)^{-1}H_{QP},
 $$
 </div>
 
-which is precisely $H_{\rm eff}(E)-E$. These are not unrelated tricks. They are different interpretations of the same block-matrix identity.
+which is $H_{\rm eff}(E)-E$. The names describe different interpretations of one block-matrix identity.
 
 ## 6. Exact but Energy Dependent
 
@@ -254,12 +242,7 @@ H_{\rm eff}(E)|\psi_P\rangle=E|\psi_P\rangle.
 $$
 </div>
 
-There are several standard ways forward.
-
-1. **Solve the nonlinear problem.** This preserves the exact energy dependence but may be inconvenient.
-2. **Evaluate at a reference energy.** Use $H_{\rm eff}(E_{\rm ref})$ for a target energy window.
-3. **Expand the resolvent.** If the $P$ and $Q$ sectors are well separated, expand about a convenient energy and truncate.
-4. **Construct an energy-independent block diagonalization.** This leads naturally to Schrieffer-Wolff and related canonical transformations.
+One may solve this nonlinear problem, evaluate it at a reference energy $E_{\rm ref}$, expand the resolvent when $P$ and $Q$ are well separated, or construct an energy-independent block diagonalization.
 
 If $H_{QQ}$ lies roughly an energy $\Delta$ above the retained sector, then schematically
 
@@ -275,7 +258,7 @@ This is the universal second-order pattern $-V^2/\Delta$.
 
 ## 7. Schrieffer-Wolff: Rotate Until the Blocks Decouple
 
-The Schrieffer-Wolff approach organizes the same virtual physics differently. Write
+Schrieffer-Wolff organizes the same virtual physics by writing
 
 <div class="math-display">
 $$
@@ -283,7 +266,7 @@ H=H_0+V_{\rm d}+V_{\rm od},
 $$
 </div>
 
-where $V_{\rm d}$ is block diagonal in the $P/Q$ split and $V_{\rm od}$ couples the two blocks. Seek an anti-Hermitian generator $S^\dagger=-S$ such that
+where $V_{\rm d}$ is block diagonal and $V_{\rm od}$ couples $P$ and $Q$. Seek $S^\dagger=-S$ such that
 
 <div class="math-display">
 $$
@@ -291,7 +274,7 @@ $$
 $$
 </div>
 
-is block diagonal order by order. Expanding with the Baker-Campbell-Hausdorff formula,
+is block diagonal order by order. The Baker-Campbell-Hausdorff expansion gives
 
 <div class="math-display">
 $$
@@ -319,20 +302,16 @@ H_{\rm eff}^{\rm SW}
 $$
 </div>
 
-The commutator term contains the same $P\rightarrow Q\rightarrow P$ virtual excursions as the second-order expansion of the Löwdin/Feshbach resolvent.
-
-The conceptual distinction is useful:
+The commutator contains the same $P\rightarrow Q\rightarrow P$ excursions as the Löwdin/Feshbach expansion. The conceptual distinction is:
 
 - Löwdin/Feshbach **eliminates amplitudes in $Q$** and naturally produces an energy-dependent Hamiltonian.
 - Schrieffer-Wolff **rotates the full Hamiltonian** so that $P$ and $Q$ decouple perturbatively, producing an energy-independent low-energy block.
 
-They need not yield literally identical matrices at every finite truncation or in every gauge, but properly constructed effective Hamiltonians reproduce the same low-energy observables to the claimed perturbative order.
+Finite-order matrices can differ by gauge, but properly constructed theories reproduce the same low-energy observables to their claimed order.
 
 ## 8. A Familiar Example: Superexchange
 
-Consider two sites with hopping $t$ and a large onsite repulsion $U$. At half filling, states with one electron per site form the low-energy sector. Double occupation costs energy $U$ and belongs to the eliminated sector.
-
-An electron can hop to form a virtual doubly occupied state and then hop back. Integrating out those charge fluctuations produces a spin interaction
+For two sites with hopping $t$ and large repulsion $U$, singly occupied states form the low-energy sector while double occupation costs $U$. Integrating out virtual double occupation gives
 
 <div class="math-display">
 $$
@@ -342,9 +321,7 @@ J\simeq\frac{4t^2}{U}.
 $$
 </div>
 
-The doubly occupied configurations disappear from the effective Hilbert space, but their virtual effect becomes the antiferromagnetic exchange $J$. This is downfolding in its most recognizable form.
-
-The same logic gives ligand-mediated hopping in solids:
+The eliminated charge configurations survive as antiferromagnetic exchange. Likewise, eliminating a ligand produces
 
 <div class="math-display">
 $$
@@ -355,7 +332,7 @@ t_{dd}^{\rm eff}\sim
 $$
 </div>
 
-Removing the ligand orbital without this correction would miss the effective metal-metal hopping.
+Both are direct manifestations of the $-V^2/\Delta$ structure.
 
 ## 9. When Plain Projection Is Already Exact
 
@@ -367,7 +344,7 @@ QHP=0,
 $$
 </div>
 
-then $H_{QP}=H_{PQ}=0$ for Hermitian $H$, and the downfolding correction vanishes. In this case
+then $H_{QP}=H_{PQ}=0$ for Hermitian $H$, so
 
 <div class="math-display">
 $$
@@ -375,9 +352,7 @@ H_{\rm eff}=V^\dagger H V
 $$
 </div>
 
-is exact.
-
-Selecting exact eigenvectors is the obvious example. If $V=(\lvert\psi_1\rangle,\ldots,\lvert\psi_r\rangle)$, then
+is exact. Selecting exact eigenvectors gives
 
 <div class="math-display">
 $$
@@ -385,11 +360,11 @@ V^\dagger H V=\operatorname{diag}(E_1,\ldots,E_r).
 $$
 </div>
 
-Why not always do this? Because the exact eigenvector basis can be a poor **modeling basis**. Its gauge may vary irregularly with momentum, and its states may not have stable layer, sublattice, orbital, valley, or spin labels. A compact model should often reproduce not only eigenvalues but also symmetries, matrix elements, locality, topology, and physical interpretation.
+Yet exact eigenvectors can be a poor **modeling basis**: their gauge may vary irregularly with momentum and obscure stable layer, orbital, valley, or spin labels. A useful model should preserve interpretation as well as eigenvalues.
 
 ## 10. Wannierization: Subspace Selection Plus Gauge Choice
 
-Wannier construction illustrates why projection and basis transformation often appear together. Starting from Bloch states $\lvert\psi_{n\mathbf k}\rangle$, define
+Wannier construction combines projection with a gauge choice. Starting from Bloch states $\lvert\psi_{n\mathbf k}\rangle$,
 
 <div class="math-display">
 $$
@@ -398,18 +373,7 @@ $$
 $$
 </div>
 
-and Fourier transform to real space:
-
-<div class="math-display">
-$$
-|w_{m\mathbf R}\rangle
-=\frac{1}{N_{\mathbf k}}
-\sum_{\mathbf k}e^{-i\mathbf k\cdot\mathbf R}
-|w_{m\mathbf k}\rangle.
-$$
-</div>
-
-For an isolated group with the same number of input and output bands, $U(\mathbf k)$ is a unitary gauge transformation within that band subspace. For entangled bands, one first extracts a lower-dimensional smooth subspace and then chooses a gauge inside it. Wannierization can therefore contain both
+followed by a Fourier transform to localized $\lvert w_{m\mathbf R}\rangle$. For isolated bands, $U(\mathbf k)$ is a unitary gauge transformation. For entangled bands, one first extracts a smooth lower-dimensional subspace. Wannierization can therefore contain both
 
 <div class="math-display">
 $$
@@ -419,37 +383,9 @@ $$
 $$
 </div>
 
-It does not, by itself, imply that remote-band virtual effects have been added through a Löwdin or Schrieffer-Wolff correction. Sometimes those effects are already encoded in the selected exact band subspace; sometimes a separately constructed orbital model needs explicit downfolding.
+This does not by itself add remote-band corrections. SVD/POD methods fit the same taxonomy: they choose $V$ from dominant snapshot directions and then use $V^\dagger H V$.
 
-## 11. Numerical Reduced-Basis Methods
-
-Not every subspace is chosen from orbitals or bands. Suppose representative wavefunctions or solution snapshots are arranged as columns of
-
-<div class="math-display">
-$$
-\Psi=\begin{pmatrix}|\psi_1\rangle&|\psi_2\rangle&\cdots\end{pmatrix}.
-$$
-</div>
-
-An SVD,
-
-<div class="math-display">
-$$
-\Psi=U\Sigma W^\dagger,
-$$
-</div>
-
-identifies the dominant directions. Keeping the first $r$ left singular vectors $U_r$ gives
-
-<div class="math-display">
-$$
-H_r=U_r^\dagger H U_r.
-$$
-</div>
-
-This appears as proper orthogonal decomposition, reduced-order modeling, low-rank projection, or a reduced-basis method. It is again a projection. The difference is that the subspace is selected by approximation quality on training data rather than by an orbital or energy label.
-
-## 12. Nonorthogonal Bases and the Two Meanings of “Löwdin”
+## 11. Nonorthogonal Bases and the Two Meanings of “Löwdin”
 
 Localized atomic orbitals are often nonorthogonal. Their coefficients satisfy a generalized eigenproblem
 
@@ -461,7 +397,7 @@ S_{ij}=\langle\phi_i|\phi_j\rangle.
 $$
 </div>
 
-After projection with $V$,
+Projection gives
 
 <div class="math-display">
 $$
@@ -471,15 +407,7 @@ S_{\rm red}=V^\dagger SV,
 $$
 </div>
 
-and the reduced problem remains
-
-<div class="math-display">
-$$
-H_{\rm red}c=E S_{\rm red}c.
-$$
-</div>
-
-Symmetric Löwdin orthogonalization defines
+and $H_{\rm red}c=ES_{\rm red}c$. Symmetric Löwdin orthogonalization defines
 
 <div class="math-display">
 $$
@@ -490,18 +418,16 @@ $$
 $$
 </div>
 
-The orthonormal Hamiltonian is $\widetilde V^\dagger H\widetilde V$.
-
-Two distinct procedures unfortunately carry Löwdin's name:
+The orthonormal Hamiltonian is $\widetilde V^\dagger H\widetilde V$. Two distinct procedures carry Löwdin's name:
 
 - **Löwdin orthogonalization** removes the overlap metric $S$.
 - **Löwdin partitioning** integrates out a complementary subspace.
 
-The first changes the representation and metric. The second constructs an effective Hamiltonian. They should not be conflated.
+The first changes the metric; the second constructs an effective Hamiltonian.
 
-## 13. TAPW and Moiré Models as a Running Example
+## 12. TAPW and Moiré Models as a Running Example
 
-Large moiré supercells make the hierarchy of operations especially visible. A localized-orbital calculation may contain thousands or tens of thousands of basis functions, while low-energy states near a chosen valley involve a restricted set of momentum components.
+Large moiré supercells make the hierarchy visible: an atomistic basis may contain thousands of functions, while a chosen valley uses far fewer momentum components.
 
 The **Truncated Atomic Plane Wave** construction forms coherent combinations schematically like
 
@@ -515,7 +441,7 @@ e^{i(\mathbf k+\mathbf G)\cdot\boldsymbol\tau_{\ell i}}
 $$
 </div>
 
-where $\ell$ labels a layer, $i$ an atomic or monolayer cell inside the moiré cell, $\alpha$ internal orbital/spin structure, and $\mathbf G$ a selected moiré reciprocal vector near the target valley.
+Here $\ell$, $i$, $\alpha$, and $\mathbf G$ label layer, cell, internal state, and selected moiré reciprocal vector.
 
 Writing these basis states as columns of $X$, the first compression is
 
@@ -527,7 +453,7 @@ S_{\rm TAPW}=X^\dagger S_{\rm loc}X.
 $$
 </div>
 
-This is primarily a physically designed **projection**. It replaces an enormous real-space basis by a much smaller valley-centered plane-wave basis. With nonorthogonal atomic orbitals, one next constructs
+This is a physics-informed **projection** into a valley-centered basis. Nonorthogonal orbitals next require
 
 <div class="math-display">
 $$
@@ -538,7 +464,7 @@ S_{\rm TAPW}^{-1/2}.
 $$
 </div>
 
-That is **Löwdin orthogonalization**, not yet the elimination of remote TAPW states.
+This is **Löwdin orthogonalization**, not remote-state elimination.
 
 The TAPW space can then be split into selected low-energy states $L$ and excluded states $H$. A fixed-reference-energy reduction has the form
 
@@ -552,7 +478,7 @@ H_{HL}(\mathbf k).
 $$
 </div>
 
-This second reduction is the genuine **Löwdin/Feshbach downfolding** step. Finally, a physically interpretable gauge and the symmetry representations are used to express the result in a compact continuum basis,
+This is the genuine **Löwdin/Feshbach downfolding** step. A physical gauge and symmetry representation then give
 
 <div class="math-display">
 $$
@@ -561,7 +487,7 @@ H_{\rm continuum}(\mathbf k)
 $$
 </div>
 
-where the $Y_j$ are symmetry-allowed operators.
+with symmetry-allowed $Y_j$.
 
 The whole pipeline can therefore be read as
 
@@ -579,21 +505,9 @@ H_{\rm continuum}.
 $$
 </div>
 
-This example is useful precisely because it contains all three fundamental operations without treating them as synonyms.
+## 13. What Can Be Generated by Downfolding?
 
-## 14. What Can Be Generated by Downfolding?
-
-Virtual excursions through eliminated states can produce much more than a constant energy shift. Depending on the problem, they generate
-
-- renormalized onsite energies and dispersions;
-- longer-range or symmetry-allowed hopping;
-- superexchange and other spin couplings;
-- spin-orbit interactions;
-- correlated hopping and multibody terms;
-- screening and frequency-dependent interactions;
-- corrections to observables as well as to the Hamiltonian.
-
-The last point matters. If a unitary transformation is used to derive $H_{\rm eff}$, observables should in principle be transformed too:
+Eliminated states can generate renormalized energies, longer-range hopping, exchange, spin-orbit coupling, multibody terms, and frequency dependence. Observables may also require transformation:
 
 <div class="math-display">
 $$
@@ -601,26 +515,22 @@ O_{\rm eff}=P e^S O e^{-S}P.
 $$
 </div>
 
-An effective Hamiltonian can reproduce low-energy energies while a bare projected observable still gives inaccurate matrix elements.
+Thus correct energies do not guarantee correct bare projected matrix elements.
 
-## 15. When Is a Reduction Trustworthy?
+## 14. When Is a Reduction Trustworthy?
 
 A reduced model should come with diagnostics, not only a small matrix. Useful questions include:
 
-1. **Energy separation:** Is the retained manifold separated from the discarded states over the full parameter and momentum range?
-2. **Hybridization:** Is $\lVert H_{PQ}\rVert/\Delta$ small enough for the chosen perturbative order?
-3. **Resolvent poles:** Does the target energy approach the spectrum of $H_{QQ}$?
-4. **Subspace quality:** Do the retained states have large overlap with the target exact states?
-5. **Gauge smoothness:** Does the basis vary smoothly with momentum and parameters?
-6. **Symmetry:** Does projection or numerical truncation preserve the required representations?
-7. **Topology:** Is a globally smooth localized basis obstructed by band topology?
-8. **Induced terms:** Were relevant longer-range, multibody, or frequency-dependent terms discarded after downfolding?
-9. **Reference-energy sensitivity:** Does changing $E_{\rm ref}$ appreciably change the predicted bands or observables?
-10. **Operator consistency:** Were observables transformed consistently with the Hamiltonian when necessary?
+1. Is the retained manifold separated from discarded states, with $\lVert H_{PQ}\rVert/\Delta$ small enough for the chosen order?
+2. Does the target energy approach a pole of $(E-H_{QQ})^{-1}$?
+3. Does the retained space overlap the target exact states and vary smoothly with momentum?
+4. Are symmetry and topology represented consistently?
+5. Were important induced, frequency-dependent, or transformed-observable terms omitted?
+6. Are predictions stable under changes of $E_{\rm ref}$ and truncation order?
 
 Near a crossing between retained and eliminated states, a small-denominator expansion is not controlled. The cure is often to enlarge $P$, not to compute more terms in a failing series.
 
-## 16. A Compact Decision Guide
+## 15. A Compact Decision Guide
 
 | Goal | Natural operation |
 |---|---|
@@ -635,7 +545,7 @@ Near a crossing between retained and eliminated states, a small-denominator expa
 
 Often the correct workflow is a sequence rather than a single choice: first construct a meaningful reduced basis, then integrate out its remaining remote sector, then impose symmetry and simplify.
 
-## 17. The Unified Picture
+## 16. The Unified Picture
 
 The apparent zoo of methods reduces to three equations:
 
@@ -656,7 +566,7 @@ $$
 
 The first preserves the full problem. The second makes it smaller by discarding states. The third makes it smaller while retaining their virtual influence.
 
-Wannierization, TAPW, $k\cdot p$, tight-binding construction, Löwdin partitioning, Feshbach projection, and Schrieffer-Wolff transformations are best understood as different answers to three modeling questions:
+These methods answer three modeling questions:
 
 1. Which subspace contains the physics we care about?
 2. Which basis makes that physics interpretable and symmetry transparent?
