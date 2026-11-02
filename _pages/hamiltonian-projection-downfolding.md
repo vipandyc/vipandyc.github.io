@@ -55,7 +55,7 @@ The matrix may become sparse, symmetry adapted, or physically transparent, but i
 
 ## 2. Operation II: Project onto a Smaller Subspace
 
-Now choose $r<N$ orthonormal states $\{|v_a\rangle\}_{a=1}^r$ and collect them as the columns of an $N\times r$ matrix
+Now choose $r<N$ orthonormal states $\{\lvert v_a\rangle\}_{a=1}^r$ and collect them as the columns of an $N\times r$ matrix
 
 <div class="math-display">
 $$
@@ -133,7 +133,7 @@ H_{\rm proj}=0.
 $$
 </div>
 
-But the exact low-energy eigenvalue is not zero. Expanding it for $|t/\Delta|\ll1$ gives
+But the exact low-energy eigenvalue is not zero. Expanding it for $\lvert t/\Delta\rvert\ll1$ gives
 
 <div class="math-display">
 $$
@@ -377,7 +377,7 @@ $$
 
 is exact.
 
-Selecting exact eigenvectors is the obvious example. If $V=(|\psi_1\rangle,\ldots,|\psi_r\rangle)$, then
+Selecting exact eigenvectors is the obvious example. If $V=(\lvert\psi_1\rangle,\ldots,\lvert\psi_r\rangle)$, then
 
 <div class="math-display">
 $$
@@ -389,7 +389,7 @@ Why not always do this? Because the exact eigenvector basis can be a poor **mode
 
 ## 10. Wannierization: Subspace Selection Plus Gauge Choice
 
-Wannier construction illustrates why projection and basis transformation often appear together. Starting from Bloch states $|\psi_{n\mathbf k}\rangle$, define
+Wannier construction illustrates why projection and basis transformation often appear together. Starting from Bloch states $\lvert\psi_{n\mathbf k}\rangle$, define
 
 <div class="math-display">
 $$
@@ -608,7 +608,7 @@ An effective Hamiltonian can reproduce low-energy energies while a bare projecte
 A reduced model should come with diagnostics, not only a small matrix. Useful questions include:
 
 1. **Energy separation:** Is the retained manifold separated from the discarded states over the full parameter and momentum range?
-2. **Hybridization:** Is $\|H_{PQ}\|/\Delta$ small enough for the chosen perturbative order?
+2. **Hybridization:** Is $\lVert H_{PQ}\rVert/\Delta$ small enough for the chosen perturbative order?
 3. **Resolvent poles:** Does the target energy approach the spectrum of $H_{QQ}$?
 4. **Subspace quality:** Do the retained states have large overlap with the target exact states?
 5. **Gauge smoothness:** Does the basis vary smoothly with momentum and parameters?
