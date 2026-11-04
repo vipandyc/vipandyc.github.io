@@ -24,6 +24,7 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 
 ## Methods
 
+- [The Doob h-Transform: From Conditioned Random Walks to Guided SDEs](/blog/doob-h-transform/)
 - [Multi-Objective Bayesian Optimization: Hypervolume, ParEGO, UCB, and Feasibility](/blog/multi-objective-bayesian-optimization/)
 - [Discrete Diffusion: Uniform Noise and Masked Noise](/blog/discrete-diffusion-uniform-masked/)
 - [How to Tackle Long-Step Gradients](/blog/long-step-gradients-checkpointing-adjoints-implicit/)
