@@ -414,43 +414,86 @@ This does not by itself add remote-band corrections. SVD/POD methods fit the sam
 
 ## 11. Nonorthogonal Bases and the Two Meanings of “Löwdin”
 
-Localized atomic orbitals are often nonorthogonal. Their coefficients satisfy a generalized eigenproblem
+Here $S$ means an **overlap matrix**, not the SW rotation generator from Section 7. Let $\lvert\phi_1\rangle,\ldots,\lvert\phi_N\rangle$ be linearly independent localized orbitals. They need not be orthogonal: $\langle\phi_i\vert\phi_j\rangle$ can be nonzero for $i\ne j$. A state $\lvert\psi\rangle=\sum_j c_j\lvert\phi_j\rangle$ therefore has norm $\langle\psi\vert\psi\rangle=c^\dagger Sc$, rather than $c^\dagger c$.
+
+To derive the eigenvalue equation within this orbital span, insert the expansion into $\hat H\lvert\psi\rangle=E\lvert\psi\rangle$ and multiply on the left by each $\langle\phi_i\vert$:
 
 <div class="math-display">
 $$
-Hc=ESc,
-\qquad
-S_{ij}=\langle\phi_i|\phi_j\rangle.
+\begin{gathered}
+H_{ij}=\langle\phi_i\vert\hat H\vert\phi_j\rangle,
+\qquad S_{ij}=\langle\phi_i\vert\phi_j\rangle,\\
+\sum_j H_{ij}c_j=E\sum_j S_{ij}c_j
+\quad\Longleftrightarrow\quad Hc=ESc.
+\end{gathered}
 $$
 </div>
 
-Projection gives
+If the original orbitals were orthonormal, $S=I$ and this would be the usual $Hc=Ec$ problem. To retain only $r$ combinations, put their coefficients in the columns of an $N\times r$ matrix $V$. The physical retained orbitals are $\lvert\chi_a\rangle=\sum_i\lvert\phi_i\rangle V_{ia}$. Approximate $\lvert\psi\rangle$ by $\sum_a d_a\lvert\chi_a\rangle$ and require the Schrödinger equation to hold when tested against every $\langle\chi_a\vert$. This gives
 
 <div class="math-display">
 $$
-H_{\rm red}=V^\dagger HV,
-\qquad
-S_{\rm red}=V^\dagger SV,
+\begin{aligned}
+(H_{\rm red})_{ab}
+&=\langle\chi_a\vert\hat H\vert\chi_b\rangle
+=\sum_{ij}V_{ia}^*H_{ij}V_{jb}
+=(V^\dagger HV)_{ab},\\
+(S_{\rm red})_{ab}
+&=\langle\chi_a\vert\chi_b\rangle
+=\sum_{ij}V_{ia}^*S_{ij}V_{jb}
+=(V^\dagger SV)_{ab},\\
+H_{\rm red}d&=E S_{\rm red}d.
+\end{aligned}
 $$
 </div>
 
-and $H_{\rm red}c=ES_{\rm red}c$. Symmetric Löwdin orthogonalization defines
+The overlap $S_{\rm red}$ is needed because the retained orbitals $\lvert\chi_a\rangle$ can still overlap. If $S=I$ and the columns of $V$ are orthonormal, then $S_{\rm red}=I$ and we recover Section 2. In the present setting, orthonormality must be measured with $S$: it means $V^\dagger S V=I$, not merely $V^\dagger V=I$.
+
+**Symmetric Löwdin orthogonalization** turns this generalized problem into an ordinary one. Assume the retained orbitals are linearly independent. Then $d^\dagger S_{\rm red}d$ is the positive squared norm of $\sum_a d_a\lvert\chi_a\rangle$ for any nonzero $d$, so $S_{\rm red}$ is positive definite. Diagonalize $S_{\rm red}=R\operatorname{diag}(s_a)R^\dagger$ with $s_a>0$; its inverse square root is $A=S_{\rm red}^{-1/2}=R\operatorname{diag}(s_a^{-1/2})R^\dagger$. Form new retained orbitals with coefficient matrix $\widetilde V=VA$. Their overlap is
 
 <div class="math-display">
 $$
-\widetilde V
-=V(V^\dagger S V)^{-1/2},
-\qquad
-\widetilde V^\dagger S\widetilde V=I.
+\widetilde V^\dagger S\widetilde V
+=A(V^\dagger S V)A
+=S_{\rm red}^{-1/2}S_{\rm red}S_{\rm red}^{-1/2}
+=I.
 $$
 </div>
 
-The orthonormal Hamiltonian is $\widetilde V^\dagger H\widetilde V$. Two distinct procedures carry Löwdin's name:
+To see what happens to the Hamiltonian, write $d=Ab$ in $H_{\rm red}d=ES_{\rm red}d$ and multiply by $A$. Since $AS_{\rm red}A=I$, the equation becomes
 
-- **Löwdin orthogonalization** removes the overlap metric $S$.
-- **Löwdin partitioning** integrates out a complementary subspace.
+<div class="math-display">
+$$
+H_{\rm orth}b=Eb,
+\qquad
+H_{\rm orth}=AH_{\rm red}A
+=S_{\rm red}^{-1/2}H_{\rm red}S_{\rm red}^{-1/2}
+=\widetilde V^\dagger H\widetilde V.
+$$
+</div>
 
-The first changes the metric; the second constructs an effective Hamiltonian.
+Because $A$ is invertible, this standard eigenproblem has exactly the same $r$ eigenvalues as the reduced generalized one.
+
+For a two-orbital example, keep both orbitals ($V=I$), each with norm one and real overlap $s$, where $0<s<1$. Then
+
+<div class="math-display">
+$$
+S=\begin{pmatrix}1&s\\s&1\end{pmatrix},
+\qquad
+u_\pm=\frac1{\sqrt2}\begin{pmatrix}1\\\pm1\end{pmatrix},
+\qquad
+S u_\pm=(1\pm s)u_\pm.
+$$
+</div>
+
+The coefficient vectors $u_\pm$ represent the physical combinations $(\lvert\phi_1\rangle\pm\lvert\phi_2\rangle)/\sqrt2$. Their squared norms are $1\pm s$, so $S^{-1/2}$ divides these directions by $\sqrt{1+s}$ and $\sqrt{1-s}$, respectively. For $s=1/2$, the factors are $\sqrt{2/3}$ and $\sqrt2$. Both directions remain: orthogonalization changes coordinates within the same space and makes the overlap matrix the identity.
+
+Two distinct procedures carry Löwdin's name:
+
+- **Löwdin orthogonalization** uses $S_{\rm red}^{-1/2}$ to replace overlapping retained orbitals with an orthonormal basis of the **same** $r$-dimensional span. It preserves the eigenvalues of $H_{\rm red}d=ES_{\rm red}d$.
+- **Löwdin partitioning** solves for amplitudes in an excluded $Q$ space and substitutes them back into the retained equation, as in Sections 4–5. It adds the effect of those excluded states to an effective Hamiltonian.
+
+Orthogonalization alone does not include the virtual $P\rightarrow Q\rightarrow P$ correction; partitioning is the step that does.
 
 ## 12. TAPW and Moiré Models as a Running Example
 
