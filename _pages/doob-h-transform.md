@@ -579,7 +579,7 @@ P^{(q)}(F)=\frac{P(F\cap E)}{p}
 $$
 </div>
 
-Here $\mathbf 1_F$ is 1 when $F$ occurs and 0 otherwise. The second equality uses the fact that $q(X_{t\wedge\tau})$ is the chance of eventual success after the observed path segment. Finding the exact $q$ in a high-dimensional system can itself be difficult. An approximate $q$ may guide sampling, but it no longer gives exact conditional paths without a correction such as likelihood-ratio reweighting.
+Here <span markdown="0">\(\mathbf{1}_F\)</span> is 1 when F occurs and 0 otherwise. The second equality weights each observed path segment by its remaining chance of success. Finding the exact committor in a high-dimensional system can be difficult. An approximate committor may guide sampling, but it no longer gives exact conditional paths without a correction such as likelihood-ratio reweighting.
 
 ### Why the $h$-transform solves a control problem
 
