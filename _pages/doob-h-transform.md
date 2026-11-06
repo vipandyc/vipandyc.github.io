@@ -364,7 +364,7 @@ L_t(hf)=hL_t f+fL_t h+(a\nabla h)\cdot\nabla f.
 $$
 </div>
 
-Consequently,
+Consequently, the first line uses the same generator identity as Eq. (14) for the jump chain, now applied to a diffusion. Because <span markdown="0">\(h\)</span> depends on time, the backward equation is <span markdown="0">\(\partial_t h+L_t h=0\)</span>; <span markdown="0">\(L_t h\)</span> need not vanish by itself:
 
 <div class="math-display">
 $$
