@@ -379,16 +379,16 @@ L^{(h)}_t f
 $$
 </div>
 
-As in the Fokker–Planck calculation above, the first-derivative coefficient in a generator is the SDE drift, and the second-derivative coefficients give the noise covariance. Comparing terms, the transformed process keeps <span markdown="0">\(a=\sigma\sigma^\top\)</span> but has drift <span markdown="0">\(b+a\nabla\log h\)</span>. Equivalently, its Fokker–Planck equation uses this new drift in the transport term. The corresponding SDE under the transformed law is
+Comparing this generator with the Fokker–Planck equation above gives drift <span markdown="0">\(b+a\nabla\log h\)</span> and unchanged noise. Thus the transformed SDE is
 
 <div class="math-display">
 $$
 \boxed{\mathrm dX_t=\left[b(t,X_t)+a(t,X_t)\nabla_x\log h(t,X_t)\right]\mathrm dt
-+\sigma(t,X_t)\,\mathrm dW_t^{(h)}.}
++\sigma(t,X_t)\,\mathrm dW_t.}
 $$
 </div>
 
-In the original SDE, $W_t$ is Brownian motion under the original law; $W_t^{(h)}$ is Brownian motion under the transformed law. The noise term still has covariance $a$; only the drift changes. If one writes $D=a/2$, the extra drift is $2D\nabla\log h$. This factor of two is easy to lose when switching between $a$ and the physics convention $D$.
+Here $W_t$ is Brownian motion under the transformed law. We reuse the symbol from the original SDE, where Brownian motion is understood under the original law. The noise term still has covariance $a$; only the drift changes. If one writes $D=a/2$, the extra drift is $2D\nabla\log h$. This factor of two is easy to lose when switching between $a$ and the physics convention $D$.
 
 The backward equation ensures that the kernel above is normalized. The subtraction of $fL_t h$ in the generator removes a zero-order term; it is useful when deriving the formula even in a region where $L_t h$ is not separately zero. For time-dependent $h$, the relevant harmonic equation is $\partial_t h+L_t h=0$, not $L_t h=0$ by itself.
 
@@ -417,7 +417,7 @@ $$
 $$
 </div>
 
-The left side is the likelihood ratio for the conditioned path up to time $t$. Under appropriate martingale and integrability conditions, Girsanov's theorem says that $W_t^{(h)}=W_t-\int_0^t u_s\,\mathrm ds$ is Brownian motion under this new law. Substituting $\mathrm dW_t=\mathrm dW_t^{(h)}+u_t\,\mathrm dt$ into the original SDE adds $\sigma u_t=\sigma\sigma^\top\nabla\log h=a\nabla\log h$ to its drift, agreeing with the generator calculation. For a hitting event, read these identities up to the stopping time; for an exact endpoint bridge, use times $t<T$.
+The left side is the likelihood ratio for the conditioned path up to time $t$. Under appropriate martingale and integrability conditions, Girsanov's theorem says that $\widetilde W_t=W_t-\int_0^t u_s\,\mathrm ds$ is Brownian motion under the new law. Substituting $\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt$ into the original SDE adds $\sigma u_t=\sigma\sigma^\top\nabla\log h=a\nabla\log h$ to its drift. The transformed SDE above simply calls $\widetilde W_t$ by the familiar name $W_t$. For a hitting event, read these identities up to the stopping time; for an exact endpoint bridge, use times $t<T$.
 
 ## 6. Brownian Bridge: Conditioning on an Endpoint
 
@@ -443,7 +443,7 @@ Since $b=0$ and $a=1$, the bridge SDE is
 
 <div class="math-display">
 $$
-\mathrm dX_t=\frac{y-X_t}{T-t}\,\mathrm dt+\mathrm dW_t^{(h)},
+\mathrm dX_t=\frac{y-X_t}{T-t}\,\mathrm dt+\mathrm dW_t,
 \qquad t<T.
 $$
 </div>
@@ -502,7 +502,7 @@ we have $a=2\beta^{-1}I$. Taking $h=q$ therefore gives the same transform, now l
 $$
 \boxed{\mathrm dX_t=
 \left[-\nabla U(X_t)+2\beta^{-1}\nabla\log q(X_t)\right]\mathrm dt
-+\sqrt{2\beta^{-1}}\,\mathrm dW_t^{(q)}.}
++\sqrt{2\beta^{-1}}\,\mathrm dW_t.}
 $$
 </div>
 
