@@ -416,33 +416,41 @@ This does not by itself add remote-band corrections. SVD/POD methods fit the sam
 
 Here $H_{ij}=\langle\phi_i\vert\hat H\vert\phi_j\rangle$ and $S_{ij}=\langle\phi_i\vert\phi_j\rangle$ are the Hamiltonian and overlap in the original $N$ orbitals. Each column of the $N\times r$ matrix $V$ gives the coefficients of one orbital combination you want to retain; $V$ need not be unitary.
 
-**What to calculate:** form the small overlap $G$ and Hamiltonian $K$. If $G$ is positive definite, take its inverse square root and diagonalize
+**What to calculate:** provided $V^\dagger SV$ is positive definite, diagonalize the following $r\times r$ matrix:
+
+<div class="math-display">
+$$
+H_{\rm proj}=(V^\dagger SV)^{-1/2}
+(V^\dagger HV)
+(V^\dagger SV)^{-1/2}.
+$$
+</div>
+
+**Why this formula?** Set $\widetilde V=V(V^\dagger SV)^{-1/2}$. This rectangular matrix defines $r$ states $\lvert\widetilde\chi_a\rangle=\sum_i\lvert\phi_i\rangle\widetilde V_{ia}$. They form an orthonormal basis of the retained subspace because
+
+<div class="math-display">
+$$
+\widetilde V^\dagger S\widetilde V
+=(V^\dagger SV)^{-1/2}(V^\dagger SV)(V^\dagger SV)^{-1/2}=I_r.
+$$
+</div>
+
+The **projection operator** on the full Hilbert space is $P=\sum_a\lvert\widetilde\chi_a\rangle\langle\widetilde\chi_a\rvert$. Since $P\lvert\widetilde\chi_a\rangle=\lvert\widetilde\chi_a\rangle$, the matrix of $P\hat H P$ in these $r$ states is
 
 <div class="math-display">
 $$
 \begin{aligned}
-G&=V^\dagger SV,\qquad K=V^\dagger HV,\qquad A=G^{-1/2},\\
-H_{\rm small}&=AKA,\qquad H_{\rm small}b=Eb.
+(H_{\rm proj})_{ab}
+&=\langle\widetilde\chi_a\rvert P\hat H P\lvert\widetilde\chi_b\rangle\\
+&=\langle\widetilde\chi_a\rvert\hat H\lvert\widetilde\chi_b\rangle
+=(\widetilde V^\dagger H\widetilde V)_{ab}.
 \end{aligned}
 $$
 </div>
 
-The corresponding approximate state has original-basis coefficients $c=VAb$. If $G=I_r$, then $A=I_r$ and you simply diagonalize $K$. Equivalently, you can solve $Kd=EGd$ directly, with $d=Ab$.
+Substituting $\widetilde V=V(V^\dagger SV)^{-1/2}$ gives the full formula above. $H_{\rm proj}$ is the *matrix representation* of $P\hat H P$ in the retained basis; it is neither the projector $P$ nor the full-space operator $P\hat H P$. Solve $H_{\rm proj}b=Eb$; the approximate state has original-basis coefficients $c=\widetilde Vb$. If $V^\dagger SV=I_r$, the formula reduces to $H_{\rm proj}=V^\dagger HV$.
 
-**Why the inverse square root?** Set $\widetilde V=VA$. Its columns are orthonormal in the *physical* inner product because
-
-<div class="math-display">
-$$
-\widetilde V^\dagger S\widetilde V=AGA
-=G^{-1/2}GG^{-1/2}=I_r.
-$$
-</div>
-
-$\widetilde V$ is still rectangular: its columns $\lvert\widetilde\chi_a\rangle=\sum_i\lvert\phi_i\rangle\widetilde V_{ia}$ form a basis only for the **retained subspace**. Its projector is $P=\sum_a\lvert\widetilde\chi_a\rangle\langle\widetilde\chi_a\rvert$. On an original coefficient vector $c$, first extract the retained amplitudes $\widetilde V^\dagger Sc$, then reconstruct $P_{\rm coeff}c=\widetilde V(\widetilde V^\dagger Sc)$. Thus $P_{\rm coeff}=\widetilde V\widetilde V^\dagger S$ and $P_{\rm coeff}^2=P_{\rm coeff}$.
-
-For reduced energies, you **do not need to form $P$**: $H_{\rm small}=\widetilde V^\dagger H\widetilde V$ already gives the Hamiltonian matrix in that basis. This small matrix is called a projected Hamiltonian, but is not itself a projector.
-
-This is **Löwdin orthogonalization**. **Löwdin partitioning** instead eliminates excluded-state amplitudes and adds their virtual contribution (Sections 4–5).
+The inverse-square-root step is **Löwdin orthogonalization**. **Löwdin partitioning** instead eliminates excluded-state amplitudes and adds their virtual contribution (Sections 4–5).
 
 ## 12. TAPW and Moiré Models as a Running Example
 
