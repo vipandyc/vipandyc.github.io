@@ -598,7 +598,7 @@ $$
 
 The remaining KL term is zero exactly when $Q=P^{(q)}$. Thus the conditional law is the smallest change, in KL, among path laws that guarantee success.
 
-For a diffusion, we can implement a control $u_t$ by changing the drift from $b$ to $b+\sigma u_t$ while keeping the noise coefficient $\sigma$. Let $Q^u$ denote the resulting path law. Girsanov's formula from Section 5, now with $\widetilde W$ Brownian under $Q^u$, gives
+For a diffusion, a control <span markdown="0">\(u_t\)</span> changes the drift from <span markdown="0">\(b\)</span> to <span markdown="0">\(b+\sigma u_t\)</span> while keeping the noise coefficient <span markdown="0">\(\sigma\)</span>. Let <span markdown="0">\(Q^u\)</span> be the resulting path law. Under <span markdown="0">\(P\)</span>, <span markdown="0">\(W\)</span> is Brownian and its increments have mean zero. Under <span markdown="0">\(Q^u\)</span>, <span markdown="0">\(\widetilde W_t=W_t-\int_0^t u_s\,\mathrm ds\)</span> is Brownian: its increments have mean zero, while those of <span markdown="0">\(W\)</span> have conditional mean <span markdown="0">\(u_t\,\mathrm dt\)</span>. Girsanov's formula writes the same log likelihood ratio in these two ways:
 
 <div class="math-display">
 $$
@@ -610,7 +610,7 @@ $$
 $$
 </div>
 
-The second equality substitutes $\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt$. The Brownian integral has mean zero under $Q^u$, so $\mathrm{KL}(Q^u\Vert P)=\tfrac12\mathbb E_{Q^u}\int_0^\tau \lVert u_t\rVert^2\,\mathrm dt$. This is the expected quadratic control cost. If the controlled law enforces $E$, its cost is at least $-\log p$; the exact $h$-transform reaches that minimum with $u_t=\sigma^\top\nabla\log q(X_t)$, giving drift $b+a\nabla\log q$. These identities assume the relevant path laws and stochastic integrals are well defined up to $\tau$.
+The second line substitutes <span markdown="0">\(\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt\)</span>; it does **not** treat both increments as zero-mean under one law. KL averages under <span markdown="0">\(Q^u\)</span>, so only the integral against <span markdown="0">\(\widetilde W\)</span> has mean zero. Hence <span markdown="0">\(\mathrm{KL}(Q^u\Vert P)=\tfrac12\mathbb E_{Q^u}\int_0^\tau \lVert u_t\rVert^2\,\mathrm dt\)</span>, the expected quadratic control cost. If the controlled law enforces <span markdown="0">\(E\)</span>, its cost is at least <span markdown="0">\(-\log p\)</span>; the exact <span markdown="0">\(h\)</span>-transform reaches that minimum with <span markdown="0">\(u_t=\sigma^\top\nabla\log q(X_t)\)</span>, giving drift <span markdown="0">\(b+a\nabla\log q\)</span>. These identities assume the relevant path laws and stochastic integrals are well defined up to <span markdown="0">\(\tau\)</span>.
 
 ## 9. Transition Path Theory: From Successful Paths to a Reaction Rate
 
