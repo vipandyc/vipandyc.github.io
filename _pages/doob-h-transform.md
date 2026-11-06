@@ -156,37 +156,85 @@ $$
 
 The intermediate $h$ factors cancel, and $h_N(i_N)=g(i_N)$. Since $g$ is $0$ or $1$ here, this is exactly the original path law conditioned on $E_N$. For a more general nonnegative payoff $g$, the same construction weights paths by $g(X_N)$ rather than conditioning on an event.
 
-## 4. Continuous-Time Markov Jump Processes
+## 4. From Discrete Steps to Continuous-Time Jumps
 
-There is a useful middle step between discrete chains and SDEs. Let a continuous-time chain jump from $i$ to $j$ at rate $k_{ij}$. Its generator $L$ gives the average instantaneous rate of change of a function $f$:
-
-<div class="math-display">
-$$
-(Lf)(i)=\sum_{j\ne i}k_{ij}\,[f(j)-f(i)].
-$$
-</div>
-
-For a hitting committor $h$, $Lh=0$ in the interior. The transformed generator is
+In the random walk, $P_{ij}$ was the probability of the next step. In continuous time, the chain can also *wait*: during a short interval $\Delta t$, it usually stays at $i$. Write $P_{ij}(\Delta t)=\Pr(X_{t+\Delta t}=j\mid X_t=i)$. For $j\ne i$,
 
 <div class="math-display">
 $$
-(L^{(h)}f)(i)=\frac{L(hf)(i)-f(i)Lh(i)}{h(i)}.
+P_{ij}(\Delta t)\approx k_{ij}\Delta t,
+\qquad P_{ii}(\Delta t)\approx 1-\Delta t\sum_{j\ne i}k_{ij}.
 $$
 </div>
 
-Expanding both sums shows exactly what changes:
+Thus $k_{ij}$ is the chance of jumping from $i$ to $j$ **per unit time**. We will apply the same $h(j)/h(i)$ factor as before to these short-time probabilities. First, let $f(i)$ be any number assigned to state $i$. Averaging over a jump or no jump gives
+
+<div class="math-display">
+$$
+\mathbb E[f(X_{t+\Delta t})\mid X_t=i]
+\approx\left(1-\Delta t\sum_{j\ne i}k_{ij}\right)f(i)
++\Delta t\sum_{j\ne i}k_{ij}f(j).
+$$
+</div>
+
+The **generator** $L$ is the rate at which this expected value initially changes. Subtract $f(i)$, divide by $\Delta t$, and let $\Delta t$ shrink to zero:
 
 <div class="math-display">
 $$
 \begin{aligned}
-(L^{(h)}f)(i)
-&=\sum_{j\ne i}k_{ij}\frac{h(j)}{h(i)}[f(j)-f(i)],\\
-k^{(h)}_{ij}&=k_{ij}\frac{h(j)}{h(i)}.
+(Lf)(i)
+&=\lim_{\Delta t\to0}\frac{\mathbb E[f(X_{t+\Delta t})\mid X_t=i]-f(i)}{\Delta t}\\
+&=\sum_{j\ne i}k_{ij}[f(j)-f(i)].
 \end{aligned}
 $$
 </div>
 
-Thus the discrete probability ratio becomes a **jump-rate ratio**. A jump toward a state with larger success probability is accelerated; a jump into $h=0$ is removed. For a harmonic hitting committor, the *total* exit rate actually stays fixed:
+Each possible jump changes $f$ by $f(j)-f(i)$; the sum weights that change by the jump's rate. Now let $E$ mean "hit $B$ before $A$" and stop the chain when it first reaches either set. Define $h(i)=\Pr(E\mid X_0=i)$, as in the discrete walk. Before either set is hit, the average future chance of success still equals the current chance:
+
+<div class="math-display">
+$$
+\mathbb E[h(X_{t+\Delta t})\mid X_t=i]=h(i),
+\qquad (Lh)(i)=0.
+$$
+</div>
+
+The second equality follows by putting $f=h$ in the generator definition. Now apply the discrete Bayes rule from Section 1 to a short interval, for $j\ne i$ and $h(i)>0$:
+
+<div class="math-display">
+$$
+\begin{aligned}
+P^{(h)}_{ij}(\Delta t)
+&=\Pr(X_{t+\Delta t}=j\mid X_t=i,E)\\
+&=P_{ij}(\Delta t)\frac{h(j)}{h(i)},\\
+k^{(h)}_{ij}
+&=\lim_{\Delta t\to0}\frac{P^{(h)}_{ij}(\Delta t)}{\Delta t}
+=k_{ij}\frac{h(j)}{h(i)}.
+\end{aligned}
+$$
+</div>
+
+So the discrete probability ratio becomes a **jump-rate ratio**. The conditioned chain has the same generator formula, using these new rates:
+
+<div class="math-display">
+$$
+(L^{(h)}f)(i)=\sum_{j\ne i}k^{(h)}_{ij}[f(j)-f(i)].
+$$
+</div>
+
+The compact expression for this generator is just the same sum written using the original $L$. Expanding $L(hf)$ and $Lh$ shows the cancellation:
+
+<div class="math-display">
+$$
+\begin{aligned}
+L(hf)(i)-f(i)Lh(i)
+&=\sum_{j\ne i}k_{ij}h(j)[f(j)-f(i)],\\
+(L^{(h)}f)(i)
+&=\frac{L(hf)(i)-f(i)Lh(i)}{h(i)}.
+\end{aligned}
+$$
+</div>
+
+A jump toward a state with larger success probability is accelerated; a jump into $h=0$ is removed. Since $Lh=0$ in the interior, the *total* exit rate stays fixed:
 
 <div class="math-display">
 $$
@@ -474,9 +522,9 @@ Here $\mathrm{KL}$ is the Kullback-Leibler divergence, which is nonnegative. Equ
 
 | Setting | Future information in $h$ | Local rule after conditioning |
 |---|---|---|
-| Discrete chain | $h(i)=\Pr(E\mid X_0=i)$ | $P^{(h)}_{ij}=P_{ij}h(j)/h(i)$ |
-| Chain with deadline | $h_n(i)=\Pr(E_N\mid X_n=i)$ | $P^{(h)}_n(i,j)=P_{ij}h_{n+1}(j)/h_n(i)$ |
-| Continuous-time jumps | $Lh=0$ in the interior | $k^{(h)}_{ij}=k_{ij}h(j)/h(i)$ |
+| Discrete chain | $h(i)=\Pr(E\mid X_0=i)$ | <span markdown="0">\(P^{(h)}_{ij}=P_{ij}h(j)/h(i)\)</span> |
+| Chain with deadline | $h_n(i)=\Pr(E_N\mid X_n=i)$ | <span markdown="0">\(P^{(h)}_n(i,j)=P_{ij}h_{n+1}(j)/h_n(i)\)</span> |
+| Continuous-time jumps | $Lh=0$ in the interior | <span markdown="0">\(k^{(h)}_{ij}=k_{ij}h(j)/h(i)\)</span> |
 | Diffusion | $\partial_t h+L_t h=0$ | $b^{(h)}=b+a\nabla\log h$ |
 | Reactive paths | $q(x)=\Pr(\text{reach }B\text{ before }A\mid X_0=x)$ | Add $a\nabla\log q$ until $B$ is hit |
 
