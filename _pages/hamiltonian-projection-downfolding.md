@@ -159,7 +159,7 @@ The shift comes from the virtual path $L\rightarrow H\rightarrow L$. The high-en
 
 ## 4. Operation III: Integrate Out the Complement
 
-Let $P$ project onto the retained subspace and define
+**Löwdin partitioning** and **Feshbach projection** are names for the elimination we now derive: solve for the part of an eigenstate in the excluded space, then substitute it into the equation for the retained part. Let $P$ project onto the retained subspace and define
 
 <div class="math-display">
 $$
@@ -229,17 +229,22 @@ $$
 
 It modifies diagonal energies and can also generate new off-diagonal couplings between retained states.
 
-## 5. Löwdin, Feshbach, Brillouin-Wigner, and the Schur Complement
+## 5. What Löwdin/Feshbach Elimination Means
 
-The same elimination appears under several names:
+The key step above was **solving for $|\psi_Q\rangle$**, not setting it to zero. The result $|\psi_Q\rangle=(E-H_{QQ})^{-1}H_{QP}|\psi_P\rangle$ says how much excluded-state amplitude accompanies a retained-state amplitude at energy $E$. Substituting it back gives an equation involving only $|\psi_P\rangle$, while the term $H_{PQ}(E-H_{QQ})^{-1}H_{QP}$ remembers the trip through $Q$. Löwdin partitioning describes this in terms of coupled basis blocks; Feshbach projection describes the same elimination with the projectors $P$ and $Q$.
 
-- **Löwdin partitioning:** interacting basis classes;
-- **Feshbach projection:** complementary projectors $P$ and $Q$;
-- **Brillouin-Wigner theory:** the energy-dependent eigenproblem;
-- **resolvent downfolding:** $(E-H_{QQ})^{-1}$;
-- **Schur complement:** the block-linear-algebra viewpoint.
+For the two-state example in Section 3, $H_{PP}=0$, $H_{PQ}=H_{QP}=t$, and $H_{QQ}=\Delta$. The retained space is one-dimensional, so the effective eigenvalue equation is simply
 
-For example, applying block Gaussian elimination to $H-EI$ produces the Schur complement
+<div class="math-display">
+$$
+E=H_{\rm eff}(E)=\frac{t^2}{E-\Delta}
+\quad\Longrightarrow\quad
+E_{\rm low}\simeq-\frac{t^2}{\Delta}
+\qquad(\Delta>0,\ |t|\ll\Delta).
+$$
+</div>
+
+Plain projection gave zero; Löwdin/Feshbach elimination recovers the shift because it retains the effect of the excluded state. “Brillouin-Wigner” refers to solving this energy-dependent equation self-consistently. In linear algebra, the same elimination is a **Schur complement**: block Gaussian elimination of $H-EI$ produces
 
 <div class="math-display">
 $$
@@ -247,7 +252,7 @@ H_{PP}-E-H_{PQ}(H_{QQ}-E)^{-1}H_{QP},
 $$
 </div>
 
-which is $H_{\rm eff}(E)-E$. The names describe different interpretations of one block-matrix identity.
+which equals $H_{\rm eff}(E)-E$. These names emphasize different uses of the same calculation.
 
 ## 6. Exact but Energy Dependent
 
@@ -271,60 +276,78 @@ $$
 $$
 </div>
 
-This is the universal second-order pattern $-V^2/\Delta$.
+This is the common second-order pattern: coupling squared divided by an energy gap.
 
-## 7. Schrieffer-Wolff: Rotate Until the Blocks Decouple
+## 7. Schrieffer-Wolff: Rotate Away the Coupling
 
-Schrieffer-Wolff organizes the same virtual physics by writing
-
-<div class="math-display">
-$$
-H=H_0+V_{\rm d}+V_{\rm od},
-$$
-</div>
-
-where $V_{\rm d}$ is block diagonal and $V_{\rm od}$ couples $P$ and $Q$. Seek $S^\dagger=-S$ such that
+Return to the two-state model from Section 3, taking real $t$ and $\Delta>0$. Split it into an uncoupled part $H_0$ and a coupling $T$:
 
 <div class="math-display">
 $$
-\widetilde H=e^SHe^{-S}
+H_0=\begin{pmatrix}0&0\\0&\Delta\end{pmatrix},
+\qquad
+T=\begin{pmatrix}0&t\\t&0\end{pmatrix},
+\qquad H=H_0+T.
 $$
 </div>
 
-is block diagonal order by order. The Baker-Campbell-Hausdorff expansion gives
+Löwdin/Feshbach elimination gave the energy-dependent equation $E=t^2/(E-\Delta)$. **Schrieffer-Wolff (SW)** takes a different route to the low-energy shift: change basis until the off-diagonal coupling is removed, then read the low-energy entry of the rotated matrix. Because $|t|\ll\Delta$, the required rotation should be small, of order $t/\Delta$.
+
+Choose a rotation generator $S$ with an angle $s$ to be determined:
+
+<div class="math-display">
+$$
+S=s\begin{pmatrix}0&-1\\1&0\end{pmatrix},
+\qquad
+\widetilde H=e^SHe^{-S}.
+$$
+</div>
+
+Here $e^S$ is the ordinary two-dimensional rotation through angle $s$. Since $S^\dagger=-S$, it is unitary: this changes the basis of the full two-state problem without discarding a state. For small $s$, expand the transformed Hamiltonian, using $[A,B]=AB-BA$:
+
+<div class="math-display">
+$$
+\widetilde H=H+[S,H]+\frac12[S,[S,H]]+\cdots.
+$$
+</div>
+
+To first order, its off-diagonal part is
+
+<div class="math-display">
+$$
+T+[S,H_0]
+=(t-s\Delta)\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+$$
+</div>
+
+Set $s=t/\Delta$ so this coupling vanishes. At second order, $[S,T]$ contributes once from $[S,H]$ and minus one-half from $\frac12[S,[S,H_0]]=-\frac12[S,T]$. Therefore
 
 <div class="math-display">
 $$
 \widetilde H
-=H+[S,H]+\frac{1}{2}[S,[S,H]]+\cdots.
+=H_0+\frac12[S,T]+O\!\left(\frac{t^3}{\Delta^2}\right)
+=\begin{pmatrix}
+-t^2/\Delta&0\\
+0&\Delta+t^2/\Delta
+\end{pmatrix}
++O\!\left(\frac{t^3}{\Delta^2}\right).
 $$
 </div>
 
-At leading order one chooses
+The upper-left entry is the $1\times1$ **SW effective Hamiltonian**: $-t^2/\Delta$. It matches the leading low-energy shift from Löwdin/Feshbach, but it has no unknown $E$ in a denominator. The small rotation has mixed some high-energy character into the low-energy state; the effect of that mixing remains in its shifted energy.
 
-<div class="math-display">
-$$
-[S,H_0]=-V_{\rm od}.
-$$
-</div>
-
-The low-energy block is then
+For larger matrices, split $H=H_0+T_{\rm d}+T_{\rm od}$ into block-diagonal terms and a coupling between $P$ and $Q$. Choose an anti-Hermitian $S$ satisfying $[S,H_0]=-T_{\rm od}$ at leading order. Projecting the rotated Hamiltonian onto the retained block gives the general second-order form
 
 <div class="math-display">
 $$
 H_{\rm eff}^{\rm SW}
-=P(H_0+V_{\rm d})P
-+\frac12P[S,V_{\rm od}]P
-+O(V^3).
+=P(H_0+T_{\rm d})P
++\frac12P[S,T_{\rm od}]P
++O(T^3).
 $$
 </div>
 
-The commutator contains the same $P\rightarrow Q\rightarrow P$ excursions as the Löwdin/Feshbach expansion. The conceptual distinction is:
-
-- Löwdin/Feshbach **eliminates amplitudes in $Q$** and naturally produces an energy-dependent Hamiltonian.
-- Schrieffer-Wolff **rotates the full Hamiltonian** so that $P$ and $Q$ decouple perturbatively, producing an energy-independent low-energy block.
-
-Finite-order matrices can differ by gauge, but properly constructed theories reproduce the same low-energy observables to their claimed order.
+The two methods capture the same virtual $P\rightarrow Q\rightarrow P$ process: Löwdin/Feshbach solves for the excluded amplitudes and produces an energy-dependent equation; SW rotates away their coupling perturbatively and produces a static low-energy block. The SW expansion requires a small coupling relative to the gap. Effective matrices can differ by a unitary change of basis within $P$ while giving the same low-energy predictions to the stated order.
 
 ## 8. A Familiar Example: Superexchange
 
@@ -349,7 +372,7 @@ t_{dd}^{\rm eff}\sim
 $$
 </div>
 
-Both are direct manifestations of the $-V^2/\Delta$ structure.
+Both illustrate the same second-order coupling-over-gap structure.
 
 ## 9. When Plain Projection Is Already Exact
 
