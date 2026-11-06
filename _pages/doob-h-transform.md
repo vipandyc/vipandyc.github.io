@@ -496,25 +496,43 @@ $$
 
 Why $Lq=0$? Over a short time $\Delta t$, the Markov property says $q(x)=\mathbb E[q(X_{\Delta t})\mid X_0=x]$ before hitting either set. Subtract $q(x)$, divide by $\Delta t$, and take $\Delta t\to0$. By the definition of the generator, the result is $Lq(x)=0$.
 
-For overdamped Langevin dynamics with scalar mobility absorbed into the time unit,
+For overdamped Langevin dynamics, let $\gamma>0$ be the constant friction coefficient and $\beta^{-1}=k_{\rm B}T$. The SDE is
 
 <div class="math-display">
 $$
-\mathrm dX_t=-\nabla U(X_t)\,\mathrm dt
-+\sqrt{2\beta^{-1}}\,\mathrm dW_t,
-\qquad \beta^{-1}=k_{\rm B}T,
+\boxed{\mathrm dX_t=-\frac{1}{\gamma}\nabla U(X_t)\,\mathrm dt
++\sqrt{\frac{2k_{\rm B}T}{\gamma}}\,\mathrm dW_t.}
 $$
 </div>
 
-we have $a=2\beta^{-1}I$. Taking $h=q$ therefore gives the same transform, now labeled by $(q)$:
+The Einstein relation gives the diffusion coefficient
+
+<div class="math-display">
+$$
+D=\frac{k_{\rm B}T}{\gamma}=\frac{1}{\beta\gamma}.
+$$
+</div>
+
+Hence the same SDE can be written as
+
+<div class="math-display">
+$$
+\mathrm dX_t=-D\beta\nabla U(X_t)\,\mathrm dt
++\sqrt{2D}\,\mathrm dW_t.
+$$
+</div>
+
+Its noise covariance per unit time is $a=2DI$. Taking $h=q$ therefore gives the same transform, now labeled by $(q)$:
 
 <div class="math-display">
 $$
 \boxed{\mathrm dX_t=
-\left[-\nabla U(X_t)+2\beta^{-1}\nabla\log q(X_t)\right]\mathrm dt
-+\sqrt{2\beta^{-1}}\,\mathrm dW_t.}
+\left[-\frac{1}{\gamma}\nabla U(X_t)+\frac{2}{\beta\gamma}\nabla\log q(X_t)\right]\mathrm dt
++\sqrt{\frac{2}{\beta\gamma}}\,\mathrm dW_t.}
 $$
 </div>
+
+Equivalently, the drift is $-D\beta\nabla U+2D\nabla\log q$, with noise coefficient $\sqrt{2D}$.
 
 This is the precise sense in which the Doob transform is **enhanced sampling guided by the committor**. It samples the original dynamics conditioned on reaching $B$ before $A$, stopping when $B$ is first reached. It targets a distribution of *paths*, not merely a flatter equilibrium distribution of configurations.
 
@@ -522,16 +540,16 @@ This is the precise sense in which the Doob transform is **enhanced sampling gui
 
 Let $A=\{a\}$ and $B=\{b\}$, with $a<x<b$, and use $U=U(x)$. The **backward equation** here is the earlier $Lq=0$. “Backward” means we specify the future outcome at $a$ and $b$, then find its probability at each earlier starting position $x$; Fokker–Planck instead evolves a density forward in time. With no deadline, $q$ has no time derivative, so $Lq=0$ is the time-independent form of $\partial_t h+L_t h=0$.
 
-In one dimension, the SDE above has drift <span markdown="0">\(-U^{\prime}(x)\)</span> and noise variance per unit time <span markdown="0">\(2\beta^{-1}\)</span>. A prime means differentiation with respect to <span markdown="0">\(x\)</span>: <span markdown="0">\(f^{\prime}(x)=\mathrm df/\mathrm dx\)</span> and <span markdown="0">\(f^{\prime\prime}(x)=\mathrm d^2f/\mathrm dx^2\)</span>. The short-time Taylor term <span markdown="0">\(\tfrac12f^{\prime\prime}(x)(\Delta X)^2\)</span> has average <span markdown="0">\(\tfrac12f^{\prime\prime}(x)(2\beta^{-1}\Delta t)\)</span>, explaining the coefficient <span markdown="0">\(\beta^{-1}\)</span> after division by <span markdown="0">\(\Delta t\)</span>. Thus <span markdown="0">\((Lf)(x)=-U^{\prime}(x)f^{\prime}(x)+\beta^{-1}f^{\prime\prime}(x)\)</span>. Setting <span markdown="0">\(f=q\)</span> in <span markdown="0">\(Lq=0\)</span>, with <span markdown="0">\(q(a)=0\)</span> and <span markdown="0">\(q(b)=1\)</span>, gives
+In one dimension, the SDE above has drift <span markdown="0">\(-U^{\prime}(x)/\gamma\)</span> and noise variance per unit time <span markdown="0">\(2D\)</span>. A prime means differentiation with respect to <span markdown="0">\(x\)</span>: <span markdown="0">\(f^{\prime}(x)=\mathrm df/\mathrm dx\)</span> and <span markdown="0">\(f^{\prime\prime}(x)=\mathrm d^2f/\mathrm dx^2\)</span>. The short-time Taylor term <span markdown="0">\(\tfrac12f^{\prime\prime}(x)(\Delta X)^2\)</span> has average <span markdown="0">\(\tfrac12f^{\prime\prime}(x)(2D\Delta t)\)</span>, explaining the coefficient <span markdown="0">\(D\)</span> after division by <span markdown="0">\(\Delta t\)</span>. Thus <span markdown="0">\((Lf)(x)=-U^{\prime}(x)f^{\prime}(x)/\gamma+D f^{\prime\prime}(x)\)</span>. Setting <span markdown="0">\(f=q\)</span> in <span markdown="0">\(Lq=0\)</span>, with <span markdown="0">\(q(a)=0\)</span> and <span markdown="0">\(q(b)=1\)</span>, gives
 
 <div class="math-display">
 $$
--U'(x)q'(x)+\beta^{-1}q''(x)=0,
+-\frac{U'(x)}{\gamma}q'(x)+Dq''(x)=0,
 \qquad q(a)=0,\quad q(b)=1.
 $$
 </div>
 
-Multiply by $\beta$ and rearrange:
+Multiply by $\beta\gamma$ and use $D=1/(\beta\gamma)$; the friction cancels:
 
 <div class="math-display">
 $$
@@ -551,16 +569,18 @@ $$
 $$
 </div>
 
+Constant friction changes the time scale but cancels from this hitting probability.
+
 The conditioned drift is then fully explicit:
 
 <div class="math-display">
 $$
-b^{(q)}(x)=-U'(x)
-+2\beta^{-1}\frac{e^{\beta U(x)}}{\displaystyle\int_a^x e^{\beta U(z)}\,\mathrm dz}.
+b^{(q)}(x)=-\frac{U'(x)}{\gamma}
++2D\frac{e^{\beta U(x)}}{\displaystyle\int_a^x e^{\beta U(z)}\,\mathrm dz}.
 $$
 </div>
 
-As a simple check, set $U=0$ and choose unit Brownian noise, $\mathrm dX_t=\mathrm dW_t$, on $(0,L)$. Then $q(x)=x/L$, $a=1$, and the transformed drift is $1/x$. Near the failure boundary $x=0$, it strongly repels the process. This is the continuum analogue of the random walk's zero probability of stepping from state $1$ to state $0$.
+As a simple check, set $U=0$ and choose units with $D=1/2$, so $\mathrm dX_t=\mathrm dW_t$ on $(0,L)$. Then $q(x)=x/L$, $a=1$, and the transformed drift is $1/x$. Near the failure boundary $x=0$, it strongly repels the process. This is the continuum analogue of the random walk's zero probability of stepping from state $1$ to state $0$.
 
 The drift becomes singular where $q=0$. The ideal conditioned process is defined where $q>0$; starting *exactly* on the boundary of $A$ requires an entrance-law or limiting construction. In simulations one usually starts just outside $A$ or uses a regularized committor, while remembering that regularization changes the exact law.
 
@@ -605,14 +625,14 @@ The Doob transform describes an $A\to B$ path **after** we have selected a succe
 
 ### Current and rate for the overdamped diffusion
 
-Use the Langevin model of Section 7, and write $D=\beta^{-1}$ and $\pi(x)=Z^{-1}e^{-\beta U(x)}$ for its equilibrium density, where $Z=\int e^{-\beta U(x)}\,\mathrm dx$ normalizes it. At position $x$, the chance that the future reaches $B$ before $A$ is $q(x)$. Because this equilibrium diffusion is reversible, the chance that the path **last came from $A$** is $1-q(x)$. Thus the amount of equilibrium probability carried by $A\to B$ reactive paths near $x$ is $r(x)=\pi(x)q(x)[1-q(x)]$. Here $r(x)$ is the equilibrium density of $A\to B$ reactive trajectories, and committor-conditioned dynamics generates those paths when started from the appropriate reactive initial distribution.
+Use the Langevin model of Section 7, with $D=\beta^{-1}/\gamma$ and equilibrium density $\pi(x)=Z^{-1}e^{-\beta U(x)}$, where $Z=\int e^{-\beta U(x)}\,\mathrm dx$ normalizes it. At position $x$, the chance that the future reaches $B$ before $A$ is $q(x)$. Because this equilibrium diffusion is reversible, the chance that the path **last came from $A$** is $1-q(x)$. Thus the amount of equilibrium probability carried by $A\to B$ reactive paths near $x$ is $r(x)=\pi(x)q(x)[1-q(x)]$. Here $r(x)$ is the equilibrium density of $A\to B$ reactive trajectories, and committor-conditioned dynamics generates those paths when started from the appropriate reactive initial distribution.
 
-From the Fokker–Planck equation in Section 5, $\partial_t r=-\nabla\cdot(vr)+D\Delta r=-\nabla\cdot J$, so a density $r$ with drift $v$ has probability current $J=vr-D\nabla r$. Put in the conditioned drift $v=-\nabla U+2D\nabla\log q$. Since $\nabla\pi=-\beta\pi\nabla U$, the equilibrium terms cancel and leave
+From the Fokker–Planck equation in Section 5, $\partial_t r=-\nabla\cdot(vr)+D\Delta r=-\nabla\cdot J$, so a density $r$ with drift $v$ has probability current $J=vr-D\nabla r$. Put in the conditioned drift $v=-\nabla U/\gamma+2D\nabla\log q$. Since $\nabla\pi=-\beta\pi\nabla U$ and $D\beta=1/\gamma$, the equilibrium terms cancel and leave
 
 <div class="math-display">
 $$
 \begin{aligned}
-J_{AB}&=\bigl(-\nabla U+2D\nabla\log q\bigr)\pi q(1-q)-D\nabla[\pi q(1-q)]\\
+J_{AB}&=\bigl(-\nabla U/\gamma+2D\nabla\log q\bigr)\pi q(1-q)-D\nabla[\pi q(1-q)]\\
 &=\boxed{D\pi\nabla q}.
 \end{aligned}
 $$
@@ -627,13 +647,15 @@ $$
 $$
 </div>
 
+At fixed $U$ and $T$, this rate scales as $1/\gamma$.
+
 To obtain the volume formula, integrate $\nabla\cdot(qJ_{AB})=J_{AB}\cdot\nabla q$ over the region outside $A$ and $B$. The boundary at $A$ contributes zero because $q=0$; the boundary at $B$ gives $R_{AB}$ because $q=1$. Assume no flux through any outer boundary. The two formulas therefore compute the same frequency, with units of inverse time.
 
 If one wants a **rate constant per $A$-origin population**, divide by the equilibrium fraction whose last visit was to $A$: $k_{AB}=R_{AB}/\theta_A$, where $\theta_A=\int\pi(x)[1-q(x)]\,\mathrm dx$ for this reversible model. When $A$ is strongly metastable, $\theta_A\approx\pi(A)$; the approximation need not hold if excursions outside $A$ take substantial time.
 
 ### What to calculate
 
-Given $U$, $\beta$, and chosen sets $A,B$: compute $\pi$, then solve $Lq=0$ with $q(x)=0$ in $A$ and $q(x)=1$ in $B$. Evaluate either the surface flux or the volume integral above. On a grid, $q$ comes from a boundary-value solver; from simulation, it can be estimated by launching unbiased trajectories from sampled positions and counting the fraction that hit $B$ first. Comparing fluxes across several surfaces is a useful check: a large disagreement indicates that the numerical committor or current is inaccurate. If a long original trajectory is affordable, also count completed reactive paths and divide by its total duration.
+Given $U$, $\beta$, $\gamma$, and chosen sets $A,B$: compute $\pi$, then solve $Lq=0$ with $q(x)=0$ in $A$ and $q(x)=1$ in $B$. Evaluate either the surface flux or the volume integral above using $D=1/(\beta\gamma)$. On a grid, $q$ comes from a boundary-value solver; from simulation, it can be estimated by launching unbiased trajectories from sampled positions and counting the fraction that hit $B$ first. Comparing fluxes across several surfaces is a useful check: a large disagreement indicates that the numerical committor or current is inaccurate. If a long original trajectory is affordable, also count completed reactive paths and divide by its total duration.
 
 For a finite-state jump model, the same rate has an especially direct estimator. Let $\pi_i$ be the stationary probability of state $i$, $k_{ij}$ its jump rate to $j$, and $q_j$ its success probability. A jump from $i\in A$ to $j$ occurs at frequency $\pi_i k_{ij}$, and the ensuing attempt succeeds with probability $q_j$. Hence
 
