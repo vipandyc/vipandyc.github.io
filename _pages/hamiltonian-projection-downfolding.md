@@ -442,8 +442,14 @@ $$
 \begin{aligned}
 (H_{\rm proj})_{ab}
 &=\langle\widetilde\chi_a\rvert P\hat H P\lvert\widetilde\chi_b\rangle\\
-&=\langle\widetilde\chi_a\rvert\hat H\lvert\widetilde\chi_b\rangle
-=(\widetilde V^\dagger H\widetilde V)_{ab}.
+&=\langle\widetilde\chi_a\rvert\hat H\lvert\widetilde\chi_b\rangle\\
+&=\left(\sum_i\widetilde V_{ia}^{*}\langle\phi_i\rvert\right)
+\hat H
+\left(\sum_j\lvert\phi_j\rangle\widetilde V_{jb}\right)\\
+&=\sum_{i,j}\widetilde V_{ia}^{*}
+\underbrace{\langle\phi_i\rvert\hat H\lvert\phi_j\rangle}_{H_{ij}}
+\widetilde V_{jb}\\
+&=(\widetilde V^\dagger H\widetilde V)_{ab}.
 \end{aligned}
 $$
 </div>
