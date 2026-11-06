@@ -1,13 +1,13 @@
 ---
 permalink: /blog/
 title: "Blog"
-excerpt: "Notes on computational physics and numerical methods"
+excerpt: "Notes on computational physics, applied math, and numerical methods"
 author_profile: true
 ---
 
 # Blog
 
-Short technical notes on computational physics, many-body algorithms, and numerical methods.
+Short technical notes on computational physics, applied math, many-body algorithms, and numerical methods.
 
 ## Something (more) quantum
 
@@ -22,6 +22,11 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 - [Simulating Optical Properties: From Kubo Formula to GW-BSE](/blog/optical-properties-kubo-dft-gw/)
 - [Reading X-ray Absorption Spectra: Edges, Regions, and First-Principles Models](/blog/x-ray-absorption-spectroscopy/)
 
+## Applied Math
+
+- [Finite Groups: Irreps, Characters, and Orthogonality Cheat Sheet](/blog/finite-group-irreps-characters-orthogonality/)
+- [Radon-Nikodym, Girsanov, and Diffusion Flow Cheat Sheet](/blog/radon-nikodym-girsanov-diffusion-flows/)
+
 ## Methods
 
 - [The Doob h-Transform: From Conditioned Random Walks to Guided SDEs](/blog/doob-h-transform/)
@@ -29,5 +34,4 @@ Short technical notes on computational physics, many-body algorithms, and numeri
 - [Discrete Diffusion: Uniform Noise and Masked Noise](/blog/discrete-diffusion-uniform-masked/)
 - [How to Tackle Long-Step Gradients](/blog/long-step-gradients-checkpointing-adjoints-implicit/)
 - [How to Calculate Free Energy: TI, FEP, MBAR, and SSCHA](/blog/calculate-free-energy-ti-fep-mbar-sscha/)
-- [Radon-Nikodym, Girsanov, and Diffusion Flow Cheat Sheet](/blog/radon-nikodym-girsanov-diffusion-flows/)
 - [Target Score Identity and Denoising Score Identity in Diffusion Models](/blog/target-denoising-score-identity-diffusion/)
