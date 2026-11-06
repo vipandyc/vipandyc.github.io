@@ -9,7 +9,7 @@ author_profile: true
 
 This is a working sheet for the equations one repeatedly needs when decomposing a representation or checking a character table. **Convention:** $G$ is finite, all representations are finite-dimensional over $\mathbb C$, and one representative of each inequivalent irreducible representation (irrep) is labeled by $\alpha$. Over $\mathbb C$, averaging an inner product makes every representation unitary, and every representation decomposes into irreps.
 
-Write $n=|G|$, $D^{(\alpha)}(g)$ for the $d_\alpha\times d_\alpha$ matrix of irrep $\alpha$, and $\chi_\alpha(g)=\operatorname{tr}D^{(\alpha)}(g)$. Let $C_j$ be a conjugacy class with representative $g_j$ and size $c_j$. Every sum over $\alpha$ below includes each inequivalent irrep once.
+Let $n$ be the number of elements of $G$. Write $D^{(\alpha)}(g)$ for the $d_\alpha\times d_\alpha$ matrix of irrep $\alpha$, and $\chi_\alpha(g)=\operatorname{tr}D^{(\alpha)}(g)$. Let $C_j$ be a conjugacy class with representative $g_j$ and size $c_j$. Every sum over $\alpha$ below includes each inequivalent irrep once.
 
 ## 1. Character identities
 
@@ -28,7 +28,7 @@ $$
 $$
 </div>
 
-In particular, $|\chi_\alpha(g)|\leq d_\alpha$: the eigenvalues of a finite-order unitary matrix lie on the unit circle. The last identity describes the dual representation $V^*$, whose matrices are $D_V(g^{-1})^{\mathsf T}$.
+In particular, $\lvert\chi_\alpha(g)\rvert\leq d_\alpha$: the eigenvalues of a finite-order unitary matrix lie on the unit circle. The last identity says that the character of the dual representation $V^*$ is the complex conjugate of the original character.
 
 ## 2. The source of orthogonality: Schur's lemma
 
@@ -60,7 +60,7 @@ Summing the diagonal entries gives the character identities below. Matrix-elemen
 
 ## 3. Row and column orthogonality of the character table
 
-For class functions define $\langle f,h\rangle_G=n^{-1}\sum_{g\in G}\overline{f(g)}h(g)$. Taking traces in the preceding identity gives **row orthogonality**:
+A class function has the same value on every element of a conjugacy class. For two such functions, define $\langle f,h\rangle_G=n^{-1}\sum_{g\in G}\overline{f(g)}h(g)$. Taking traces in the preceding identity gives **row orthogonality**:
 
 <div class="math-display">
 $$
@@ -71,7 +71,7 @@ $$
 $$
 </div>
 
-The class-size factor $c_j$ matters: a character table has one column per *class*, but the inner product sums over *elements*. Since $\overline{\chi_\alpha(g)}=\chi_\alpha(g^{-1})$, the inverse-character version of this formula is identical. There are as many irreps as conjugacy classes: the center of $\mathbb C[G]$ has a basis of class sums, while $\mathbb C[G]\cong\bigoplus_\alpha\operatorname{End}(V_\alpha)$ gives one central scalar block per irrep.
+The class-size factor $c_j$ matters: a character table has one column per *class*, but the inner product sums over *elements*. Since $\overline{\chi_\alpha(g)}=\chi_\alpha(g^{-1})$, the inverse-character version of this formula is identical. Row orthogonality makes the irreducible characters independent. They also span all class functions (the character completeness theorem). A class function has one freely chosen value per conjugacy class, so the number of irreps equals the number of classes.
 
 Thus the weighted character table $U_{\alpha j}=\sqrt{c_j/n}\,\chi_\alpha(g_j)$ is square and unitary. Its column orthogonality is
 
@@ -110,7 +110,14 @@ m_\alpha=\langle\chi_\alpha,\chi_V\rangle_G
 $$
 </div>
 
-Useful checks follow immediately: $V$ is irreducible exactly when $\langle\chi_V,\chi_V\rangle_G=1$, and two complex representations are isomorphic exactly when their characters agree. More generally, $\langle\chi_V,\chi_W\rangle_G=\dim\operatorname{Hom}_G(V,W)=\sum_\alpha m_\alpha(V)m_\alpha(W)$.
+Useful checks follow immediately: $V$ is irreducible exactly when $\langle\chi_V,\chi_V\rangle_G=1$, and two complex representations are isomorphic exactly when their characters agree. If $V$ and $W$ contain $m_\alpha(V)$ and $m_\alpha(W)$ copies of irrep $\alpha$, respectively, their character inner product counts the shared irreps:
+
+<div class="math-display">
+$$
+\langle\chi_V,\chi_W\rangle_G
+=\sum_\alpha m_\alpha(V)m_\alpha(W).
+$$
+</div>
 
 ## 5. Projectors that extract symmetry sectors
 
@@ -175,30 +182,32 @@ $$
 
 These are the even and odd parts of $f$. With a reflection-invariant inner product they are orthogonal, since $P_+P_-=0$ and $P_\pm^\dagger=P_\pm$. If an operator $H$ respects the symmetry, $[H,D(g)]=0$ for every $g$, then $P_\alpha H P_\beta=0$ for $\alpha\ne\beta$. In a symmetry-adapted basis, $H$ splits into blocks $\bigoplus_\alpha(h_\alpha\otimes I_{d_\alpha})$; $h_\alpha$ can still mix different copies of the same irrep.
 
-## 7. Products and symmetric or antisymmetric states
+## 7. Combining representations
 
-The tensor-product character is a product, so the number of copies of $V_\gamma$ in $V_\alpha\otimes V_\beta$ is
+A product state pairs one state from $V_\alpha$ with one from $V_\beta$, written $v\otimes w$. Each group element acts on both states, so the product's character is $\chi_\alpha(g)\chi_\beta(g)$. To count how many copies of irrep $\gamma$ occur in the product, use the same character inner product as in Section 4:
 
 <div class="math-display">
 $$
-N_{\alpha\beta}^{\gamma}
+m_\gamma(V_\alpha\otimes V_\beta)
 =\langle\chi_\gamma,\chi_\alpha\chi_\beta\rangle_G
 =\frac1n\sum_j c_j
 \overline{\chi_\gamma(g_j)}\chi_\alpha(g_j)\chi_\beta(g_j).
 $$
 </div>
 
-For two identical factors, the swap operator separates symmetric and antisymmetric tensors. Its trace on $D(g)\otimes D(g)$ is $\chi_V(g^2)$, giving
+For two copies of the **same** space, exchanging the factors sends $v\otimes w$ to $w\otimes v$. Adding or subtracting the exchanged state gives its symmetric or antisymmetric part. Their characters obey
 
 <div class="math-display">
 $$
-\chi_{\operatorname{Sym}^2 V}(g)
+\chi_{\rm sym}(g)
 =\frac{\chi_V(g)^2+\chi_V(g^2)}2,
 \qquad
-\chi_{\wedge^2 V}(g)
+\chi_{\rm anti}(g)
 =\frac{\chi_V(g)^2-\chi_V(g^2)}2.
 $$
 </div>
+
+Why does $g^2$ appear? If $D(g)$ has eigenvalues $\lambda_i$, the action on all pairs has trace $(\sum_i\lambda_i)^2=\chi_V(g)^2$. After exchanging the pair, only equal-index pairs contribute to the trace, giving $\sum_i\lambda_i^2=\chi_V(g^2)$. Taking half the sum or difference gives the two formulas.
 
 ## 8. Worked check: $S_3$
 
