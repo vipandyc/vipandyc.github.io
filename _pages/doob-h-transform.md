@@ -36,7 +36,7 @@ Bayes' rule now answers the central question: **given that success will occur, w
 <div class="math-display">
 $$
 \begin{aligned}
-P_{\rm cond}(j\mid i)
+P^{(h)}_{ij}
 &=\Pr(X_{n+1}=j\mid X_n=i,E)\\
 &=\frac{\Pr(X_{n+1}=j,E\mid X_n=i)}{\Pr(E\mid X_n=i)}\\
 &=P_{ij}\frac{h(j)}{h(i)},\qquad h(i)>0.
@@ -44,13 +44,15 @@ P_{\rm cond}(j\mid i)
 $$
 </div>
 
+The superscript $(h)$ labels quantities under the $h$-transformed process; it is not an exponent. For example, $P_{ij}$ is the original step probability and $P^{(h)}_{ij}$ is the step probability after conditioning.
+
 The factor $h(j)/h(i)$ rewards moves into states from which success is more likely. This is a probability kernel because the law of total probability gives
 
 <div class="math-display">
 $$
 h(i)=\sum_j P_{ij}h(j),
 \qquad\text{so}\qquad
-\sum_j P_{\rm cond}(j\mid i)=1.
+\sum_j P^{(h)}_{ij}=1.
 $$
 </div>
 
@@ -63,7 +65,7 @@ For a path $i_0\to i_1\to\cdots\to i_m$, multiply its transformed step probabili
 <div class="math-display">
 $$
 \begin{aligned}
-\Pr_{\rm cond}(\text{path}\mid X_0=i_0)
+\Pr^{(h)}(\text{path}\mid X_0=i_0)
 &=\prod_{k=0}^{m-1}P_{i_k i_{k+1}}\frac{h(i_{k+1})}{h(i_k)}\\
 &=\left(\prod_{k=0}^{m-1}P_{i_k i_{k+1}}\right)
 \frac{h(i_m)}{h(i_0)}.
@@ -92,9 +94,9 @@ The interior equation says the first difference $h(i+1)-h(i)$ is constant. The b
 
 <div class="math-display">
 $$
-P_{\rm cond}(3\mid2)=\frac12\frac{h(3)}{h(2)}=\frac34,
+P^{(h)}_{2,3}=\frac12\frac{h(3)}{h(2)}=\frac34,
 \qquad
-P_{\rm cond}(1\mid2)=\frac12\frac{h(1)}{h(2)}=\frac14.
+P^{(h)}_{2,1}=\frac12\frac{h(1)}{h(2)}=\frac14.
 $$
 </div>
 
@@ -104,7 +106,7 @@ As a check, consider the particular path $2\to3\to4\to5$. Under the original wal
 
 <div class="math-display">
 $$
-P_{\rm cond}(3\mid2)P_{\rm cond}(4\mid3)P_{\rm cond}(5\mid4)
+P^{(h)}_{2,3}P^{(h)}_{3,4}P^{(h)}_{4,5}
 =\frac34\cdot\frac23\cdot\frac58
 =\frac5{16}.
 $$
@@ -135,7 +137,7 @@ Therefore the conditioned transition at step $n$ is
 
 <div class="math-display">
 $$
-P_{\rm cond}(j\mid i,n)=P_{ij}\frac{h_{n+1}(j)}{h_n(i)}.
+P^{(h)}_n(i,j)=P_{ij}\frac{h_{n+1}(j)}{h_n(i)}.
 $$
 </div>
 
@@ -155,7 +157,7 @@ For a hitting committor $h$, $Lh=0$ in the interior. The transformed generator i
 
 <div class="math-display">
 $$
-(L_{\rm cond} f)(i)=\frac{L(hf)(i)-f(i)Lh(i)}{h(i)}.
+(L^{(h)}f)(i)=\frac{L(hf)(i)-f(i)Lh(i)}{h(i)}.
 $$
 </div>
 
@@ -164,9 +166,9 @@ Expanding both sums shows exactly what changes:
 <div class="math-display">
 $$
 \begin{aligned}
-(L_{\rm cond} f)(i)
+(L^{(h)}f)(i)
 &=\sum_{j\ne i}k_{ij}\frac{h(j)}{h(i)}[f(j)-f(i)],\\
-k_{\rm cond}(i,j)&=k_{ij}\frac{h(j)}{h(i)}.
+k^{(h)}_{ij}&=k_{ij}\frac{h(j)}{h(i)}.
 \end{aligned}
 $$
 </div>
@@ -175,7 +177,7 @@ Thus the discrete probability ratio becomes a **jump-rate ratio**. A jump toward
 
 <div class="math-display">
 $$
-\sum_{j\ne i}k_{\rm cond}(i,j)
+\sum_{j\ne i}k^{(h)}_{ij}
 =\sum_{j\ne i}k_{ij}+\frac{Lh(i)}{h(i)}
 =\sum_{j\ne i}k_{ij}.
 $$
@@ -215,7 +217,7 @@ with terminal or boundary data set by the event. The finite-time transition kern
 
 <div class="math-display">
 $$
-p_{\rm cond}(t,y\mid s,x)
+p^{(h)}(t,y\mid s,x)
 =p(t,y\mid s,x)\frac{h(t,y)}{h(s,x)},\qquad s<t.
 $$
 </div>
@@ -233,7 +235,7 @@ Consequently,
 <div class="math-display">
 $$
 \begin{aligned}
-L_{\rm cond} f
+L^{(h)}_t f
 &=\frac{L_t(hf)-fL_t h}{h}\\
 &=\left(b+a\frac{\nabla h}{h}\right)\cdot\nabla f
 +\frac12\sum_{i,j}a_{ij}\partial_i\partial_j f\\
@@ -248,11 +250,11 @@ The second-order term is unchanged. Reading off the first-order term, the transf
 <div class="math-display">
 $$
 \boxed{\mathrm dX_t=\left[b(t,X_t)+a(t,X_t)\nabla_x\log h(t,X_t)\right]\mathrm dt
-+\sigma(t,X_t)\,\mathrm dW_t^{\rm cond}.}
++\sigma(t,X_t)\,\mathrm dW_t^{(h)}.}
 $$
 </div>
 
-$W^{\rm cond}$ is Brownian motion under the conditioned law. The noise covariance $a$ stays the same; only the drift changes. If one writes $D=a/2$, the extra drift is $2D\nabla\log h$. This factor of two is easy to lose when switching between $a$ and the physics convention $D$.
+In the original SDE, $W_t$ is Brownian motion under the original law; $W_t^{(h)}$ is Brownian motion under the transformed law. The noise term still has covariance $a$; only the drift changes. If one writes $D=a/2$, the extra drift is $2D\nabla\log h$. This factor of two is easy to lose when switching between $a$ and the physics convention $D$.
 
 The backward equation ensures that the kernel above is normalized. The subtraction of $fL_t h$ in the generator removes a zero-order term; it is useful when deriving the formula even in a region where $L_t h$ is not separately zero. For time-dependent $h$, the relevant harmonic equation is $\partial_t h+L_t h=0$, not $L_t h=0$ by itself.
 
@@ -281,7 +283,7 @@ $$
 $$
 </div>
 
-The left side is the likelihood ratio for the conditioned path up to time $t$. Under appropriate martingale and integrability conditions, Girsanov's theorem says that $W_t^{\rm cond}=W_t-\int_0^t u_s\,\mathrm ds$ is Brownian motion under this new law. Substituting $\mathrm dW_t=\mathrm dW_t^{\rm cond}+u_t\,\mathrm dt$ into the original SDE adds $\sigma u_t=\sigma\sigma^\top\nabla\log h=a\nabla\log h$ to its drift, agreeing with the generator calculation. For a hitting event, read these identities up to the stopping time; for an exact endpoint bridge, use times $t<T$.
+The left side is the likelihood ratio for the conditioned path up to time $t$. Under appropriate martingale and integrability conditions, Girsanov's theorem says that $W_t^{(h)}=W_t-\int_0^t u_s\,\mathrm ds$ is Brownian motion under this new law. Substituting $\mathrm dW_t=\mathrm dW_t^{(h)}+u_t\,\mathrm dt$ into the original SDE adds $\sigma u_t=\sigma\sigma^\top\nabla\log h=a\nabla\log h$ to its drift, agreeing with the generator calculation. For a hitting event, read these identities up to the stopping time; for an exact endpoint bridge, use times $t<T$.
 
 ## 6. Brownian Bridge: Conditioning on an Endpoint
 
@@ -307,7 +309,7 @@ Since $b=0$ and $a=1$, the bridge SDE is
 
 <div class="math-display">
 $$
-\mathrm dX_t=\frac{y-X_t}{T-t}\,\mathrm dt+\mathrm dW_t^{\rm cond},
+\mathrm dX_t=\frac{y-X_t}{T-t}\,\mathrm dt+\mathrm dW_t^{(h)},
 \qquad t<T.
 $$
 </div>
@@ -360,13 +362,13 @@ $$
 $$
 </div>
 
-we have $a=2\beta^{-1}I$. Taking $h=q$ therefore gives
+we have $a=2\beta^{-1}I$. Taking $h=q$ therefore gives the same transform, now labeled by $(q)$:
 
 <div class="math-display">
 $$
 \boxed{\mathrm dX_t=
 \left[-\nabla U(X_t)+2\beta^{-1}\nabla\log q(X_t)\right]\mathrm dt
-+\sqrt{2\beta^{-1}}\,\mathrm dW_t^{\rm cond}.}
++\sqrt{2\beta^{-1}}\,\mathrm dW_t^{(q)}.}
 $$
 </div>
 
@@ -407,7 +409,7 @@ The conditioned drift is then fully explicit:
 
 <div class="math-display">
 $$
-b_{\rm cond}(x)=-U'(x)
+b^{(q)}(x)=-U'(x)
 +2\beta^{-1}\frac{e^{\beta U(x)}}{\displaystyle\int_a^x e^{\beta U(z)}\,\mathrm dz}.
 $$
 </div>
@@ -422,7 +424,7 @@ The exact $q$-transform makes successful trajectories typical under the new dyna
 
 <div class="math-display">
 $$
-\Pr_{\rm cond}(F\mid X_0=x)
+\Pr^{(q)}(F\mid X_0=x)
 =\Pr(F\mid\text{reach }B\text{ before }A,\ X_0=x).
 $$
 </div>
@@ -443,26 +445,26 @@ $$
 
 up to the relevant stopping time. In words, a path segment is reweighted by its remaining chance of success, $h(t,X_t)$, divided by the initial chance $h(0,x)$. The SDE drift $a\nabla\log h$ is the local change of dynamics that realizes this reweighting. For a soft terminal weight $g(X_T)>0$, replace $h(t,x)$ by $\mathbb E[g(X_T)\mid X_t=x]$; the path law is then weighted by $g(X_T)/h(0,x)$ rather than conditioned on a binary event.
 
-One can also see why this is an optimal-control construction. Let $P$ be the original path distribution, $P_{\rm cond}$ its distribution conditional on $E$, and $Q$ any other path distribution that always satisfies $E$. A successful path has conditional probability equal to its original probability divided by $\Pr(E)$, so
+One can also see why this is an optimal-control construction. Let $P$ be the original path distribution, $P^{(h)}$ its distribution conditional on $E$, and $Q$ any other path distribution that always satisfies $E$. A successful path has conditional probability equal to its original probability divided by $\Pr(E)$, so
 
 <div class="math-display">
 $$
 \mathrm{KL}(Q\|P)
-=\mathrm{KL}(Q\|P_{\rm cond})-\log\Pr(E)
+=\mathrm{KL}(Q\|P^{(h)})-\log\Pr(E)
 \ge -\log\Pr(E).
 $$
 </div>
 
-Here $\mathrm{KL}$ is the Kullback-Leibler divergence, which is nonnegative. Equality holds at $Q=P_{\rm cond}$. Among path laws that enforce the event, the conditional law changes the original path measure by the least relative entropy. When realizable by a controlled diffusion with the same noise, its drift correction is precisely $a\nabla\log h$.
+Here $\mathrm{KL}$ is the Kullback-Leibler divergence, which is nonnegative. Equality holds at $Q=P^{(h)}$. Among path laws that enforce the event, the conditional law changes the original path measure by the least relative entropy. When realizable by a controlled diffusion with the same noise, its drift correction is precisely $a\nabla\log h$.
 
 ## 9. A Short Map of the Formulas
 
 | Setting | Future information in $h$ | Local rule after conditioning |
 |---|---|---|
-| Discrete chain | $h(i)=\Pr(E\mid X_0=i)$ | $P_{\rm cond}(j\mid i)=P_{ij}h(j)/h(i)$ |
-| Chain with deadline | $h_n(i)=\mathbb E[g(X_N)\mid X_n=i]$ | $P_{\rm cond}(j\mid i,n)=P_{ij}h_{n+1}(j)/h_n(i)$ |
-| Continuous-time jumps | $Lh=0$ in the interior | $k_{\rm cond}(i,j)=k_{ij}h(j)/h(i)$ |
-| Diffusion | $\partial_t h+L_t h=0$ | $b_{\rm cond}=b+a\nabla\log h$ |
+| Discrete chain | $h(i)=\Pr(E\mid X_0=i)$ | $P^{(h)}_{ij}=P_{ij}h(j)/h(i)$ |
+| Chain with deadline | $h_n(i)=\mathbb E[g(X_N)\mid X_n=i]$ | $P^{(h)}_n(i,j)=P_{ij}h_{n+1}(j)/h_n(i)$ |
+| Continuous-time jumps | $Lh=0$ in the interior | $k^{(h)}_{ij}=k_{ij}h(j)/h(i)$ |
+| Diffusion | $\partial_t h+L_t h=0$ | $b^{(h)}=b+a\nabla\log h$ |
 | Reactive paths | $q(x)=\Pr(\text{reach }B\text{ before }A\mid X_0=x)$ | Add $a\nabla\log q$ until $B$ is hit |
 
 The through-line is Bayes' rule. A move becomes more likely in proportion to how much it improves the chance of the future condition. The backward equation makes those local probabilities consistent; telescoping makes the resulting *entire path law* the correct conditional law.
