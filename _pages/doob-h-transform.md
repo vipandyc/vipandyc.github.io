@@ -31,17 +31,16 @@ $$
 $$
 </div>
 
-Bayes' rule now answers the central question: **given that success will occur, what is the probability of the next move?** To see the cancellation explicitly, temporarily take $\Pr(X_n=i)>0$:
+Bayes' rule now answers the central question: **given that success will occur, what is the probability of the next move?** Take $\Pr(X_n=i)>0$ and $h(i)>0$ for this calculation:
 
 <div class="math-display">
 $$
 \begin{aligned}
 P^{(h)}_{ij}
 &=\Pr(X_{n+1}=j\mid X_n=i,E)\\
-&=\frac{\Pr(X_{n+1}=j,E\mid X_n=i)}{\Pr(E\mid X_n=i)}\\
-&=\frac{\Pr(X_n=i,X_{n+1}=j,E)}{\Pr(X_n=i,E)}\\
-&=\frac{\Pr(X_n=i)P_{ij}h(j)}{\Pr(X_n=i)h(i)}\\
-&=P_{ij}\frac{h(j)}{h(i)},\qquad h(i)>0.
+&=\frac{\Pr(E\mid X_{n+1}=j,X_n=i)\,\Pr(X_{n+1}=j\mid X_n=i)\,\Pr(X_n=i)}{\Pr(E\mid X_n=i)\,\Pr(X_n=i)}\\
+&=\Pr(X_{n+1}=j\mid X_n=i)\frac{\Pr(E\mid X_{n+1}=j,X_n=i)}{\Pr(E\mid X_n=i)}\\
+&=\boxed{P_{ij}\frac{h(j)}{h(i)}}.
 \end{aligned}
 $$
 </div>
