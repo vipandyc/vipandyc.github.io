@@ -220,25 +220,27 @@ $$
 $$
 </div>
 
-The compact expression for this generator is the same sum written using the original $L$. Here $hf$ is the function whose value at state $j$ is $h(j)f(j)$. Apply the generator formula to $hf$ and to $h$ separately, then distribute $f(i)$ inside the second sum:
+The compact expression for this generator is the same sum written using the original $L$. Here $hf$ is the function whose value at state $j$ is $h(j)f(j)$. Apply the generator formula to $hf$ and to $h$ separately. The terms containing only values at the starting state cancel:
 
 <div class="math-display">
 $$
 \begin{aligned}
 L(hf)(i)-f(i)Lh(i)
-&=\sum_{j\ne i}k_{ij}[h(j)f(j)-h(i)f(i)]
--f(i)\sum_{j\ne i}k_{ij}[h(j)-h(i)]\\
-&=\sum_{j\ne i}k_{ij}[h(j)f(j)-h(i)f(i)-f(i)h(j)+f(i)h(i)]\\
-&=\sum_{j\ne i}k_{ij}h(j)[f(j)-f(i)]\\
-&=h(i)\sum_{j\ne i}k_{ij}\frac{h(j)}{h(i)}[f(j)-f(i)]\\
-&=h(i)(L^{(h)}f)(i),\\
-(L^{(h)}f)(i)
-&=\frac{L(hf)(i)-f(i)Lh(i)}{h(i)}.
+&=\sum_{j\ne i}k_{ij}\bigl\{h(j)f(j)-h(i)f(i)-f(i)[h(j)-h(i)]\bigr\}\\
+&=\sum_{j\ne i}k_{ij}h(j)[f(j)-f(i)]=h(i)(L^{(h)}f)(i).
 \end{aligned}
 $$
 </div>
 
-A jump toward a state with larger success probability is accelerated; a jump into a state with zero success probability is removed. The sum on the left below is the **total exit rate**: in a short interval, the chance of leaving the current state is approximately this sum times the interval length. We add the rates for all possible destinations because those jumps are mutually exclusive. At an interior state where the success probability is positive, substitute the transformed rates and add and subtract the current success probability inside the sum. The resulting difference is the original generator applied to the success probability, which is zero there:
+Dividing by the positive success probability at the starting state gives
+
+<div class="math-display">
+$$
+(L^{(h)}f)(i)=\frac{L(hf)(i)-f(i)Lh(i)}{h(i)}.
+$$
+</div>
+
+Conditioning favors jumps toward success and removes jumps that guarantee failure. The **total exit rate** is the sum of rates for all destinations. In the interior this sum is unchanged because <span markdown="0">\((Lh)(i)=0\)</span>:
 
 <div class="math-display">
 $$
