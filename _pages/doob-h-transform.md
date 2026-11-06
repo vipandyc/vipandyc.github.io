@@ -189,11 +189,11 @@ $$
 $$
 </div>
 
-Each possible jump changes $f$ by $f(j)-f(i)$; the sum weights that change by the jump's rate. Now let $E$ mean "hit $B$ before $A$" and stop the chain when it first reaches either set. Define $h(i)=\Pr(E\mid X_0=i)$, as in the discrete walk. Then $h(X_t)$ is a **martingale under the original law**: given the present state, its expected future value equals its current value exactly. Individual paths can still change $h(X_t)$, but this conditional expectation makes the numerator in the generator limit exactly zero:
+Each possible jump changes $f$ by $f(j)-f(i)$; the sum weights that change by the jump's rate. Now let $E$ mean "hit $B$ before $A$" and stop the chain when it first reaches either set. Define $h(i)=\Pr(E\mid X_0=i)$, as in the discrete walk. Then $h(X_t)$ is a **martingale under the original law**: given the present state, its expected future value equals its current value exactly. For $h$ (though not for an arbitrary $f$), the generator's numerator is therefore zero:
 
 <div class="math-display">
 $$
-(Lh)(i)=0.
+\mathbb E[h(X_{t+\Delta t})\mid X_t=i]-h(i)=0,\qquad (Lh)(i)=0.
 $$
 </div>
 
