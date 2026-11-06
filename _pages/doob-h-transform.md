@@ -566,20 +566,7 @@ The drift becomes singular where $q=0$. The ideal conditioned process is defined
 
 ## 8. Successful Paths and Stochastic Optimal Control
 
-### What the conditioned paths tell us
-
-Start at $x$ and let $E$ mean “reach $B$ before $A$.” The original chance of success is $q(x)>0$. The $q$-transform samples successful paths, so these samples show how a successful path moves, but their success fraction cannot tell us the original value of $q(x)$. To estimate an original transition rate, we also need how often attempts start (or the flux out of $A$) and their original success probability.
-
-Here is the path weighting in simpler terms. Let $F$ mean that a path has followed some particular route so far. Bayes' rule gives
-
-<div class="math-display">
-$$
-P(F\mid E)=\frac{P(F\cap E)}{q(x)}
-=P(F)\frac{P(E\mid F)}{q(x)}.
-$$
-</div>
-
-If that route ends at $y$ before hitting either target, its remaining chance of success is $q(y)$. Thus conditioning multiplies its original weight by $q(y)/q(x)$. Finding the exact committor in a high-dimensional system can be difficult. An approximate committor may guide sampling, but it no longer gives exact conditional paths without a correction such as likelihood-ratio reweighting.
+For a path starting at $x$, let $E$ mean “reach $B$ before $A$.” Its chance of success is $q(x)$, where $q$ is the **committor**. Computing $q$ can be difficult in high-dimensional systems. An approximation may guide sampling, but it does not give the exact conditioned path law without correction.
 
 ### Why the $h$-transform solves a control problem
 
