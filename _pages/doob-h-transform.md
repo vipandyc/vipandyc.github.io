@@ -278,7 +278,7 @@ $$
 $$
 </div>
 
-Here <span markdown="0">\(i,j\)</span> label spatial coordinates, rather than the states of the jump chain in Section 4; <span markdown="0">\(b_i\)</span> is a component of the drift, <span markdown="0">\(a_{ij}=\sum_m\sigma_{im}\sigma_{jm}\)</span>, and <span markdown="0">\(\partial_i\)</span> means differentiation with respect to <span markdown="0">\(x_i\)</span>. The first term moves probability with the drift, while the second spreads it through the noise.
+Here <span markdown="0">\(i,j\)</span> label spatial coordinates, rather than the states of the jump chain in Section 4; <span markdown="0">\(b_i\)</span> is a component of the drift, and <span markdown="0">\(a_{ij}=\sum_m\sigma_{im}\sigma_{jm}\)</span>.
 
 To see the connection with a generator, choose a smooth function <span markdown="0">\(f(x)\)</span> that assigns a number to each position. Its average is <span markdown="0">\(\mathbb E[f(X_t)]=\int f(x)\rho(t,x)\,\mathrm dx\)</span>. Multiply the Fokker–Planck equation by <span markdown="0">\(f\)</span> and integrate. Assume boundary terms vanish, for example because <span markdown="0">\(f\)</span> has compact support. Integration by parts moves one derivative in the drift term and two in the noise term from the density onto <span markdown="0">\(f\)</span>:
 
