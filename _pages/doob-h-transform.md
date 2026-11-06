@@ -411,7 +411,7 @@ $$
 $$
 </div>
 
-Here <span markdown="0">\(u_t=\sigma(t,X_t)^\top\nabla\log h(t,X_t)\)</span>, and <span markdown="0">\((\mathrm dh)^2=|\sigma^\top\nabla h|^2\,\mathrm dt\)</span>. All functions and derivatives in the calculation are evaluated at <span markdown="0">\((t,X_t)\)</span>.
+Here <span markdown="0">\(u_t=\sigma(t,X_t)^\top\nabla\log h(t,X_t)\)</span>, and <span markdown="0">\((\mathrm dh)^2=\lVert\sigma^\top\nabla h\rVert^2\,\mathrm dt\)</span>. All functions and derivatives in the calculation are evaluated at <span markdown="0">\((t,X_t)\)</span>.
 
 Integrate from $0$ to $t$ and exponentiate:
 
@@ -522,7 +522,7 @@ This is the precise sense in which the Doob transform is **enhanced sampling gui
 
 Let $A=\{a\}$ and $B=\{b\}$, with $a<x<b$, and use $U=U(x)$. The **backward equation** here is the earlier $Lq=0$. “Backward” means we specify the future outcome at $a$ and $b$, then find its probability at each earlier starting position $x$; Fokker–Planck instead evolves a density forward in time. With no deadline, $q$ has no time derivative, so $Lq=0$ is the time-independent form of $\partial_t h+L_t h=0$.
 
-In one dimension, the SDE above has drift $-U'(x)$ and noise variance per unit time $2\beta^{-1}$. The generator uses half that variance, so $(Lf)(x)=-U'(x)f'(x)+\beta^{-1}f''(x)$. Setting $f=q$ in $Lq=0$, with $q(a)=0$ and $q(b)=1$, gives
+In one dimension, the SDE above has drift $-U'(x)$ and noise variance per unit time $2\beta^{-1}$. Primes mean derivatives with respect to $x$: $f'(x)=\mathrm df/\mathrm dx$ and $f''(x)=\mathrm d^2f/\mathrm dx^2$. In the short-time Taylor expansion, the term $\tfrac12f''(x)(\Delta X)^2$ has average $\tfrac12f''(x)(2\beta^{-1}\Delta t)$, which explains the coefficient $\beta^{-1}$ after division by $\Delta t$. Thus $(Lf)(x)=-U'(x)f'(x)+\beta^{-1}f''(x)$. Setting $f=q$ in $Lq=0$, with $q(a)=0$ and $q(b)=1$, gives
 
 <div class="math-display">
 $$
@@ -583,15 +583,15 @@ Here $\mathbf 1_F$ is 1 when $F$ occurs and 0 otherwise. The second equality use
 
 ### Why the $h$-transform solves a control problem
 
-Here is the stochastic optimal control (SOC) connection. A proposed controlled path law $Q$ is required to have $Q(E)=1$ and to be absolutely continuous with respect to $P$. We measure how much it changes the original paths by the Kullback–Leibler divergence $\mathrm{KL}(Q\|P)=\mathbb E_Q[\log(\mathrm dQ/\mathrm dP)]$.
+Here is the stochastic optimal control (SOC) connection. A proposed controlled path law $Q$ is required to have $Q(E)=1$ and to be absolutely continuous with respect to $P$. We measure how much it changes the original paths by the Kullback–Leibler divergence $\mathrm{KL}(Q\Vert P)=\mathbb E_Q[\log(\mathrm dQ/\mathrm dP)]$.
 
 For any successful path, conditioning divides its original probability by $p$: $\mathrm dP^{(q)}=\mathrm dP/p$ on $E$. Since $Q$ only samples paths in $E$, the likelihood ratios obey $\mathrm dQ/\mathrm dP=(\mathrm dQ/\mathrm dP^{(q)})/p$. Taking the logarithm and averaging under $Q$ gives the equality:
 
 <div class="math-display">
 $$
 \begin{aligned}
-\mathrm{KL}(Q\|P)&=\mathbb E_Q\!\left[\log\frac{\mathrm dQ}{\mathrm dP^{(q)}}\right]-\log p\\
-&=\mathrm{KL}(Q\|P^{(q)})-\log p\ge -\log p.
+\mathrm{KL}(Q\Vert P)&=\mathbb E_Q\!\left[\log\frac{\mathrm dQ}{\mathrm dP^{(q)}}\right]-\log p\\
+&=\mathrm{KL}(Q\Vert P^{(q)})-\log p\ge -\log p.
 \end{aligned}
 $$
 </div>
@@ -604,13 +604,13 @@ For a diffusion, we can implement a control $u_t$ by changing the drift from $b$
 $$
 \begin{aligned}
 \log\frac{\mathrm dQ^u}{\mathrm dP}
-&=\int_0^\tau u_t\cdot\mathrm dW_t-\frac12\int_0^\tau |u_t|^2\,\mathrm dt\\
-&=\int_0^\tau u_t\cdot\mathrm d\widetilde W_t+\frac12\int_0^\tau |u_t|^2\,\mathrm dt.
+&=\int_0^\tau u_t\cdot\mathrm dW_t-\frac12\int_0^\tau \lVert u_t\rVert^2\,\mathrm dt\\
+&=\int_0^\tau u_t\cdot\mathrm d\widetilde W_t+\frac12\int_0^\tau \lVert u_t\rVert^2\,\mathrm dt.
 \end{aligned}
 $$
 </div>
 
-The second equality substitutes $\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt$. The Brownian integral has mean zero under $Q^u$, so $\mathrm{KL}(Q^u\|P)=\tfrac12\mathbb E_{Q^u}\int_0^\tau |u_t|^2\,\mathrm dt$. This is the expected quadratic control cost. If the controlled law enforces $E$, its cost is at least $-\log p$; the exact $h$-transform reaches that minimum with $u_t=\sigma^\top\nabla\log q(X_t)$, giving drift $b+a\nabla\log q$. These identities assume the relevant path laws and stochastic integrals are well defined up to $\tau$.
+The second equality substitutes $\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt$. The Brownian integral has mean zero under $Q^u$, so $\mathrm{KL}(Q^u\Vert P)=\tfrac12\mathbb E_{Q^u}\int_0^\tau \lVert u_t\rVert^2\,\mathrm dt$. This is the expected quadratic control cost. If the controlled law enforces $E$, its cost is at least $-\log p$; the exact $h$-transform reaches that minimum with $u_t=\sigma^\top\nabla\log q(X_t)$, giving drift $b+a\nabla\log q$. These identities assume the relevant path laws and stochastic integrals are well defined up to $\tau$.
 
 ## 9. Transition Path Theory: From Successful Paths to a Reaction Rate
 
@@ -636,7 +636,7 @@ This current counts **original reactive paths per unit time**, rather than norma
 <div class="math-display">
 $$
 \boxed{R_{AB}=\int_\Sigma J_{AB}\cdot n\,\mathrm dS
-=D\int_{\mathbb R^d\setminus(A\cup B)}\pi(x)|\nabla q(x)|^2\,\mathrm dx.}
+=D\int_{\mathbb R^d\setminus(A\cup B)}\pi(x)\lVert\nabla q(x)\rVert^2\,\mathrm dx.}
 $$
 </div>
 
@@ -646,7 +646,7 @@ If one wants a **rate constant per $A$-origin population**, divide by the equili
 
 ### What to calculate
 
-Given $U$, $\beta$, and chosen sets $A,B$: compute $\pi$, solve $Lq=0$ with $q|_A=0$ and $q|_B=1$, then evaluate either the surface flux or the volume integral above. On a grid, $q$ comes from a boundary-value solver; from simulation, it can be estimated by launching unbiased trajectories from sampled positions and counting the fraction that hit $B$ first. Comparing fluxes across several surfaces is a useful check: a large disagreement indicates that the numerical committor or current is inaccurate. If a long original trajectory is affordable, also count completed reactive paths and divide by its total duration.
+Given $U$, $\beta$, and chosen sets $A,B$: compute $\pi$, then solve $Lq=0$ with $q(x)=0$ in $A$ and $q(x)=1$ in $B$. Evaluate either the surface flux or the volume integral above. On a grid, $q$ comes from a boundary-value solver; from simulation, it can be estimated by launching unbiased trajectories from sampled positions and counting the fraction that hit $B$ first. Comparing fluxes across several surfaces is a useful check: a large disagreement indicates that the numerical committor or current is inaccurate. If a long original trajectory is affordable, also count completed reactive paths and divide by its total duration.
 
 For a finite-state jump model, the same rate has an especially direct estimator. Let $\pi_i$ be the stationary probability of state $i$, $k_{ij}$ its jump rate to $j$, and $q_j$ its success probability. A jump from $i\in A$ to $j$ occurs at frequency $\pi_i k_{ij}$, and the ensuing attempt succeeds with probability $q_j$. Hence
 
