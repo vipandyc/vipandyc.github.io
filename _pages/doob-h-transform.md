@@ -394,16 +394,24 @@ The backward equation ensures that the kernel above is normalized. The subtracti
 
 ### The same drift from a path likelihood ratio
 
-There is a second derivation that connects the transform to Girsanov's theorem. Under the original SDE, Itô's formula first gives <span markdown="0">\(\mathrm dh(t,X_t)=[(\partial_t+L_t)h]\,\mathrm dt+(\sigma^\top\nabla h)\cdot\mathrm dW_t=(\sigma^\top\nabla h)\cdot\mathrm dW_t\)</span>, since the backward equation makes the drift term zero. Applying Itô to the logarithm divides by <span markdown="0">\(h\)</span> and adds the quadratic-variation term <span markdown="0">\(-|\sigma^\top\nabla h|^2\mathrm dt/(2h^2)\)</span>, giving
+There is a second derivation that connects the transform to Girsanov's theorem. Itô's formula adds a second-derivative correction to the ordinary chain rule because <span markdown="0">\((\mathrm dW_{t,k})^2=\mathrm dt\)</span>; products of different Brownian components contribute zero. Substitute the original SDE into that rule. The bracketed drift coefficient in the second line is <span markdown="0">\((\partial_t+L_t)h=0\)</span> by the backward equation. Applying the same rule to <span markdown="0">\(\log h\)</span> gives the last line:
 
 <div class="math-display">
 $$
+\begin{aligned}
+\mathrm dh(t,X_t)
+&=\partial_t h\,\mathrm dt+\nabla h\cdot(b\,\mathrm dt+\sigma\,\mathrm dW_t)
++\tfrac12\sum_{i,j}a_{ij}\partial_i\partial_j h\,\mathrm dt\\
+&=[(\partial_t+L_t)h],\mathrm dt+(\sigma^\top\nabla h)\cdot\mathrm dW_t
+=(\sigma^\top\nabla h)\cdot\mathrm dW_t,\\
 \mathrm d\log h(t,X_t)
-=u_t\cdot\mathrm dW_t-\tfrac12(u_t\cdot u_t)\,\mathrm dt,
-\qquad
-u_t=\sigma(t,X_t)^\top\nabla\log h(t,X_t).
+&=\frac{\mathrm dh}{h}-\frac{(\mathrm dh)^2}{2h^2}
+=u_t\cdot\mathrm dW_t-\tfrac12(u_t\cdot u_t)\,\mathrm dt.
+\end{aligned}
 $$
 </div>
+
+Here <span markdown="0">\(u_t=\sigma(t,X_t)^\top\nabla\log h(t,X_t)\)</span>, and <span markdown="0">\((\mathrm dh)^2=|\sigma^\top\nabla h|^2\,\mathrm dt\)</span>. All functions and derivatives in the calculation are evaluated at <span markdown="0">\((t,X_t)\)</span>.
 
 Integrate from $0$ to $t$ and exponentiate:
 
