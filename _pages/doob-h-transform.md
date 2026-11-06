@@ -330,7 +330,7 @@ $$
 
 These are two descriptions of the same diffusion: Fokker–Planck evolves its density, and the generator gives the local rate of change of functions of its state. The integration-by-parts calculation shows exactly how the two descriptions correspond.
 
-For a terminal event <span markdown="0">\(E\)</span>, let <span markdown="0">\(h(t,x)=\Pr(E\mid X_t=x)\)</span>, or use a transition **density** when the event specifies an exact continuous endpoint. Assume <span markdown="0">\(h>0\)</span> and smooth in the region of interest. The Markov property says that waiting a short time and then averaging the remaining success chance leaves the current success chance unchanged. Expanding that average to first order gives
+For a terminal event <span markdown="0">\(E\)</span>, let <span markdown="0">\(h(t,x)=\Pr(E\mid X_t=x)\)</span>, or use a transition **density** for an exact endpoint. Assume <span markdown="0">\(h>0\)</span> and smooth. Along the original trajectory, <span markdown="0">\(h(t,X_t)\)</span> remains a **martingale** until the terminal or stopping time. Here <span markdown="0">\(\partial_t h\)</span> is explicit time change, while <span markdown="0">\(L_t h\)</span> is the average change from the motion of <span markdown="0">\(X_t\)</span>:
 
 <div class="math-display">
 $$
