@@ -605,7 +605,7 @@ The Doob transform describes an $A\to B$ path **after** we have selected a succe
 
 ### Current and rate for the overdamped diffusion
 
-Use the Langevin model of Section 7, and write $D=\beta^{-1}$ and $\pi(x)=Z^{-1}e^{-\beta U(x)}$ for its equilibrium density, where $Z=\int e^{-\beta U(x)}\,\mathrm dx$ normalizes it. At position $x$, the chance that the future reaches $B$ before $A$ is $q(x)$. Because this equilibrium diffusion is reversible, the chance that the path **last came from $A$** is $1-q(x)$. Thus the amount of equilibrium probability carried by $A\to B$ reactive paths near $x$ is $r(x)=\pi(x)q(x)[1-q(x)]$.
+Use the Langevin model of Section 7, and write $D=\beta^{-1}$ and $\pi(x)=Z^{-1}e^{-\beta U(x)}$ for its equilibrium density, where $Z=\int e^{-\beta U(x)}\,\mathrm dx$ normalizes it. At position $x$, the chance that the future reaches $B$ before $A$ is $q(x)$. Because this equilibrium diffusion is reversible, the chance that the path **last came from $A$** is $1-q(x)$. Thus the amount of equilibrium probability carried by $A\to B$ reactive paths near $x$ is $r(x)=\pi(x)q(x)[1-q(x)]$. Here $r(x)$ is the equilibrium density of $A\to B$ reactive trajectories, and committor-conditioned dynamics generates those paths when started from the appropriate reactive initial distribution.
 
 From the Fokker–Planck equation in Section 5, $\partial_t r=-\nabla\cdot(vr)+D\Delta r=-\nabla\cdot J$, so a density $r$ with drift $v$ has probability current $J=vr-D\nabla r$. Put in the conditioned drift $v=-\nabla U+2D\nabla\log q$. Since $\nabla\pi=-\beta\pi\nabla U$, the equilibrium terms cancel and leave
 
