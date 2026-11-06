@@ -150,11 +150,13 @@ If the matrices $D^{(\alpha)}(g)$ are known, **matrix-unit operators** isolate t
 
 <div class="math-display">
 $$
-E_{ij}^{(\alpha)}=\frac{d_\alpha}{n}
-\sum_{g\in G}\overline{D^{(\alpha)}(g)_{ij}}D(g),
-\qquad
+\begin{aligned}
+E_{ij}^{(\alpha)}
+&=\frac{d_\alpha}{n}\sum_{g\in G}
+\overline{D^{(\alpha)}(g)_{ij}}D(g),\\
 E_{ij}^{(\alpha)}E_{k\ell}^{(\beta)}
-=\delta_{\alpha\beta}\delta_{jk}E_{i\ell}^{(\alpha)}.
+&=\delta_{\alpha\beta}\delta_{jk}E_{i\ell}^{(\alpha)}.
+\end{aligned}
 $$
 </div>
 
@@ -164,9 +166,10 @@ For the two-element group $G=\{e,s\}$ acting by reflection, $D(s)f(x)=f(-x)$, th
 
 <div class="math-display">
 $$
-P_\pm=\tfrac12(I\pm D(s)),
-\qquad
-f_\pm(x)=(P_\pm f)(x)=\tfrac12\bigl[f(x)\pm f(-x)\bigr].
+\begin{aligned}
+P_\pm&=\tfrac12(I\pm D(s)),\\
+f_\pm(x)&=(P_\pm f)(x)=\tfrac12\bigl[f(x)\pm f(-x)\bigr].
+\end{aligned}
 $$
 </div>
 
