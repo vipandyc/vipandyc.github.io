@@ -638,37 +638,30 @@ J_{AB}&=\bigl(-\nabla U/\gamma+2D\nabla\log q\bigr)\pi q(1-q)-D\nabla[\pi q(1-q)
 $$
 </div>
 
-This current counts **original reactive paths per unit time**, rather than normalized conditioned paths. Moreover, $Lq=0$ implies $\nabla\cdot J_{AB}=D\nabla\cdot(\pi\nabla q)=\pi Lq=0$ between $A$ and $B$: reactive paths do not begin or end in the middle. Therefore every surface $\Sigma$ separating $A$ from $B$ carries the same net flux. Let $n$ point toward $B$ on $\Sigma$, and set $\Omega=\mathbb R^d\setminus(A\cup B)$. The rate has two equivalent forms:
+This current counts **original reactive paths per unit time**, rather than normalized conditioned paths. Between $A$ and $B$, $Lq=0$ implies $\nabla\cdot J_{AB}=D\nabla\cdot(\pi\nabla q)=\pi Lq=0$. Let $\Omega=\mathbb R^d\setminus(A\cup B)$. Here $\Sigma$ is **any surface separating $A$ from $B$**, with normal $n$ pointing toward $B$; it can, but need not, be a contour of $q$. The contour $q(x)=1/2$ is one choice. Write $\mathrm dS$ for surface area and $\mathrm dV=\mathrm d^d x$ for volume. The rate has two equivalent forms:
 
 <div class="math-display">
 $$
 \boxed{R_{AB}=\int_\Sigma J_{AB}\cdot n\,\mathrm dS
-=D\int_\Omega\pi(x)\lVert\nabla q(x)\rVert^2\,\mathrm d^d x.}
+=D\int_\Omega\pi(x)\lVert\nabla q(x)\rVert^2\,\mathrm dV.}
 $$
 </div>
 
-The first integral is flux through a surface, so $\mathrm dS$ is a surface-area element. One possible choice is the surface where $q(x)=1/2$. The second runs over the entire $d$-dimensional region $\Omega$, so $\mathrm d^d x$ is a **volume element**. To see why they agree, use $\nabla\cdot J_{AB}=0$ and $J_{AB}=D\pi\nabla q$:
+The equality follows directly from $\nabla\cdot(qJ_{AB})=q\nabla\cdot J_{AB}+J_{AB}\cdot\nabla q=D\pi\lVert\nabla q\rVert^2$. Integrate this over $\Omega$ and use the divergence theorem:
 
 <div class="math-display">
 $$
-\nabla\cdot(qJ_{AB})
-=q\nabla\cdot J_{AB}+J_{AB}\cdot\nabla q
-=D\pi\lVert\nabla q\rVert^2.
+\begin{aligned}
+D\int_\Omega\pi\lVert\nabla q\rVert^2\,\mathrm dV
+&=\int_\Omega\nabla\cdot(qJ_{AB})\,\mathrm dV
+=\int_{\partial\Omega}qJ_{AB}\cdot n_\Omega\,\mathrm dS\\
+&=\int_{\partial B}J_{AB}\cdot n_\Omega\,\mathrm dS
+=\int_\Sigma J_{AB}\cdot n\,\mathrm dS=R_{AB}.
+\end{aligned}
 $$
 </div>
 
-Integrating this identity over $\Omega$ and applying the divergence theorem gives
-
-<div class="math-display">
-$$
-D\int_\Omega\pi\lVert\nabla q\rVert^2\,\mathrm d^d x
-=\int_{\partial\Omega}qJ_{AB}\cdot n_\Omega\,\mathrm dS
-=\int_{\partial B}J_{AB}\cdot n_\Omega\,\mathrm dS
-=R_{AB}.
-$$
-</div>
-
-The $A$ boundary contributes zero because $q=0$; at $B$, $q=1$. We assume no flux through any outer boundary. Since $\nabla\cdot J_{AB}=0$, the flux through $\partial B$ equals the flux through $\Sigma$. At fixed $U$ and $T$, the rate scales as $1/\gamma$.
+Here $n_\Omega$ points outward from $\Omega$. The $A$ boundary contributes zero because $q=0$; at $B$, $q=1$. We assume no flux through any outer boundary. Since $\nabla\cdot J_{AB}=0$, the flux through $\partial B$ equals the flux through $\Sigma$. At fixed $U$ and $T$, the rate scales as $1/\gamma$.
 
 The flux $R_{AB}$ counts successful transitions per unit time across the **whole** equilibrium ensemble. For a rate per trajectory associated with $A$, divide by the fraction $\theta_A$ whose most recent visit to either basin was to $A$:
 
