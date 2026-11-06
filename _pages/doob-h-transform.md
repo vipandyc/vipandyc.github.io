@@ -670,7 +670,16 @@ $$
 
 The $A$ boundary contributes zero because $q=0$; at $B$, $q=1$. We assume no flux through any outer boundary. Since $\nabla\cdot J_{AB}=0$, the flux through $\partial B$ equals the flux through $\Sigma$. At fixed $U$ and $T$, the rate scales as $1/\gamma$.
 
-If one wants a **rate constant per $A$-origin population**, divide by the equilibrium fraction whose last visit was to $A$: $k_{AB}=R_{AB}/\theta_A$, where $\theta_A=\int\pi(x)[1-q(x)]\,\mathrm dx$ for this reversible model. When $A$ is strongly metastable, $\theta_A\approx\pi(A)$; the approximation need not hold if excursions outside $A$ take substantial time.
+The flux $R_{AB}$ counts successful transitions per unit time across the **whole** equilibrium ensemble. For a rate per trajectory associated with $A$, divide by the fraction $\theta_A$ whose most recent visit to either basin was to $A$:
+
+<div class="math-display">
+$$
+k_{AB}=\frac{R_{AB}}{\theta_A},\qquad
+\theta_A=\int_{\mathbb R^d}\pi(x)[1-q(x)]\,\mathrm d^d x.
+$$
+</div>
+
+In this reversible model, $1-q(x)$ is the chance that a trajectory at $x$ last came from $A$. Thus $\theta_A$ includes trajectories currently outside $A$ that last visited it. If these excursions are brief compared with the time spent in $A$, then $\theta_A\approx\pi(A)=\int_A\pi(x)\,\mathrm d^d x$, and $k_{AB}\approx R_{AB}/\pi(A)$.
 
 ### What to calculate
 
