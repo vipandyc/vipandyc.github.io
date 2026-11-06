@@ -638,18 +638,37 @@ J_{AB}&=\bigl(-\nabla U/\gamma+2D\nabla\log q\bigr)\pi q(1-q)-D\nabla[\pi q(1-q)
 $$
 </div>
 
-This current counts **original reactive paths per unit time**, rather than normalized conditioned paths. Moreover, $Lq=0$ implies $\nabla\cdot J_{AB}=D\nabla\cdot(\pi\nabla q)=\pi Lq=0$ between $A$ and $B$: reactive paths do not begin or end in the middle. Therefore every surface $\Sigma$ separating $A$ from $B$ carries the same net flux. With its normal $n$ pointing toward $B$,
+This current counts **original reactive paths per unit time**, rather than normalized conditioned paths. Moreover, $Lq=0$ implies $\nabla\cdot J_{AB}=D\nabla\cdot(\pi\nabla q)=\pi Lq=0$ between $A$ and $B$: reactive paths do not begin or end in the middle. Therefore every surface $\Sigma$ separating $A$ from $B$ carries the same net flux. Let $n$ point toward $B$ on $\Sigma$, and set $\Omega=\mathbb R^d\setminus(A\cup B)$. The rate has two equivalent forms:
 
 <div class="math-display">
 $$
 \boxed{R_{AB}=\int_\Sigma J_{AB}\cdot n\,\mathrm dS
-=D\int_{\mathbb R^d\setminus(A\cup B)}\pi(x)\lVert\nabla q(x)\rVert^2\,\mathrm dx.}
+=D\int_\Omega\pi(x)\lVert\nabla q(x)\rVert^2\,\mathrm d^d x.}
 $$
 </div>
 
-At fixed $U$ and $T$, this rate scales as $1/\gamma$.
+The first integral is flux through a surface, so $\mathrm dS$ is a surface-area element. The second runs over the entire $d$-dimensional region $\Omega$, so $\mathrm d^d x$ is a **volume element**. To see why they agree, use $\nabla\cdot J_{AB}=0$ and $J_{AB}=D\pi\nabla q$:
 
-To obtain the volume formula, integrate $\nabla\cdot(qJ_{AB})=J_{AB}\cdot\nabla q$ over the region outside $A$ and $B$. The boundary at $A$ contributes zero because $q=0$; the boundary at $B$ gives $R_{AB}$ because $q=1$. Assume no flux through any outer boundary. The two formulas therefore compute the same frequency, with units of inverse time.
+<div class="math-display">
+$$
+\nabla\cdot(qJ_{AB})
+=q\nabla\cdot J_{AB}+J_{AB}\cdot\nabla q
+=D\pi\lVert\nabla q\rVert^2.
+$$
+</div>
+
+Integrating this identity over $\Omega$ and applying the divergence theorem gives
+
+<div class="math-display">
+$$
+D\int_\Omega\pi\lVert\nabla q\rVert^2\,\mathrm d^d x
+=\int_{\partial\Omega}qJ_{AB}\cdot n_\Omega\,\mathrm dS
+=\int_{\partial B}J_{AB}\cdot n_\Omega\,\mathrm dS
+=R_{AB}.
+$$
+</div>
+
+The $A$ boundary contributes zero because $q=0$; at $B$, $q=1$. We assume no flux through any outer boundary. Since $\nabla\cdot J_{AB}=0$, the flux through $\partial B$ equals the flux through $\Sigma$. At fixed $U$ and $T$, the rate scales as $1/\gamma$.
 
 If one wants a **rate constant per $A$-origin population**, divide by the equilibrium fraction whose last visit was to $A$: $k_{AB}=R_{AB}/\theta_A$, where $\theta_A=\int\pi(x)[1-q(x)]\,\mathrm dx$ for this reversible model. When $A$ is strongly metastable, $\theta_A\approx\pi(A)$; the approximation need not hold if excursions outside $A$ take substantial time.
 
