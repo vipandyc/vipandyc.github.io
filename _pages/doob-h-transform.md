@@ -193,12 +193,16 @@ Each possible jump changes $f$ by $f(j)-f(i)$; the sum weights that change by th
 
 <div class="math-display">
 $$
-\mathbb E[h(X_{t+\Delta t})\mid X_t=i]=h(i),
-\qquad (Lh)(i)=0.
+\begin{aligned}
+\mathbb E[h(X_{t+\Delta t})\mid X_t=i]&=h(i),\\
+(Lh)(i)
+&=\lim_{\Delta t\to0}\frac{\mathbb E[h(X_{t+\Delta t})\mid X_t=i]-h(i)}{\Delta t}\\
+&=\lim_{\Delta t\to0}\frac{h(i)-h(i)}{\Delta t}=0.
+\end{aligned}
 $$
 </div>
 
-The second equality follows by putting $f=h$ in the generator definition. Now apply the discrete Bayes rule from Section 1 to a short interval, for $j\ne i$ and $h(i)>0$:
+Now apply the discrete Bayes rule from Section 1 to a short interval, for $j\ne i$ and $h(i)>0$:
 
 <div class="math-display">
 $$
