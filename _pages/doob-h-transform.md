@@ -115,16 +115,16 @@ $$
 
 ## 3. A Deadline Makes $h$ Time Dependent
 
-Now ask a different question: will the chain satisfy a terminal condition at step $N$? Write $g(X_N)$ for its terminal payoff; for an event, $g$ is its indicator. The appropriate function is
+Fix a deadline $N$ and a target set $B$. **The event we condition on is $E_N=\{X_N\in B\}$:** the chain is in $B$ at step $N$. Set $g(i)=1$ for $i\in B$ and $g(i)=0$ otherwise, so $g(X_N)$ records whether this event happened. The function used in the transform is
 
 <div class="math-display">
 $$
-h_n(i)=\mathbb E[g(X_N)\mid X_n=i],
+h_n(i)=\Pr(E_N\mid X_n=i)=\mathbb E[g(X_N)\mid X_n=i],
 \qquad h_N(i)=g(i).
 $$
 </div>
 
-Working backward one step gives the **backward equation**
+Here $g$ marks success at the deadline, while $h_n(i)$ is the probability of that success from state $i$ at step $n$. Working backward one step gives the **backward equation**
 
 <div class="math-display">
 $$
@@ -132,15 +132,29 @@ h_n(i)=\sum_jP_{ij}h_{n+1}(j).
 $$
 </div>
 
-Therefore the conditioned transition at step $n$ is
+Conditioning on $E_N$, Bayes' rule gives the next-step probability when $h_n(i)>0$:
 
 <div class="math-display">
 $$
-P^{(h)}_n(i,j)=P_{ij}\frac{h_{n+1}(j)}{h_n(i)}.
+P^{(h)}_n(i,j)
+=\Pr(X_{n+1}=j\mid X_n=i,E_N)
+=P_{ij}\frac{h_{n+1}(j)}{h_n(i)}.
 $$
 </div>
 
-Its explicit dependence on $n$ matters. If the deadline is close, the next move may need to be more strongly directed than it was earlier. Multiplying the kernels again telescopes to $g(i_N)/h_0(i_0)$ times the original path probability. For an indicator $g$, this is ordinary conditioning; for a nonnegative payoff $g$, it is a **terminally tilted** path law.
+Its explicit dependence on $n$ matters. If the deadline is close, the next move may need to be more strongly directed than it was earlier. For a path $i_0\to i_1\to\cdots\to i_N$, multiply its step probabilities:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\prod_{n=0}^{N-1}P^{(h)}_n(i_n,i_{n+1})
+&=\prod_{n=0}^{N-1}\left[P_{i_n i_{n+1}}\frac{h_{n+1}(i_{n+1})}{h_n(i_n)}\right]\\
+&=\left(\prod_{n=0}^{N-1}P_{i_n i_{n+1}}\right)\frac{g(i_N)}{h_0(i_0)}.
+\end{aligned}
+$$
+</div>
+
+The intermediate $h$ factors cancel, and $h_N(i_N)=g(i_N)$. Since $g$ is $0$ or $1$ here, this is exactly the original path law conditioned on $E_N$. For a more general nonnegative payoff $g$, the same construction weights paths by $g(X_N)$ rather than conditioning on an event.
 
 ## 4. Continuous-Time Markov Jump Processes
 
@@ -461,7 +475,7 @@ Here $\mathrm{KL}$ is the Kullback-Leibler divergence, which is nonnegative. Equ
 | Setting | Future information in $h$ | Local rule after conditioning |
 |---|---|---|
 | Discrete chain | $h(i)=\Pr(E\mid X_0=i)$ | $P^{(h)}_{ij}=P_{ij}h(j)/h(i)$ |
-| Chain with deadline | $h_n(i)=\mathbb E[g(X_N)\mid X_n=i]$ | $P^{(h)}_n(i,j)=P_{ij}h_{n+1}(j)/h_n(i)$ |
+| Chain with deadline | $h_n(i)=\Pr(E_N\mid X_n=i)$ | $P^{(h)}_n(i,j)=P_{ij}h_{n+1}(j)/h_n(i)$ |
 | Continuous-time jumps | $Lh=0$ in the interior | $k^{(h)}_{ij}=k_{ij}h(j)/h(i)$ |
 | Diffusion | $\partial_t h+L_t h=0$ | $b^{(h)}=b+a\nabla\log h$ |
 | Reactive paths | $q(x)=\Pr(\text{reach }B\text{ before }A\mid X_0=x)$ | Add $a\nabla\log q$ until $B$ is hit |
