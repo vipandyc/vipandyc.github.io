@@ -70,17 +70,24 @@ P=VV^\dagger,
 $$
 </div>
 
-These are two sizes of matrix for the same projected action:
+These are two sizes of matrix for the same projected action. Complete $V$ to an orthonormal basis $U=(V,W)$:
 
 <div class="math-display">
 $$
+\begin{gathered}
 H_{\rm proj}=V^\dagger H V\quad(r\times r),
 \qquad
-PHP=(VV^\dagger)H(VV^\dagger)=V H_{\rm proj}V^\dagger\quad(N\times N).
+PHP=(VV^\dagger)H(VV^\dagger)=V H_{\rm proj}V^\dagger\quad(N\times N),\\
+U^\dagger(PHP)U=
+\begin{pmatrix}
+H_{\rm proj}&0\\
+0&0
+\end{pmatrix}.
+\end{gathered}
 $$
 </div>
 
-**Yes:** if we complete $V$ to an orthonormal basis $U=(V,W)$, then $U^\dagger(PHP)U=\begin{pmatrix}H_{\rm proj}&0\\0&0\end{pmatrix}$. Only the $r\times r$ block can be nonzero *in that basis*. In the original basis, the entries can be spread around. For example, with $H=\operatorname{diag}(2,4)$ and $V=(1,1)^\top/\sqrt2$ ($r=1$),
+Only the $r\times r$ block can be nonzero in the $U$ basis. In the original basis, $PHP$ can have nonzero entries throughout. For example, with $H=\operatorname{diag}(2,4)$ and $V=(1,1)^\top/\sqrt2$ ($r=1$),
 
 <div class="math-display">
 $$
