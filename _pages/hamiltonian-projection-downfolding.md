@@ -231,7 +231,7 @@ It modifies diagonal energies and can also generate new off-diagonal couplings b
 
 ## 5. What Löwdin/Feshbach Elimination Means
 
-The key step above was **solving for $|\psi_Q\rangle$**, not setting it to zero. The result $|\psi_Q\rangle=(E-H_{QQ})^{-1}H_{QP}|\psi_P\rangle$ says how much excluded-state amplitude accompanies a retained-state amplitude at energy $E$. Substituting it back gives an equation involving only $|\psi_P\rangle$, while the term $H_{PQ}(E-H_{QQ})^{-1}H_{QP}$ remembers the trip through $Q$. Löwdin partitioning describes this in terms of coupled basis blocks; Feshbach projection describes the same elimination with the projectors $P$ and $Q$.
+The key step above was **solving for $\lvert\psi_Q\rangle$**, not setting it to zero. The result $\lvert\psi_Q\rangle=(E-H_{QQ})^{-1}H_{QP}\lvert\psi_P\rangle$ says how much excluded-state amplitude accompanies a retained-state amplitude at energy $E$. Substituting it back gives an equation involving only $\lvert\psi_P\rangle$, while the term $H_{PQ}(E-H_{QQ})^{-1}H_{QP}$ remembers the trip through $Q$. Löwdin partitioning describes this in terms of coupled basis blocks; Feshbach projection describes the same elimination with the projectors $P$ and $Q$.
 
 For the two-state example in Section 3, $H_{PP}=0$, $H_{PQ}=H_{QP}=t$, and $H_{QQ}=\Delta$. The retained space is one-dimensional, so the effective eigenvalue equation is simply
 
@@ -291,7 +291,7 @@ T=\begin{pmatrix}0&t\\t&0\end{pmatrix},
 $$
 </div>
 
-Löwdin/Feshbach elimination gave the energy-dependent equation $E=t^2/(E-\Delta)$. **Schrieffer-Wolff (SW)** takes a different route to the low-energy shift: change basis until the off-diagonal coupling is removed, then read the low-energy entry of the rotated matrix. Because $|t|\ll\Delta$, the required rotation should be small, of order $t/\Delta$.
+Löwdin/Feshbach elimination gave the energy-dependent equation $E=t^2/(E-\Delta)$. **Schrieffer-Wolff (SW)** takes a different route to the low-energy shift: change basis until the off-diagonal coupling is removed, then read the low-energy entry of the rotated matrix. Because $\lvert t\rvert\ll\Delta$, the required rotation should be small, of order $t/\Delta$.
 
 Choose a rotation generator $S$ with an angle $s$ to be determined:
 
