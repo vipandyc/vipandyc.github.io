@@ -414,9 +414,9 @@ This does not by itself add remote-band corrections. SVD/POD methods fit the sam
 
 ## 11. Nonorthogonal Bases and the Two Meanings of “Löwdin”
 
-Here $S$ is the orbital **overlap matrix** (unrelated to the SW generator in Section 7). For $\lvert\psi\rangle=\sum_i c_i\lvert\phi_i\rangle$, define $H_{ij}=\langle\phi_i\vert\hat H\vert\phi_j\rangle$ and $S_{ij}=\langle\phi_i\vert\phi_j\rangle$. Projecting the Schrödinger equation onto these orbitals gives $Hc=ESc$; the physical norm is $c^\dagger Sc$.
+Here $S$ is the orbital **overlap matrix** (unrelated to the SW generator in Section 7). For $\lvert\psi\rangle=\sum_i c_i\lvert\phi_i\rangle$, define $H_{ij}=\langle\phi_i\vert\hat H\vert\phi_j\rangle$ and $S_{ij}=\langle\phi_i\vert\phi_j\rangle$. Taking inner products of the Schrödinger equation with the orbitals gives $Hc=ESc$; the physical norm is $c^\dagger Sc$.
 
-Let the columns of $V$ specify $r$ retained combinations $\lvert\chi_a\rangle=\sum_i\lvert\phi_i\rangle V_{ia}$. Projecting onto their span gives
+Let the columns of $V$ specify $r$ retained combinations $\lvert\chi_a\rangle=\sum_i\lvert\phi_i\rangle V_{ia}$. Taking inner products with these combinations gives
 
 <div class="math-display">
 $$
@@ -426,28 +426,44 @@ H_{\rm red}=V^\dagger HV,
 $$
 </div>
 
-The retained combinations are orthonormal only if $S_{\rm red}=I$. When they are linearly independent, $S_{\rm red}$ is positive definite. **Symmetric Löwdin orthogonalization** chooses $A=S_{\rm red}^{-1/2}$ and $\widetilde V=VA$; its new overlap is
+The retained combinations are orthonormal only if $S_{\rm red}=I$. When they are linearly independent, $S_{\rm red}$ is positive definite. **Symmetric Löwdin orthogonalization** replaces $V$ by $\widetilde V=VA$ with $A=S_{\rm red}^{-1/2}$. Its new overlap is
 
 <div class="math-display">
 $$
 \widetilde V^\dagger S\widetilde V
 =A^\dagger S_{\rm red}A
-=S_{\rm red}^{-1/2}S_{\rm red}S_{\rm red}^{-1/2}=I.
+=S_{\rm red}^{-1/2}S_{\rm red}S_{\rm red}^{-1/2}=I_r.
 $$
 </div>
 
-Indeed, if $S_{\rm red}=R\operatorname{diag}(s_a)R^\dagger$, each positive eigenvalue becomes $s_a^{-1/2}s_a s_a^{-1/2}=1$. Setting $d=Ab$ also converts the generalized eigenproblem into
+Indeed, if $S_{\rm red}=R\operatorname{diag}(s_a)R^\dagger$, this divides each overlap direction by $\sqrt{s_a}$. The $N\times r$ matrix $\widetilde V$ is **not unitary** when $r<N$: its columns specify a basis only for the retained $r$-dimensional subspace. The identity $\widetilde V^\dagger S\widetilde V=I_r$ says that the corresponding physical orbitals $\lvert\widetilde\chi_a\rangle=\sum_i\lvert\phi_i\rangle\widetilde V_{ia}$ are orthonormal. The **actual projection operator** onto their span is
 
 <div class="math-display">
 $$
-H_{\rm orth}b=Eb,
-\qquad
-H_{\rm orth}=S_{\rm red}^{-1/2}H_{\rm red}S_{\rm red}^{-1/2}
-=\widetilde V^\dagger H\widetilde V.
+P=\sum_{a=1}^r\lvert\widetilde\chi_a\rangle
+\langle\widetilde\chi_a\rvert,
+\qquad P^2=P.
 $$
 </div>
 
-Because $A$ is invertible, orthogonalization preserves the selected span and its $r$ eigenvalues. **Löwdin partitioning** is a different operation: it eliminates excluded $Q$ amplitudes and adds their virtual contribution to the effective Hamiltonian (Sections 4–5).
+$P\lvert\psi\rangle$ keeps the amplitudes $\langle\widetilde\chi_a\vert\psi\rangle$ along the retained orbitals. For an original coefficient vector $c$, those amplitudes are $\widetilde V^\dagger Sc$; rebuilding the retained state gives $P_{\rm coeff}c=\widetilde V(\widetilde V^\dagger Sc)$. Thus $P_{\rm coeff}=\widetilde V\widetilde V^\dagger S$ and $P_{\rm coeff}^2=P_{\rm coeff}$, while $P_{\rm coeff}\ne I_N$ for $r<N$.
+
+By contrast, $\widetilde V^\dagger H\widetilde V$ is **not a projector**. It is the $r\times r$ matrix of $P\hat H P$ in the retained basis, because $P\lvert\widetilde\chi_a\rangle=\lvert\widetilde\chi_a\rangle$. “Projecting the Hamiltonian” refers to this restriction; idempotence applies to $P$, not to the Hamiltonian matrix:
+
+<div class="math-display">
+$$
+\begin{aligned}
+H_{\rm orth}
+&=\widetilde V^\dagger H\widetilde V
+=S_{\rm red}^{-1/2}H_{\rm red}S_{\rm red}^{-1/2},\\
+(H_{\rm orth})_{ab}
+&=\langle\widetilde\chi_a\rvert P\hat H P
+\lvert\widetilde\chi_b\rangle.
+\end{aligned}
+$$
+</div>
+
+Setting $d=Ab$ converts $H_{\rm red}d=ES_{\rm red}d$ into $H_{\rm orth}b=Eb$ without changing the selected span. **Löwdin partitioning** is a different operation: it eliminates excluded $Q$ amplitudes and adds their virtual contribution (Sections 4–5).
 
 ## 12. TAPW and Moiré Models as a Running Example
 
