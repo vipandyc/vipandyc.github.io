@@ -449,44 +449,35 @@ $$
 
 The overlap $S_{\rm red}$ is needed because the retained orbitals $\lvert\chi_a\rangle$ can still overlap. If $S=I$ and the columns of $V$ are orthonormal, then $S_{\rm red}=I$ and we recover Section 2. In the present setting, orthonormality must be measured with $S$: it means $V^\dagger S V=I$, not merely $V^\dagger V=I$.
 
-**Symmetric Löwdin orthogonalization** turns this generalized problem into an ordinary one. Assume the retained orbitals are linearly independent. Then $d^\dagger S_{\rm red}d$ is the positive squared norm of $\sum_a d_a\lvert\chi_a\rangle$ for any nonzero $d$, so $S_{\rm red}$ is positive definite. Diagonalize $S_{\rm red}=R\operatorname{diag}(s_a)R^\dagger$ with $s_a>0$; its inverse square root is $A=S_{\rm red}^{-1/2}=R\operatorname{diag}(s_a^{-1/2})R^\dagger$. Form new retained orbitals with coefficient matrix $\widetilde V=VA$. Their overlap is
+**Symmetric Löwdin orthogonalization** asks for new retained orbitals $\lvert\widetilde\chi_a\rangle=\sum_b\lvert\chi_b\rangle A_{ba}$ whose overlap matrix is the identity. Their overlap is $A^\dagger S_{\rm red}A$, so we need $A^\dagger S_{\rm red}A=I$.
+
+Assume the retained orbitals are linearly independent. Then $d^\dagger S_{\rm red}d$ is the positive squared norm of $\sum_a d_a\lvert\chi_a\rangle$ for any nonzero $d$, so $S_{\rm red}$ is positive definite. Diagonalize $S_{\rm red}=R\operatorname{diag}(s_a)R^\dagger$ with $s_a>0$, and choose $A=S_{\rm red}^{-1/2}=R\operatorname{diag}(s_a^{-1/2})R^\dagger$. In each eigenvector direction, the overlap is rescaled as $s_a^{-1/2}s_a s_a^{-1/2}=1$. For all the orbitals at once, their new coefficient matrix is $\widetilde V=VA$ and
 
 <div class="math-display">
 $$
 \widetilde V^\dagger S\widetilde V
-=A(V^\dagger S V)A
+=A^\dagger(V^\dagger S V)A
 =S_{\rm red}^{-1/2}S_{\rm red}S_{\rm red}^{-1/2}
 =I.
 $$
 </div>
 
+This is the matrix version of dividing one vector by its norm: the inverse square root normalizes all overlapping directions simultaneously.
+
 To see what happens to the Hamiltonian, write $d=Ab$ in $H_{\rm red}d=ES_{\rm red}d$ and multiply by $A$. Since $AS_{\rm red}A=I$, the equation becomes
 
 <div class="math-display">
 $$
-H_{\rm orth}b=Eb,
-\qquad
+\begin{gathered}
 H_{\rm orth}=AH_{\rm red}A
-=S_{\rm red}^{-1/2}H_{\rm red}S_{\rm red}^{-1/2}
-=\widetilde V^\dagger H\widetilde V.
+=S_{\rm red}^{-1/2}H_{\rm red}S_{\rm red}^{-1/2},\\
+H_{\rm orth}=\widetilde V^\dagger H\widetilde V,
+\qquad H_{\rm orth}b=Eb.
+\end{gathered}
 $$
 </div>
 
-Because $A$ is invertible, this standard eigenproblem has exactly the same $r$ eigenvalues as the reduced generalized one.
-
-For a two-orbital example, keep both orbitals ($V=I$), each with norm one and real overlap $s$, where $0<s<1$. Then
-
-<div class="math-display">
-$$
-S=\begin{pmatrix}1&s\\s&1\end{pmatrix},
-\qquad
-u_\pm=\frac1{\sqrt2}\begin{pmatrix}1\\\pm1\end{pmatrix},
-\qquad
-S u_\pm=(1\pm s)u_\pm.
-$$
-</div>
-
-The coefficient vectors $u_\pm$ represent the physical combinations $(\lvert\phi_1\rangle\pm\lvert\phi_2\rangle)/\sqrt2$. Their squared norms are $1\pm s$, so $S^{-1/2}$ divides these directions by $\sqrt{1+s}$ and $\sqrt{1-s}$, respectively. For $s=1/2$, the factors are $\sqrt{2/3}$ and $\sqrt2$. Both directions remain: orthogonalization changes coordinates within the same space and makes the overlap matrix the identity.
+Because $A$ is invertible, this standard eigenproblem has exactly the same $r$ eigenvalues as the reduced generalized one. Orthogonalization keeps the same span and number of states.
 
 Two distinct procedures carry Löwdin's name:
 
@@ -513,7 +504,7 @@ $$
 
 Here $\ell$, $i$, $\alpha$, and $\mathbf G$ label layer, cell, internal state, and selected moiré reciprocal vector.
 
-Writing these basis states as columns of $X$, the first compression is
+Writing the coefficients of these TAPW states in the localized orbital basis as columns of $X$, the first compression is
 
 <div class="math-display">
 $$
@@ -523,18 +514,20 @@ S_{\rm TAPW}=X^\dagger S_{\rm loc}X.
 $$
 </div>
 
-This is a physics-informed **projection** into a valley-centered basis. Nonorthogonal orbitals next require
+This is a physics-informed **projection** into a valley-centered basis. The resulting TAPW states need not be orthonormal: their overlap is $S_{\rm TAPW}$, even if the starting orbitals were orthonormal but the columns of $X$ were not. When $S_{\rm TAPW}$ is positive definite, Section 11 applies directly with $V=X$, $H=H_{\rm loc}$, and $S=S_{\rm loc}$. Define $Y=X S_{\rm TAPW}^{-1/2}$. Then
 
 <div class="math-display">
 $$
+\begin{aligned}
+Y^\dagger S_{\rm loc}Y&=I,\\
 H_{\rm TAPW}^{\rm orth}
-=S_{\rm TAPW}^{-1/2}
-H_{\rm TAPW}
-S_{\rm TAPW}^{-1/2}.
+&=Y^\dagger H_{\rm loc}Y
+=S_{\rm TAPW}^{-1/2}H_{\rm TAPW}S_{\rm TAPW}^{-1/2}.
+\end{aligned}
 $$
 </div>
 
-This is **Löwdin orthogonalization**, not remote-state elimination.
+Thus the TAPW orthogonalization formula is exactly the construction above, with $S_{\rm red}$ replaced by $S_{\rm TAPW}$. If $S_{\rm TAPW}=I$, this step does nothing. It changes the basis within the selected TAPW space; it does not eliminate remote states.
 
 The TAPW space can then be split into selected low-energy states $L$ and excluded states $H$. A fixed-reference-energy reduction has the form
 
