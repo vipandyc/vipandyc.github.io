@@ -113,8 +113,6 @@ P^{(h)}_{2,3}P^{(h)}_{3,4}P^{(h)}_{4,5}
 $$
 </div>
 
-The same pathwise calculation also shows why an approximate $h_{\rm approx}$ does **not** automatically give exact conditional paths. If $h_{\rm approx}(i)\ne\sum_jP_{ij}h_{\rm approx}(j)$, the numbers $P_{ij}h_{\rm approx}(j)/h_{\rm approx}(i)$ do not even sum to one without further normalization. An approximation can still be a useful proposal for enhanced sampling, but it needs a correction or path weights when exact expectations are required.
-
 ## 3. A Deadline Makes $h$ Time Dependent
 
 Now ask a different question: will the chain satisfy a terminal condition at step $N$? Write $g(X_N)$ for its terminal payoff; for an event, $g$ is its indicator. The appropriate function is
