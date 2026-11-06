@@ -414,56 +414,35 @@ This does not by itself add remote-band corrections. SVD/POD methods fit the sam
 
 ## 11. Nonorthogonal Bases and the Two Meanings of “Löwdin”
 
-Here $S$ is the orbital **overlap matrix** (unrelated to the SW generator in Section 7). For $\lvert\psi\rangle=\sum_i c_i\lvert\phi_i\rangle$, define $H_{ij}=\langle\phi_i\vert\hat H\vert\phi_j\rangle$ and $S_{ij}=\langle\phi_i\vert\phi_j\rangle$. Taking inner products of the Schrödinger equation with the orbitals gives $Hc=ESc$; the physical norm is $c^\dagger Sc$.
+Here $H_{ij}=\langle\phi_i\vert\hat H\vert\phi_j\rangle$ and $S_{ij}=\langle\phi_i\vert\phi_j\rangle$ are the Hamiltonian and overlap in the original $N$ orbitals. Each column of the $N\times r$ matrix $V$ gives the coefficients of one orbital combination you want to retain; $V$ need not be unitary.
 
-Let the columns of $V$ specify $r$ retained combinations $\lvert\chi_a\rangle=\sum_i\lvert\phi_i\rangle V_{ia}$. Taking inner products with these combinations gives
-
-<div class="math-display">
-$$
-H_{\rm red}=V^\dagger HV,
-\qquad S_{\rm red}=V^\dagger SV,
-\qquad H_{\rm red}d=ES_{\rm red}d.
-$$
-</div>
-
-The retained combinations are orthonormal only if $S_{\rm red}=I$. When they are linearly independent, $S_{\rm red}$ is positive definite. **Symmetric Löwdin orthogonalization** replaces $V$ by $\widetilde V=VA$ with $A=S_{\rm red}^{-1/2}$. Its new overlap is
-
-<div class="math-display">
-$$
-\widetilde V^\dagger S\widetilde V
-=A^\dagger S_{\rm red}A
-=S_{\rm red}^{-1/2}S_{\rm red}S_{\rm red}^{-1/2}=I_r.
-$$
-</div>
-
-Indeed, if $S_{\rm red}=R\operatorname{diag}(s_a)R^\dagger$, this divides each overlap direction by $\sqrt{s_a}$. The $N\times r$ matrix $\widetilde V$ is **not unitary** when $r<N$: its columns specify a basis only for the retained $r$-dimensional subspace. The identity $\widetilde V^\dagger S\widetilde V=I_r$ says that the corresponding physical orbitals $\lvert\widetilde\chi_a\rangle=\sum_i\lvert\phi_i\rangle\widetilde V_{ia}$ are orthonormal. The **actual projection operator** onto their span is
-
-<div class="math-display">
-$$
-P=\sum_{a=1}^r\lvert\widetilde\chi_a\rangle
-\langle\widetilde\chi_a\rvert,
-\qquad P^2=P.
-$$
-</div>
-
-$P\lvert\psi\rangle$ keeps the amplitudes $\langle\widetilde\chi_a\vert\psi\rangle$ along the retained orbitals. For an original coefficient vector $c$, those amplitudes are $\widetilde V^\dagger Sc$; rebuilding the retained state gives $P_{\rm coeff}c=\widetilde V(\widetilde V^\dagger Sc)$. Thus $P_{\rm coeff}=\widetilde V\widetilde V^\dagger S$ and $P_{\rm coeff}^2=P_{\rm coeff}$, while $P_{\rm coeff}\ne I_N$ for $r<N$.
-
-By contrast, $\widetilde V^\dagger H\widetilde V$ is **not a projector**. It is the $r\times r$ matrix of $P\hat H P$ in the retained basis, because $P\lvert\widetilde\chi_a\rangle=\lvert\widetilde\chi_a\rangle$. “Projecting the Hamiltonian” refers to this restriction; idempotence applies to $P$, not to the Hamiltonian matrix:
+**What to calculate:** form the small overlap $G$ and Hamiltonian $K$. If $G$ is positive definite, take its inverse square root and diagonalize
 
 <div class="math-display">
 $$
 \begin{aligned}
-H_{\rm orth}
-&=\widetilde V^\dagger H\widetilde V
-=S_{\rm red}^{-1/2}H_{\rm red}S_{\rm red}^{-1/2},\\
-(H_{\rm orth})_{ab}
-&=\langle\widetilde\chi_a\rvert P\hat H P
-\lvert\widetilde\chi_b\rangle.
+G&=V^\dagger SV,\qquad K=V^\dagger HV,\qquad A=G^{-1/2},\\
+H_{\rm small}&=AKA,\qquad H_{\rm small}b=Eb.
 \end{aligned}
 $$
 </div>
 
-Setting $d=Ab$ converts $H_{\rm red}d=ES_{\rm red}d$ into $H_{\rm orth}b=Eb$ without changing the selected span. **Löwdin partitioning** is a different operation: it eliminates excluded $Q$ amplitudes and adds their virtual contribution (Sections 4–5).
+The corresponding approximate state has original-basis coefficients $c=VAb$. If $G=I_r$, then $A=I_r$ and you simply diagonalize $K$. Equivalently, you can solve $Kd=EGd$ directly, with $d=Ab$.
+
+**Why the inverse square root?** Set $\widetilde V=VA$. Its columns are orthonormal in the *physical* inner product because
+
+<div class="math-display">
+$$
+\widetilde V^\dagger S\widetilde V=AGA
+=G^{-1/2}GG^{-1/2}=I_r.
+$$
+</div>
+
+$\widetilde V$ is still rectangular: its columns $\lvert\widetilde\chi_a\rangle=\sum_i\lvert\phi_i\rangle\widetilde V_{ia}$ form a basis only for the **retained subspace**. Its projector is $P=\sum_a\lvert\widetilde\chi_a\rangle\langle\widetilde\chi_a\rvert$. On an original coefficient vector $c$, first extract the retained amplitudes $\widetilde V^\dagger Sc$, then reconstruct $P_{\rm coeff}c=\widetilde V(\widetilde V^\dagger Sc)$. Thus $P_{\rm coeff}=\widetilde V\widetilde V^\dagger S$ and $P_{\rm coeff}^2=P_{\rm coeff}$.
+
+For reduced energies, you **do not need to form $P$**: $H_{\rm small}=\widetilde V^\dagger H\widetilde V$ already gives the Hamiltonian matrix in that basis. This small matrix is called a projected Hamiltonian, but is not itself a projector.
+
+This is **Löwdin orthogonalization**. **Löwdin partitioning** instead eliminates excluded-state amplitudes and adds their virtual contribution (Sections 4–5).
 
 ## 12. TAPW and Moiré Models as a Running Example
 
@@ -493,7 +472,7 @@ S_{\rm TAPW}=X^\dagger S_{\rm loc}X.
 $$
 </div>
 
-This is a physics-informed **projection** into a valley-centered basis. The resulting TAPW states need not be orthonormal: their overlap is $S_{\rm TAPW}$, even if the starting orbitals were orthonormal but the columns of $X$ were not. When $S_{\rm TAPW}$ is positive definite, Section 11 applies directly with $V=X$, $H=H_{\rm loc}$, and $S=S_{\rm loc}$. Define $Y=X S_{\rm TAPW}^{-1/2}$. Then
+The TAPW states can overlap. Applying the Section 11 calculation directly with $V=X$ gives $Y=X S_{\rm TAPW}^{-1/2}$ and
 
 <div class="math-display">
 $$
@@ -506,7 +485,7 @@ H_{\rm TAPW}^{\rm orth}
 $$
 </div>
 
-Thus the TAPW orthogonalization formula is exactly the construction above, with $S_{\rm red}$ replaced by $S_{\rm TAPW}$. If $S_{\rm TAPW}=I$, this step does nothing. It changes the basis within the selected TAPW space; it does not eliminate remote states.
+This requires positive-definite $S_{\rm TAPW}$; if $S_{\rm TAPW}=I$, $Y=X$. Orthogonalization changes the basis within the selected TAPW space. It does not eliminate remote states.
 
 The TAPW space can then be split into selected low-energy states $L$ and excluded states $H$. A fixed-reference-energy reduction has the form
 
