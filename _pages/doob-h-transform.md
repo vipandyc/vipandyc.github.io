@@ -520,7 +520,7 @@ This is the precise sense in which the Doob transform is **enhanced sampling gui
 
 ### One-dimensional committor with an explicit solution
 
-Let $A=\{a\}$ and $B=\{b\}$, with $a<x<b$, and use $U=U(x)$. The **backward equation** here is the earlier $Lq=0$: it finds the chance of a future hit as a function of the starting position. With no deadline, $q$ has no time derivative, so this is the time-independent form of $\partial_t h+L_t h=0$.
+Let $A=\{a\}$ and $B=\{b\}$, with $a<x<b$, and use $U=U(x)$. The **backward equation** here is the earlier $Lq=0$. “Backward” means we specify the future outcome at $a$ and $b$, then find its probability at each earlier starting position $x$; Fokker–Planck instead evolves a density forward in time. With no deadline, $q$ has no time derivative, so $Lq=0$ is the time-independent form of $\partial_t h+L_t h=0$.
 
 In one dimension, the SDE above has drift $-U'(x)$ and noise variance per unit time $2\beta^{-1}$. The generator uses half that variance, so $(Lf)(x)=-U'(x)f'(x)+\beta^{-1}f''(x)$. Setting $f=q$ in $Lq=0$, with $q(a)=0$ and $q(b)=1$, gives
 
@@ -564,46 +564,101 @@ As a simple check, set $U=0$ and choose unit Brownian noise, $\mathrm dX_t=\math
 
 The drift becomes singular where $q=0$. The ideal conditioned process is defined where $q>0$; starting *exactly* on the boundary of $A$ requires an entrance-law or limiting construction. In simulations one usually starts just outside $A$ or uses a regularized committor, while remembering that regularization changes the exact law.
 
-## 8. What Is Gained, and What Is Not
+## 8. Successful Paths and Stochastic Optimal Control
 
-The exact $q$-transform makes successful trajectories typical under the new dynamics. For every event $F$ determined by the path before stopping,
+### What the conditioned paths tell us
 
-<div class="math-display">
-$$
-\Pr^{(q)}(F\mid X_0=x)
-=\Pr(F\mid\text{reach }B\text{ before }A,\ X_0=x).
-$$
-</div>
+Start at $x$ and let $E$ mean “reach $B$ before $A.” Write $p=q(x)>0$, let $P$ be the law of the original path from $x$, and let $P^{(q)}=P(\,\cdot\mid E)$. The $q$-transform samples paths from $P^{(q)}$. Every transformed path succeeds, so these samples show how a successful path moves, but their success fraction cannot tell us the original value of $p$. To estimate an original transition rate, we also need how often attempts start (or the flux out of $A$) and their original success probability.
 
-This does **not** mean that a collection of $q$-transformed paths alone tells us the original transition frequency. The conditioning has divided out the success probability $q(x)$, just as the random walk path probability was divided by $2/5$. A rate calculation also needs information about how often trajectories leave $A$, their starting distribution or flux, and the success probability under the original dynamics. Those are separate kinetic quantities.
-
-There is also a computational catch: finding the exact committor in a high-dimensional system can be as hard as the rare-event problem itself. A learned $q_{\rm approx}$ can make a very good proposal, but the exact-path claim no longer holds automatically. To estimate unbiased observables, one must account for the actual proposal law, for example with likelihood-ratio reweighting or another valid correction. Near $q=0$, even a small absolute error can produce a large error in $\nabla\log q$.
-
-The relation to change of measure is clean. For a positive-probability event $E$, an initial point $x$, and a path event $F$ observed by time $t$, Bayes' rule gives
+The path weighting follows directly from Bayes' rule. If $F$ depends on the path through time $t\wedge\tau$, where $\tau$ is the first hit of $A$ or $B$, then
 
 <div class="math-display">
 $$
-\Pr(F\mid E,X_0=x)
-=\frac{\Pr(F\mid X_0=x)\,
-\mathbb E[h(t,X_t)\mid F,X_0=x]}{h(0,x)},
+P^{(q)}(F)=\frac{P(F\cap E)}{p}
+=\frac{\mathbb E_P[\mathbf 1_F\,q(X_{t\wedge\tau})]}{q(x)}.
 $$
 </div>
 
-up to the relevant stopping time. In words, a path segment is reweighted by its remaining chance of success, $h(t,X_t)$, divided by the initial chance $h(0,x)$. The SDE drift $a\nabla\log h$ is the local change of dynamics that realizes this reweighting. For a soft terminal weight $g(X_T)>0$, replace $h(t,x)$ by $\mathbb E[g(X_T)\mid X_t=x]$; the path law is then weighted by $g(X_T)/h(0,x)$ rather than conditioned on a binary event.
+Here $\mathbf 1_F$ is 1 when $F$ occurs and 0 otherwise. The second equality uses the fact that $q(X_{t\wedge\tau})$ is the chance of eventual success after the observed path segment. Finding the exact $q$ in a high-dimensional system can itself be difficult. An approximate $q$ may guide sampling, but it no longer gives exact conditional paths without a correction such as likelihood-ratio reweighting.
 
-One can also see why this is an optimal-control construction. Let $P$ be the original path distribution, $P^{(h)}$ its distribution conditional on $E$, and $Q$ any other path distribution that always satisfies $E$. A successful path has conditional probability equal to its original probability divided by $\Pr(E)$, so
+### Why the $h$-transform solves a control problem
+
+Here is the stochastic optimal control (SOC) connection. A proposed controlled path law $Q$ is required to have $Q(E)=1$ and to be absolutely continuous with respect to $P$. We measure how much it changes the original paths by the Kullback–Leibler divergence $\mathrm{KL}(Q\|P)=\mathbb E_Q[\log(\mathrm dQ/\mathrm dP)]$.
+
+For any successful path, conditioning divides its original probability by $p$: $\mathrm dP^{(q)}=\mathrm dP/p$ on $E$. Since $Q$ only samples paths in $E$, the likelihood ratios obey $\mathrm dQ/\mathrm dP=(\mathrm dQ/\mathrm dP^{(q)})/p$. Taking the logarithm and averaging under $Q$ gives the equality:
 
 <div class="math-display">
 $$
-\mathrm{KL}(Q\|P)
-=\mathrm{KL}(Q\|P^{(h)})-\log\Pr(E)
-\ge -\log\Pr(E).
+\begin{aligned}
+\mathrm{KL}(Q\|P)&=\mathbb E_Q\!\left[\log\frac{\mathrm dQ}{\mathrm dP^{(q)}}\right]-\log p\\
+&=\mathrm{KL}(Q\|P^{(q)})-\log p\ge -\log p.
+\end{aligned}
 $$
 </div>
 
-Here $\mathrm{KL}$ is the Kullback-Leibler divergence, which is nonnegative. Equality holds at $Q=P^{(h)}$. Among path laws that enforce the event, the conditional law changes the original path measure by the least relative entropy. When realizable by a controlled diffusion with the same noise, its drift correction is precisely $a\nabla\log h$.
+The remaining KL term is zero exactly when $Q=P^{(q)}$. Thus the conditional law is the smallest change, in KL, among path laws that guarantee success.
 
-## 9. A Short Map of the Formulas
+For a diffusion, we can implement a control $u_t$ by changing the drift from $b$ to $b+\sigma u_t$ while keeping the noise coefficient $\sigma$. Let $Q^u$ denote the resulting path law. Girsanov's formula from Section 5, now with $\widetilde W$ Brownian under $Q^u$, gives
+
+<div class="math-display">
+$$
+\begin{aligned}
+\log\frac{\mathrm dQ^u}{\mathrm dP}
+&=\int_0^\tau u_t\cdot\mathrm dW_t-\frac12\int_0^\tau |u_t|^2\,\mathrm dt\\
+&=\int_0^\tau u_t\cdot\mathrm d\widetilde W_t+\frac12\int_0^\tau |u_t|^2\,\mathrm dt.
+\end{aligned}
+$$
+</div>
+
+The second equality substitutes $\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt$. The Brownian integral has mean zero under $Q^u$, so $\mathrm{KL}(Q^u\|P)=\tfrac12\mathbb E_{Q^u}\int_0^\tau |u_t|^2\,\mathrm dt$. This is the expected quadratic control cost. If the controlled law enforces $E$, its cost is at least $-\log p$; the exact $h$-transform reaches that minimum with $u_t=\sigma^\top\nabla\log q(X_t)$, giving drift $b+a\nabla\log q$. These identities assume the relevant path laws and stochastic integrals are well defined up to $\tau$.
+
+## 9. Transition Path Theory: From Successful Paths to a Reaction Rate
+
+The Doob transform describes an $A\to B$ path **after** we have selected a successful attempt. Transition path theory (TPT) also asks how many such paths occur per unit time in the original, unconditioned dynamics. Call that equilibrium frequency $R_{AB}$; it is the long-run number of $A\to B$ reactive paths divided by the observation time. A reactive path starts at its **last exit from $A$** and ends at its **first arrival in $B$**, without returning to $A$ in between. [E and Vanden-Eijnden](https://web.math.princeton.edu/~weinan/pdf%20files/theory%20transition.pdf) derive the corresponding reactive current for diffusions.
+
+### Current and rate for the overdamped diffusion
+
+Use the Langevin model of Section 7, and write $D=\beta^{-1}$ and $\pi(x)=Z^{-1}e^{-\beta U(x)}$ for its equilibrium density, where $Z=\int e^{-\beta U(x)}\,\mathrm dx$ normalizes it. At position $x$, the chance that the future reaches $B$ before $A$ is $q(x)$. Because this equilibrium diffusion is reversible, the chance that the path **last came from $A$** is $1-q(x)$. Thus the amount of equilibrium probability carried by $A\to B$ reactive paths near $x$ is $r(x)=\pi(x)q(x)[1-q(x)]$.
+
+From the Fokker–Planck equation in Section 5, $\partial_t r=-\nabla\cdot(vr)+D\Delta r=-\nabla\cdot J$, so a density $r$ with drift $v$ has probability current $J=vr-D\nabla r$. Put in the conditioned drift $v=-\nabla U+2D\nabla\log q$. Since $\nabla\pi=-\beta\pi\nabla U$, the equilibrium terms cancel and leave
+
+<div class="math-display">
+$$
+\begin{aligned}
+J_{AB}&=\bigl(-\nabla U+2D\nabla\log q\bigr)\pi q(1-q)-D\nabla[\pi q(1-q)]\\
+&=\boxed{D\pi\nabla q}.
+\end{aligned}
+$$
+</div>
+
+This current counts **original reactive paths per unit time**, rather than normalized conditioned paths. Moreover, $Lq=0$ implies $\nabla\cdot J_{AB}=D\nabla\cdot(\pi\nabla q)=\pi Lq=0$ between $A$ and $B$: reactive paths do not begin or end in the middle. Therefore every surface $\Sigma$ separating $A$ from $B$ carries the same net flux. With its normal $n$ pointing toward $B$,
+
+<div class="math-display">
+$$
+\boxed{R_{AB}=\int_\Sigma J_{AB}\cdot n\,\mathrm dS
+=D\int_{\mathbb R^d\setminus(A\cup B)}\pi(x)|\nabla q(x)|^2\,\mathrm dx.}
+$$
+</div>
+
+To obtain the volume formula, integrate $\nabla\cdot(qJ_{AB})=J_{AB}\cdot\nabla q$ over the region outside $A$ and $B$. The boundary at $A$ contributes zero because $q=0$; the boundary at $B$ gives $R_{AB}$ because $q=1$. Assume no flux through any outer boundary. The two formulas therefore compute the same frequency, with units of inverse time.
+
+If one wants a **rate constant per $A$-origin population**, divide by the equilibrium fraction whose last visit was to $A$: $k_{AB}=R_{AB}/\theta_A$, where $\theta_A=\int\pi(x)[1-q(x)]\,\mathrm dx$ for this reversible model. When $A$ is strongly metastable, $\theta_A\approx\pi(A)$; the approximation need not hold if excursions outside $A$ take substantial time.
+
+### What to calculate
+
+Given $U$, $\beta$, and chosen sets $A,B$: compute $\pi$, solve $Lq=0$ with $q|_A=0$ and $q|_B=1$, then evaluate either the surface flux or the volume integral above. On a grid, $q$ comes from a boundary-value solver; from simulation, it can be estimated by launching unbiased trajectories from sampled positions and counting the fraction that hit $B$ first. Comparing fluxes across several surfaces is a useful check: a large disagreement indicates that the numerical committor or current is inaccurate. If a long original trajectory is affordable, also count completed reactive paths and divide by its total duration.
+
+For a finite-state jump model, the same rate has an especially direct estimator. Let $\pi_i$ be the stationary probability of state $i$, $k_{ij}$ its jump rate to $j$, and $q_j$ its success probability. A jump from $i\in A$ to $j$ occurs at frequency $\pi_i k_{ij}$, and the ensuing attempt succeeds with probability $q_j$. Hence
+
+<div class="math-display">
+$$
+\boxed{R_{AB}=\sum_{i\in A}\sum_{j\notin A}\pi_i k_{ij}q_j.}
+$$
+</div>
+
+For the three-state chain $0\leftrightarrow1\leftrightarrow2$, take $A=\{0\}$ and $B=\{2\}$, with unit rates in both directions. Then $\pi_i=1/3$ and $q=(0,1/2,1)$, so $R_{AB}=(1/3)(1)(1/2)=1/6$ transitions per unit time. In computation, estimate $\pi$ and $k$ from the original dynamics, solve the small linear system for $q$, and evaluate this sum. The formula is the discrete counterpart of the reactive flux above; see [Metzner, Schütte, and Vanden-Eijnden](https://publications.imp.fu-berlin.de/43/1/MeScVE09.pdf).
+
+## 10. A Short Map of the Formulas
 
 | Setting | Future information in $h$ | Local rule after conditioning |
 |---|---|---|
