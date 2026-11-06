@@ -402,7 +402,7 @@ $$
 \mathrm dh(t,X_t)
 &=\partial_t h\,\mathrm dt+\nabla h\cdot(b\,\mathrm dt+\sigma\,\mathrm dW_t)
 +\tfrac12\sum_{i,j}a_{ij}\partial_i\partial_j h\,\mathrm dt\\
-&=[(\partial_t+L_t)h],\mathrm dt+(\sigma^\top\nabla h)\cdot\mathrm dW_t
+&=[(\partial_t+L_t)h]\,\mathrm dt+(\sigma^\top\nabla h)\cdot\mathrm dW_t
 =(\sigma^\top\nabla h)\cdot\mathrm dW_t,\\
 \mathrm d\log h(t,X_t)
 &=\frac{\mathrm dh}{h}-\frac{(\mathrm dh)^2}{2h^2}
@@ -425,7 +425,9 @@ $$
 $$
 </div>
 
-The left side is the likelihood ratio for the conditioned path up to time $t$. Under appropriate martingale and integrability conditions, Girsanov's theorem says that $\widetilde W_t=W_t-\int_0^t u_s\,\mathrm ds$ is Brownian motion under the new law. Substituting $\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt$ into the original SDE adds $\sigma u_t=\sigma\sigma^\top\nabla\log h=a\nabla\log h$ to its drift. The transformed SDE above simply calls $\widetilde W_t$ by the familiar name $W_t$. For a hitting event, read these identities up to the stopping time; for an exact endpoint bridge, use times $t<T$.
+The ratio on the left is a **path weight**: up to time <span markdown="0">\(t\)</span>, a path is weighted by its remaining chance of success divided by its initial chance. Over a short interval, the exponential on the right changes this weight by approximately <span markdown="0">\(1+u_t\cdot\mathrm dW_t\)</span>. Given the present state, each component of <span markdown="0">\(\mathrm dW_t\)</span> originally has mean zero and variance <span markdown="0">\(\mathrm dt\)</span>, so after reweighting its mean is <span markdown="0">\(\mathbb E[(1+u_t\cdot\mathrm dW_t)\mathrm dW_t]=u_t\,\mathrm dt\)</span>. Its covariance stays the same to leading order.
+
+Girsanov's theorem makes this short-time calculation exact: when the path weights define a probability law, <span markdown="0">\(\widetilde W_t=W_t-\int_0^t u_s\,\mathrm ds\)</span> is Brownian motion under that law. Substituting <span markdown="0">\(\mathrm dW_t=\mathrm d\widetilde W_t+u_t\,\mathrm dt\)</span> into the original SDE gives drift <span markdown="0">\(b+\sigma u_t=b+a\nabla\log h\)</span>, as in Eq. (23). Equation (23) writes <span markdown="0">\(W_t\)</span> for <span markdown="0">\(\widetilde W_t\)</span>. For a hitting event, use these identities up to the stopping time; for an endpoint bridge, use times <span markdown="0">\(t<T\)</span>.
 
 ## 6. Brownian Bridge: Conditioning on an Endpoint
 
