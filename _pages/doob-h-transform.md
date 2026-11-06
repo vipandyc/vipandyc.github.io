@@ -394,7 +394,7 @@ The backward equation ensures that the kernel above is normalized. The subtracti
 
 ### The same drift from a path likelihood ratio
 
-There is a second derivation that connects the transform to Girsanov's theorem. Apply Itô's formula to $\log h(t,X_t)$ under the original SDE. Since $(\partial_t+L_t)h=0$,
+There is a second derivation that connects the transform to Girsanov's theorem. Under the original SDE, Itô's formula first gives <span markdown="0">\(\mathrm dh(t,X_t)=[(\partial_t+L_t)h]\,\mathrm dt+(\sigma^\top\nabla h)\cdot\mathrm dW_t=(\sigma^\top\nabla h)\cdot\mathrm dW_t\)</span>, since the backward equation makes the drift term zero. Applying Itô to the logarithm divides by <span markdown="0">\(h\)</span> and adds the quadratic-variation term <span markdown="0">\(-|\sigma^\top\nabla h|^2\mathrm dt/(2h^2)\)</span>, giving
 
 <div class="math-display">
 $$
