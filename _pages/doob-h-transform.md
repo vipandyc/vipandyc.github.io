@@ -238,13 +238,18 @@ L(hf)(i)-f(i)Lh(i)
 $$
 </div>
 
-A jump toward a state with larger success probability is accelerated; a jump into $h=0$ is removed. Since $Lh=0$ in the interior, the *total* exit rate stays fixed:
+A jump toward a state with larger success probability is accelerated; a jump into $h=0$ is removed. The sum on the left below is the **total exit rate**. In a short interval $\Delta t$, the chance of jumping from $i$ to a particular $j$ is approximately $k^{(h)}_{ij}\Delta t$. Jumps to different destinations are mutually exclusive, so the chance of leaving $i$ is approximately $\Delta t\sum_{j\ne i}k^{(h)}_{ij}$. For an interior state with $h(i)>0$, substitute the transformed rate, add and subtract $h(i)$ inside the sum, and use $(Lh)(i)=\sum_{j\ne i}k_{ij}[h(j)-h(i)]=0$:
 
 <div class="math-display">
 $$
+\begin{aligned}
 \sum_{j\ne i}k^{(h)}_{ij}
-=\sum_{j\ne i}k_{ij}+\frac{Lh(i)}{h(i)}
-=\sum_{j\ne i}k_{ij}.
+&=\sum_{j\ne i}k_{ij}\frac{h(j)}{h(i)}\\
+&=\frac{1}{h(i)}\sum_{j\ne i}k_{ij}\bigl[h(j)-h(i)+h(i)\bigr]\\
+&=\frac{1}{h(i)}\sum_{j\ne i}k_{ij}[h(j)-h(i)]+\sum_{j\ne i}k_{ij}\\
+&=\frac{(Lh)(i)}{h(i)}+\sum_{j\ne i}k_{ij}\\
+&=\sum_{j\ne i}k_{ij}.
+\end{aligned}
 $$
 </div>
 
