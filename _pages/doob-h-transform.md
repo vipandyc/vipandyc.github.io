@@ -568,22 +568,22 @@ The drift becomes singular where $q=0$. The ideal conditioned process is defined
 
 ### What the conditioned paths tell us
 
-Start at $x$ and let $E$ mean “reach $B$ before $A$.” Write $p=q(x)>0$, let $P$ be the law of the original path from $x$, and let $P^{(q)}=P(\,\cdot\mid E)$. The $q$-transform samples paths from $P^{(q)}$. Every transformed path succeeds, so these samples show how a successful path moves, but their success fraction cannot tell us the original value of $p$. To estimate an original transition rate, we also need how often attempts start (or the flux out of $A$) and their original success probability.
+Start at $x$ and let $E$ mean “reach $B$ before $A$.” The original chance of success is $q(x)>0$. The $q$-transform samples successful paths, so these samples show how a successful path moves, but their success fraction cannot tell us the original value of $q(x)$. To estimate an original transition rate, we also need how often attempts start (or the flux out of $A$) and their original success probability.
 
-The path weighting follows directly from Bayes' rule. If $F$ depends on the path through time $t\wedge\tau$, where $\tau$ is the first hit of $A$ or $B$, then
+Here is the path weighting in simpler terms. Let $F$ mean that a path has followed some particular route so far. Bayes' rule gives
 
 <div class="math-display">
 $$
-P^{(q)}(F)=\frac{P(F\cap E)}{p}
-=\frac{\mathbb E_P[\mathbf 1_F\,q(X_{t\wedge\tau})]}{q(x)}.
+P(F\mid E)=\frac{P(F\cap E)}{q(x)}
+=P(F)\frac{P(E\mid F)}{q(x)}.
 $$
 </div>
 
-Here <span markdown="0">\(\mathbf{1}_F\)</span> is 1 when F occurs and 0 otherwise. The second equality weights each observed path segment by its remaining chance of success. Finding the exact committor in a high-dimensional system can be difficult. An approximate committor may guide sampling, but it no longer gives exact conditional paths without a correction such as likelihood-ratio reweighting.
+If that route ends at $y$ before hitting either target, its remaining chance of success is $q(y)$. Thus conditioning multiplies its original weight by $q(y)/q(x)$. Finding the exact committor in a high-dimensional system can be difficult. An approximate committor may guide sampling, but it no longer gives exact conditional paths without a correction such as likelihood-ratio reweighting.
 
 ### Why the $h$-transform solves a control problem
 
-Here is the stochastic optimal control (SOC) connection. A proposed controlled path law $Q$ is required to have $Q(E)=1$ and to be absolutely continuous with respect to $P$. We measure how much it changes the original paths by the Kullback–Leibler divergence $\mathrm{KL}(Q\Vert P)=\mathbb E_Q[\log(\mathrm dQ/\mathrm dP)]$.
+Here is the stochastic optimal control (SOC) connection. Let $P$ be the law of the original path from $x$, and let $P^{(q)}=P(\,\cdot\mid E)$ be its law conditioned on success. A proposed controlled path law $Q$ is required to have $Q(E)=1$ and to be absolutely continuous with respect to $P$. We measure how much it changes the original paths by the Kullback–Leibler divergence $\mathrm{KL}(Q\Vert P)=\mathbb E_Q[\log(\mathrm dQ/\mathrm dP)]$.
 
 Recall that <span markdown="0">\(p=P(E)=q(x)>0\)</span> is the original chance of success from the starting point <span markdown="0">\(x\)</span>. For any successful path, conditioning divides its original probability by $p$: $\mathrm dP^{(q)}=\mathrm dP/p$ on $E$. Since $Q$ only samples paths in $E$, the likelihood ratios obey $\mathrm dQ/\mathrm dP=(\mathrm dQ/\mathrm dP^{(q)})/p$. Taking the logarithm and averaging under $Q$ gives the equality:
 
