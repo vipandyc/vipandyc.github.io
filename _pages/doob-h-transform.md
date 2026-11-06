@@ -568,7 +568,7 @@ The drift becomes singular where $q=0$. The ideal conditioned process is defined
 
 ### What the conditioned paths tell us
 
-Start at $x$ and let $E$ mean “reach $B$ before $A.” Write $p=q(x)>0$, let $P$ be the law of the original path from $x$, and let $P^{(q)}=P(\,\cdot\mid E)$. The $q$-transform samples paths from $P^{(q)}$. Every transformed path succeeds, so these samples show how a successful path moves, but their success fraction cannot tell us the original value of $p$. To estimate an original transition rate, we also need how often attempts start (or the flux out of $A$) and their original success probability.
+Start at $x$ and let $E$ mean “reach $B$ before $A$.” Write $p=q(x)>0$, let $P$ be the law of the original path from $x$, and let $P^{(q)}=P(\,\cdot\mid E)$. The $q$-transform samples paths from $P^{(q)}$. Every transformed path succeeds, so these samples show how a successful path moves, but their success fraction cannot tell us the original value of $p$. To estimate an original transition rate, we also need how often attempts start (or the flux out of $A$) and their original success probability.
 
 The path weighting follows directly from Bayes' rule. If $F$ depends on the path through time $t\wedge\tau$, where $\tau$ is the first hit of $A$ or $B$, then
 
