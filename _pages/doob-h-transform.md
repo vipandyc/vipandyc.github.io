@@ -220,13 +220,18 @@ $$
 $$
 </div>
 
-The compact expression for this generator is just the same sum written using the original $L$. Expanding $L(hf)$ and $Lh$ shows the cancellation:
+The compact expression for this generator is the same sum written using the original $L$. Here $hf$ is the function whose value at state $j$ is $h(j)f(j)$. Apply the generator formula to $hf$ and to $h$ separately, then distribute $f(i)$ inside the second sum:
 
 <div class="math-display">
 $$
 \begin{aligned}
 L(hf)(i)-f(i)Lh(i)
-&=\sum_{j\ne i}k_{ij}h(j)[f(j)-f(i)],\\
+&=\sum_{j\ne i}k_{ij}[h(j)f(j)-h(i)f(i)]
+-f(i)\sum_{j\ne i}k_{ij}[h(j)-h(i)]\\
+&=\sum_{j\ne i}k_{ij}[h(j)f(j)-h(i)f(i)-f(i)h(j)+f(i)h(i)]\\
+&=\sum_{j\ne i}k_{ij}h(j)[f(j)-f(i)]\\
+&=h(i)\sum_{j\ne i}k_{ij}\frac{h(j)}{h(i)}[f(j)-f(i)]\\
+&=h(i)(L^{(h)}f)(i),\\
 (L^{(h)}f)(i)
 &=\frac{L(hf)(i)-f(i)Lh(i)}{h(i)}.
 \end{aligned}
