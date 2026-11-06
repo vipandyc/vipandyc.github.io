@@ -184,26 +184,27 @@ These are the even and odd parts of $f$. With a reflection-invariant inner produ
 
 ## 7. Combining representations
 
-A product state pairs one state from $V_\alpha$ with one from $V_\beta$, written $v\otimes w$. Each group element acts on both states, so the product's character is $\chi_\alpha(g)\chi_\beta(g)$. To count how many copies of irrep $\gamma$ occur in the product, use the same character inner product as in Section 4:
+A product state pairs one state from $V_\alpha$ with one from $V_\beta$, written $v\otimes w$. Each group element acts on both states, so the product's character is the product of their characters. To count how many copies of irrep $\gamma$ occur, use the class-weighted inner product from Section 4:
 
 <div class="math-display">
 $$
+\begin{aligned}
+\chi_{\alpha\otimes\beta}(g)
+&=\chi_\alpha(g)\chi_\beta(g),\\
 m_\gamma(V_\alpha\otimes V_\beta)
-=\langle\chi_\gamma,\chi_\alpha\chi_\beta\rangle_G
-=\frac1n\sum_j c_j
-\overline{\chi_\gamma(g_j)}\chi_\alpha(g_j)\chi_\beta(g_j).
+&=\langle\chi_\gamma,\chi_{\alpha\otimes\beta}\rangle_G.
+\end{aligned}
 $$
 </div>
 
-For two copies of the **same** space, exchanging the factors sends $v\otimes w$ to $w\otimes v$. Adding or subtracting the exchanged state gives its symmetric or antisymmetric part. Their characters obey
+For two copies of the **same** space, exchanging the factors sends $v\otimes w$ to $w\otimes v$. Taking half the sum or difference gives its symmetric or antisymmetric part. Their characters obey
 
 <div class="math-display">
 $$
-\chi_{\rm sym}(g)
-=\frac{\chi_V(g)^2+\chi_V(g^2)}2,
-\qquad
-\chi_{\rm anti}(g)
-=\frac{\chi_V(g)^2-\chi_V(g^2)}2.
+\begin{aligned}
+\chi_{\rm sym}(g)&=\tfrac12[\chi_V(g)^2+\chi_V(g^2)],\\
+\chi_{\rm anti}(g)&=\tfrac12[\chi_V(g)^2-\chi_V(g^2)].
+\end{aligned}
 $$
 </div>
 
