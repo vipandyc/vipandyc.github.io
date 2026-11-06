@@ -520,7 +520,9 @@ This is the precise sense in which the Doob transform is **enhanced sampling gui
 
 ### One-dimensional committor with an explicit solution
 
-Let $A=\{a\}$ and $B=\{b\}$, with $a<x<b$, and use $U=U(x)$. The backward equation becomes
+Let $A=\{a\}$ and $B=\{b\}$, with $a<x<b$, and use $U=U(x)$. The **backward equation** here is the earlier $Lq=0$: it finds the chance of a future hit as a function of the starting position. With no deadline, $q$ has no time derivative, so this is the time-independent form of $\partial_t h+L_t h=0$.
+
+In one dimension, the SDE above has drift $-U'(x)$ and noise variance per unit time $2\beta^{-1}$. The generator uses half that variance, so $(Lf)(x)=-U'(x)f'(x)+\beta^{-1}f''(x)$. Setting $f=q$ in $Lq=0$, with $q(a)=0$ and $q(b)=1$, gives
 
 <div class="math-display">
 $$
