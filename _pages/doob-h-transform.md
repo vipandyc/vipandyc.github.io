@@ -585,7 +585,7 @@ Here <span markdown="0">\(\mathbf{1}_F\)</span> is 1 when F occurs and 0 otherwi
 
 Here is the stochastic optimal control (SOC) connection. A proposed controlled path law $Q$ is required to have $Q(E)=1$ and to be absolutely continuous with respect to $P$. We measure how much it changes the original paths by the Kullback–Leibler divergence $\mathrm{KL}(Q\Vert P)=\mathbb E_Q[\log(\mathrm dQ/\mathrm dP)]$.
 
-For any successful path, conditioning divides its original probability by $p$: $\mathrm dP^{(q)}=\mathrm dP/p$ on $E$. Since $Q$ only samples paths in $E$, the likelihood ratios obey $\mathrm dQ/\mathrm dP=(\mathrm dQ/\mathrm dP^{(q)})/p$. Taking the logarithm and averaging under $Q$ gives the equality:
+Recall that <span markdown="0">\(p=P(E)=q(x)>0\)</span> is the original chance of success from the starting point <span markdown="0">\(x\)</span>. For any successful path, conditioning divides its original probability by $p$: $\mathrm dP^{(q)}=\mathrm dP/p$ on $E$. Since $Q$ only samples paths in $E$, the likelihood ratios obey $\mathrm dQ/\mathrm dP=(\mathrm dQ/\mathrm dP^{(q)})/p$. Taking the logarithm and averaging under $Q$ gives the equality:
 
 <div class="math-display">
 $$
