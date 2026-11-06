@@ -647,7 +647,7 @@ $$
 $$
 </div>
 
-The first integral is flux through a surface, so $\mathrm dS$ is a surface-area element. The second runs over the entire $d$-dimensional region $\Omega$, so $\mathrm d^d x$ is a **volume element**. To see why they agree, use $\nabla\cdot J_{AB}=0$ and $J_{AB}=D\pi\nabla q$:
+The first integral is flux through a surface, so $\mathrm dS$ is a surface-area element. One possible choice is the surface where $q(x)=1/2$. The second runs over the entire $d$-dimensional region $\Omega$, so $\mathrm d^d x$ is a **volume element**. To see why they agree, use $\nabla\cdot J_{AB}=0$ and $J_{AB}=D\pi\nabla q$:
 
 <div class="math-display">
 $$
@@ -674,7 +674,7 @@ If one wants a **rate constant per $A$-origin population**, divide by the equili
 
 ### What to calculate
 
-Given $U$, $\beta$, $\gamma$, and chosen sets $A,B$: compute $\pi$, then solve $Lq=0$ with $q(x)=0$ in $A$ and $q(x)=1$ in $B$. Evaluate either the surface flux or the volume integral above using $D=1/(\beta\gamma)$. On a grid, $q$ comes from a boundary-value solver; from simulation, it can be estimated by launching unbiased trajectories from sampled positions and counting the fraction that hit $B$ first. Comparing fluxes across several surfaces is a useful check: a large disagreement indicates that the numerical committor or current is inaccurate. If a long original trajectory is affordable, also count completed reactive paths and divide by its total duration.
+Given $U$, $\beta$, $\gamma$, and chosen sets $A,B$: compute $\pi$, then solve $Lq=0$ with $q(x)=0$ in $A$ and $q(x)=1$ in $B$. With $D=1/(\beta\gamma)$, evaluate the flux through a separating surface, such as $q=1/2$, or use the volume integral above; the latter can be expensive in high dimensions. On a grid, $q$ comes from a boundary-value solver; from simulation, it can be estimated by launching unbiased trajectories from sampled positions and counting the fraction that hit $B$ first. Comparing fluxes across several surfaces is a useful check: a large disagreement indicates that the numerical committor or current is inaccurate. If a long original trajectory is affordable, also count completed reactive paths and divide by its total duration.
 
 For a finite-state jump model, the same rate has an especially direct estimator. Let $\pi_i$ be the stationary probability of state $i$, $k_{ij}$ its jump rate to $j$, and $q_j$ its success probability. A jump from $i\in A$ to $j$ occurs at frequency $\pi_i k_{ij}$, and the ensuing attempt succeeds with probability $q_j$. Hence
 
