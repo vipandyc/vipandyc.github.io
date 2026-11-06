@@ -379,7 +379,7 @@ L^{(h)}_t f
 $$
 </div>
 
-The second-order term is unchanged. Reading off the first-order term, the transformed process satisfies
+As in the Fokker–Planck calculation above, the first-derivative coefficient in a generator is the SDE drift, and the second-derivative coefficients give the noise covariance. Comparing terms, the transformed process keeps <span markdown="0">\(a=\sigma\sigma^\top\)</span> but has drift <span markdown="0">\(b+a\nabla\log h\)</span>. Equivalently, its Fokker–Planck equation uses this new drift in the transport term. The corresponding SDE under the transformed law is
 
 <div class="math-display">
 $$
