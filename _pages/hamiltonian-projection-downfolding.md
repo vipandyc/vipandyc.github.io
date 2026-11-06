@@ -70,7 +70,7 @@ P=VV^\dagger,
 $$
 </div>
 
-There are two equivalent-looking formulas that emphasize different objects:
+The projected Hamiltonian has two representations:
 
 <div class="math-display">
 $$
@@ -80,7 +80,56 @@ H_{\rm proj}=V^\dagger H V.
 $$
 </div>
 
-$PHP$ is an operator in the original $N$-dimensional representation whose action is restricted to the selected subspace. $V^\dagger H V$ is the actual $r\times r$ matrix in the reduced basis.
+$PHP$ is an $N\times N$ matrix that acts only within the selected subspace. $H_{\rm proj}=V^\dagger H V$ is its $r\times r$ matrix in the basis formed by the columns of $V$. They are related by inserting $P=VV^\dagger$:
+
+<div class="math-display">
+$$
+PHP=(VV^\dagger)H(VV^\dagger)
+=V\underbrace{(V^\dagger H V)}_{H_{\rm proj}}V^\dagger.
+$$
+</div>
+
+So these are **representations of the same projected action**, not matrices of the same size. If a reduced state has coordinates $c\in\mathbb C^r$, its full-space vector is $Vc$, and
+
+<div class="math-display">
+$$
+(PHP)(Vc)=V(H_{\rm proj}c).
+$$
+</div>
+
+For a concrete $N=3$, $r=2$ example, retain the first two coordinate states:
+
+<div class="math-display">
+$$
+H=\begin{pmatrix}2&1&7\\1&4&8\\7&8&9\end{pmatrix},
+\quad
+V=\begin{pmatrix}1&0\\0&1\\0&0\end{pmatrix},
+\quad
+P=VV^\dagger=\begin{pmatrix}1&0&0\\0&1&0\\0&0&0\end{pmatrix}.
+$$
+</div>
+
+Now both forms are easy to see:
+
+<div class="math-display">
+$$
+PHP=\begin{pmatrix}2&1&0\\1&4&0\\0&0&0\end{pmatrix}
+\quad\longleftrightarrow\quad
+H_{\rm proj}=V^\dagger H V=\begin{pmatrix}2&1\\1&4\end{pmatrix}.
+$$
+</div>
+
+**Yes:** in a basis whose first $r$ vectors span the retained subspace, $PHP$ has the reduced $r\times r$ matrix as its only potentially nonzero block. In a general original basis, the nonzero entries need not sit in one block. For example, retain $v=(1,1)^\top/\sqrt2$ from $H=\operatorname{diag}(2,4)$. Then $r=1$, but
+
+<div class="math-display">
+$$
+H_{\rm proj}=v^\dagger H v=3,
+\qquad
+PHP=v(3)v^\dagger=\frac32\begin{pmatrix}1&1\\1&1\end{pmatrix}.
+$$
+</div>
+
+The full-space matrix has four nonzero entries despite representing a one-dimensional operator. If we rotate the full basis so that its first vector is $v$, that same $PHP$ becomes $\operatorname{diag}(3,0)$.
 
 This is genuine dimension reduction, but it is only **projection or truncation**. It retains the matrix elements of $H$ inside the chosen space and discards the rest. It does not automatically preserve the virtual influence of the discarded states.
 
