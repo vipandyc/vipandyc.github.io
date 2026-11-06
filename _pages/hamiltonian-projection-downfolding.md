@@ -435,21 +435,18 @@ $$
 $$
 </div>
 
-The **projection operator** on the full Hilbert space is $P=\sum_a\lvert\widetilde\chi_a\rangle\langle\widetilde\chi_a\rvert$. Since $P\lvert\widetilde\chi_a\rangle=\lvert\widetilde\chi_a\rangle$, the matrix of $P\hat H P$ in these $r$ states is
+The **projection operator** on the full Hilbert space is $P=\sum_a\lvert\widetilde\chi_a\rangle\langle\widetilde\chi_a\rvert$. Since $P\lvert\widetilde\chi_a\rangle=\lvert\widetilde\chi_a\rangle$, the matrix of $P\hat H P$ in the retained basis obeys $(H_{\rm proj})_{ab}=\langle\widetilde\chi_a\rvert P\hat H P\lvert\widetilde\chi_b\rangle=\langle\widetilde\chi_a\rvert\hat H\lvert\widetilde\chi_b\rangle$. Expanding the states gives
 
 <div class="math-display">
 $$
 \begin{aligned}
-(H_{\rm proj})_{ab}
-&=\langle\widetilde\chi_a\rvert P\hat H P\lvert\widetilde\chi_b\rangle\\
-&=\langle\widetilde\chi_a\rvert\hat H\lvert\widetilde\chi_b\rangle\\
+\langle\widetilde\chi_a\rvert\hat H\lvert\widetilde\chi_b\rangle
 &=\left(\sum_i\widetilde V_{ia}^{*}\langle\phi_i\rvert\right)
 \hat H
 \left(\sum_j\lvert\phi_j\rangle\widetilde V_{jb}\right)\\
 &=\sum_{i,j}\widetilde V_{ia}^{*}
 \underbrace{\langle\phi_i\rvert\hat H\lvert\phi_j\rangle}_{H_{ij}}
-\widetilde V_{jb}\\
-&=(\widetilde V^\dagger H\widetilde V)_{ab}.
+\widetilde V_{jb}=(\widetilde V^\dagger H\widetilde V)_{ab}.
 \end{aligned}
 $$
 </div>
