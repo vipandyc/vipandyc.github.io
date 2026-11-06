@@ -376,31 +376,18 @@ Both illustrate the same second-order coupling-over-gap structure.
 
 ## 9. When Plain Projection Is Already Exact
 
-Projection fails only when the retained space couples to its complement. If the range of $P$ is invariant under $H$,
+Plain projection keeps the $P$ space and ignores $Q=I-P$. This gives exact eigenvalues for states in $P$ when $H$ cannot move those states into $Q$. The condition is $QHP=0$: apply $H$ to any retained state, and its component in the discarded space is zero. For Hermitian $H$, the reverse coupling is also zero because $PHQ=(QHP)^\dagger$. Thus, in a basis ordered by $P$ and $Q$,
 
 <div class="math-display">
 $$
-QHP=0,
+H=\begin{pmatrix}H_{PP}&0\\0&H_{QQ}\end{pmatrix},
+\qquad H_{\rm proj}=V^\dagger HV=H_{PP}.
 $$
 </div>
 
-then $H_{QP}=H_{PQ}=0$ for Hermitian $H$, so
+If $H_{\rm proj}c=Ec$, then $H(Vc)=V(H_{\rm proj}c)=E(Vc)$: an eigenvector of the small matrix is also an eigenvector of the full one. There is no missing virtual correction because there is no coupling to $Q$.
 
-<div class="math-display">
-$$
-H_{\rm eff}=V^\dagger H V
-$$
-</div>
-
-is exact. Selecting exact eigenvectors gives
-
-<div class="math-display">
-$$
-V^\dagger H V=\operatorname{diag}(E_1,\ldots,E_r).
-$$
-</div>
-
-Yet exact eigenvectors can be a poor **modeling basis**: their gauge may vary irregularly with momentum and obscure stable layer, orbital, valley, or spin labels. A useful model should preserve interpretation as well as eigenvalues.
+For the two-state matrix in Section 3, retaining its first basis state is exact when $t=0$. When $t\ne0$, the coupling moves amplitude into the second state, and plain projection misses the shift $-t^2/\Delta$. Another exact choice is to make the columns of $V$ actual eigenvectors of $H$; then $V^\dagger HV=\operatorname{diag}(E_1,\ldots,E_r)$. That choice already requires knowing the full eigenvectors, so it may not provide a simple model built from orbitals or other physical labels.
 
 ## 10. Wannierization: Subspace Selection Plus Gauge Choice
 
