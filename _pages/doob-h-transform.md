@@ -238,17 +238,17 @@ L(hf)(i)-f(i)Lh(i)
 $$
 </div>
 
-A jump toward a state with larger success probability is accelerated; a jump into $h=0$ is removed. The sum on the left below is the **total exit rate**. In a short interval $\Delta t$, the chance of jumping from $i$ to a particular $j$ is approximately $k^{(h)}_{ij}\Delta t$. Jumps to different destinations are mutually exclusive, so the chance of leaving $i$ is approximately $\Delta t\sum_{j\ne i}k^{(h)}_{ij}$. For an interior state with $h(i)>0$, substitute the transformed rate, add and subtract $h(i)$ inside the sum, and use $(Lh)(i)=\sum_{j\ne i}k_{ij}[h(j)-h(i)]=0$:
+A jump toward a state with larger success probability is accelerated; a jump into a state with zero success probability is removed. The sum on the left below is the **total exit rate**: in a short interval, the chance of leaving the current state is approximately this sum times the interval length. We add the rates for all possible destinations because those jumps are mutually exclusive. At an interior state where the success probability is positive, substitute the transformed rates and add and subtract the current success probability inside the sum. The resulting difference is the original generator applied to the success probability, which is zero there:
 
 <div class="math-display">
 $$
 \begin{aligned}
 \sum_{j\ne i}k^{(h)}_{ij}
-&=\sum_{j\ne i}k_{ij}\frac{h(j)}{h(i)}\\
-&=\frac{1}{h(i)}\sum_{j\ne i}k_{ij}\bigl[h(j)-h(i)+h(i)\bigr]\\
-&=\frac{1}{h(i)}\sum_{j\ne i}k_{ij}[h(j)-h(i)]+\sum_{j\ne i}k_{ij}\\
-&=\frac{(Lh)(i)}{h(i)}+\sum_{j\ne i}k_{ij}\\
-&=\sum_{j\ne i}k_{ij}.
+&=\sum_{j\ne i}k_{ij}\frac{h(j)}{h(i)}
+=\frac{1}{h(i)}\sum_{j\ne i}k_{ij}\bigl[h(j)-h(i)+h(i)\bigr]\\
+&=\frac{1}{h(i)}\sum_{j\ne i}k_{ij}[h(j)-h(i)]+\sum_{j\ne i}k_{ij}
+=\frac{(Lh)(i)}{h(i)}+\sum_{j\ne i}k_{ij}
+=\sum_{j\ne i}k_{ij}.
 \end{aligned}
 $$
 </div>
@@ -266,16 +266,78 @@ $$
 $$
 </div>
 
-Its generator, acting on a smooth test function $f$, is
+Let <span markdown="0">\(\rho(t,x)\)</span> be the probability density of <span markdown="0">\(X_t\)</span>. The **Fokker–Planck equation** tells us how this density changes:
 
 <div class="math-display">
 $$
-(L_t f)(x)=b(t,x)\cdot\nabla f(x)
-+\frac12\sum_{i,j}a_{ij}(t,x)\,\partial_i\partial_j f(x).
+\partial_t\rho(t,x)
+=-\sum_i\partial_i\bigl[b_i(t,x)\rho(t,x)\bigr]
++\frac12\sum_{i,j}\partial_i\partial_j\bigl[a_{ij}(t,x)\rho(t,x)\bigr].
 $$
 </div>
 
-For a terminal event $E$, let $h(t,x)=\Pr(E\mid X_t=x)$, or use a transition **density** when $E$ specifies an exact continuous endpoint. Assume $h>0$ and smooth in the region of interest. Its backward equation is
+Here <span markdown="0">\(i,j\)</span> label spatial coordinates, rather than the states of the jump chain in Section 4; <span markdown="0">\(b_i\)</span> is a component of the drift, <span markdown="0">\(a_{ij}=\sum_m\sigma_{im}\sigma_{jm}\)</span>, and <span markdown="0">\(\partial_i\)</span> means differentiation with respect to <span markdown="0">\(x_i\)</span>. The first term moves probability with the drift, while the second spreads it through the noise.
+
+To see the connection with a generator, choose a smooth function <span markdown="0">\(f(x)\)</span> that assigns a number to each position. Its average is <span markdown="0">\(\mathbb E[f(X_t)]=\int f(x)\rho(t,x)\,\mathrm dx\)</span>. Multiply the Fokker–Planck equation by <span markdown="0">\(f\)</span> and integrate. Assume boundary terms vanish, for example because <span markdown="0">\(f\)</span> has compact support. Integration by parts moves one derivative in the drift term and two in the noise term from the density onto <span markdown="0">\(f\)</span>:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\frac{\mathrm d}{\mathrm dt}\mathbb E[f(X_t)]
+&=\int f\,\partial_t\rho\,\mathrm dx\\
+&=-\sum_i\int f\,\partial_i(b_i\rho)\,\mathrm dx
++\frac12\sum_{i,j}\int f\,\partial_i\partial_j(a_{ij}\rho)\,\mathrm dx\\
+&=\int\left[\sum_i b_i\,\partial_i f
++\frac12\sum_{i,j}a_{ij}\,\partial_i\partial_j f\right]\rho\,\mathrm dx.
+\end{aligned}
+$$
+</div>
+
+The expression in brackets is called <span markdown="0">\((L_t f)(x)\)</span>, the **generator acting on a function**. It gives the instantaneous change of that function's average starting from a known position <span markdown="0">\(x\)</span>. To see this directly from the SDE, write <span markdown="0">\(\Delta X=X_{t+\Delta t}-X_t\)</span>. Brownian increments have mean zero, and their covariance over a short interval is proportional to its length, so to first order
+
+<div class="math-display">
+$$
+\mathbb E[\Delta X_i\mid X_t=x]\approx b_i(t,x)\Delta t,
+\qquad
+\mathbb E[\Delta X_i\Delta X_j\mid X_t=x]\approx a_{ij}(t,x)\Delta t.
+$$
+</div>
+
+The product of two drift increments is proportional to <span markdown="0">\((\Delta t)^2\)</span>, so it does not contribute at this order. Taylor-expand <span markdown="0">\(f\)</span> around <span markdown="0">\(x\)</span>:
+
+<div class="math-display">
+$$
+f(x+\Delta X)-f(x)\approx
+\sum_i\partial_i f(x)\,\Delta X_i
++\frac12\sum_{i,j}\partial_i\partial_j f(x)\,\Delta X_i\Delta X_j.
+$$
+</div>
+
+Take its conditional average, divide by the interval length, and let that length shrink to zero. This gives the same expression found from Fokker–Planck:
+
+<div class="math-display">
+$$
+\begin{aligned}
+(L_t f)(x)
+&=\lim_{\Delta t\to0}\frac{\mathbb E[f(X_{t+\Delta t})\mid X_t=x]-f(x)}{\Delta t}\\
+&=\sum_i b_i(t,x)\,\partial_i f(x)
++\frac12\sum_{i,j}a_{ij}(t,x)\,\partial_i\partial_j f(x).
+\end{aligned}
+$$
+</div>
+
+These are two descriptions of the same diffusion: Fokker–Planck evolves its density, and the generator gives the local rate of change of functions of its state. The integration-by-parts calculation shows exactly how the two descriptions correspond.
+
+For a terminal event <span markdown="0">\(E\)</span>, let <span markdown="0">\(h(t,x)=\Pr(E\mid X_t=x)\)</span>, or use a transition **density** when the event specifies an exact continuous endpoint. Assume <span markdown="0">\(h>0\)</span> and smooth in the region of interest. The Markov property says that waiting a short time and then averaging the remaining success chance leaves the current success chance unchanged. Expanding that average to first order gives
+
+<div class="math-display">
+$$
+h(t,x)=\mathbb E[h(t+\Delta t,X_{t+\Delta t})\mid X_t=x]
+\approx h(t,x)+\Delta t[\partial_t h(t,x)+(L_t h)(x)].
+$$
+</div>
+
+Cancel the current value on both sides and divide by the interval length to obtain the **backward equation**:
 
 <div class="math-display">
 $$
