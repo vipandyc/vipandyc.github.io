@@ -57,7 +57,9 @@ $$
 $$
 </div>
 
-The last term is nonnegative, so conditioning cannot increase the variance.
+Think of each fixed value of $X$ as a group. The first term is the **variance between group means**; the second is the **average variance within groups**.
+
+Rao–Blackwellization keeps the group means and removes the within-group sampling noise. Because the within-group term is nonnegative, conditioning cannot increase the variance.
 
 To see why, write $G=m(X)+R$ with $R=G-m(X)$. Since $\mathbb E[R\mid X]=0$, we have $\mathbb E[m(X)R]=\mathbb E[m(X)\mathbb E[R\mid X]]=0$: the two parts are uncorrelated, so their variances add. Equality holds only when $G$ already has no randomness left after $X$ is known.
 
