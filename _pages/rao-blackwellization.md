@@ -47,19 +47,19 @@ estimate the same mean. The second estimator has averaged away the randomness in
 
 ## 2. Why the Variance Falls
 
-The **law of total variance** separates the variation across $X$ from the variation left within each fixed $X$:
+The **law of total variance** separates the variation across $X$ from the variation left within each fixed $X$. Subscripts show which randomness is being averaged:
 
 <div class="math-display">
 $$
-\operatorname{Var}(G)
-=\operatorname{Var}\!\bigl(\mathbb E[G\mid X]\bigr)
-+\mathbb E\!\bigl[\operatorname{Var}(G\mid X)\bigr]
-=\operatorname{Var}(m(X))
-+\mathbb E[\operatorname{Var}(G\mid X)].
+\operatorname{Var}_{X,Y}[G(X,Y)]
+=\operatorname{Var}_X[m(X)]
++\mathbb E_X\!\left[\operatorname{Var}_{Y\mid X}(G(X,Y))\right].
 $$
 </div>
 
-The last term is nonnegative, so $\operatorname{Var}(m(X))\leq\operatorname{Var}(G)$. To see why, write $G=m(X)+R$ with $R=G-m(X)$. Since $\mathbb E[R\mid X]=0$, we have $\mathbb E[m(X)R]=\mathbb E[m(X)\mathbb E[R\mid X]]=0$: the two parts are uncorrelated, so their variances add. Equality holds only when $G$ already has no randomness left after $X$ is known.
+The inner variance is over $Y$ at a fixed $X$; the outer expectation then averages those conditional variances over $X$. The last term is nonnegative, so $\operatorname{Var}_X(m(X))\leq\operatorname{Var}_{X,Y}(G(X,Y))$.
+
+To see why, write $G=m(X)+R$ with $R=G-m(X)$. Since $\mathbb E[R\mid X]=0$, we have $\mathbb E[m(X)R]=\mathbb E[m(X)\mathbb E[R\mid X]]=0$: the two parts are uncorrelated, so their variances add. Equality holds only when $G$ already has no randomness left after $X$ is known.
 
 For independent samples, each estimator's variance is its single-draw variance divided by $N$. Rao–Blackwellization therefore reduces the Monte Carlo error at the same sample count. Since the mean is preserved, it also cannot increase mean squared error for estimating $\mu$.
 
