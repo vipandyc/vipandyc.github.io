@@ -57,7 +57,9 @@ $$
 $$
 </div>
 
-The inner variance is over $Y$ at a fixed $X$; the outer expectation then averages those conditional variances over $X$. The last term is nonnegative, so $\operatorname{Var}_X(m(X))\leq\operatorname{Var}_{X,Y}(G(X,Y))$.
+The quantity whose variance we measure is $G(X,Y)$; the subscripts say which draws vary. The inner variance changes $Y$ while holding $X$ fixed, and $\mathbb E_X$ averages those conditional variances over $X$. In the example below, $G(X,Y)=Y$, so the inner term is $\operatorname{Var}(Y\mid X)$.
+
+The last term is nonnegative, so $\operatorname{Var}_X(m(X))\leq\operatorname{Var}_{X,Y}(G(X,Y))$.
 
 To see why, write $G=m(X)+R$ with $R=G-m(X)$. Since $\mathbb E[R\mid X]=0$, we have $\mathbb E[m(X)R]=\mathbb E[m(X)\mathbb E[R\mid X]]=0$: the two parts are uncorrelated, so their variances add. Equality holds only when $G$ already has no randomness left after $X$ is known.
 
