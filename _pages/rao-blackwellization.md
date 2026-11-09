@@ -47,7 +47,7 @@ estimate the same mean. The second estimator has averaged away the randomness in
 
 ## 2. Why the Variance Falls
 
-The **law of total variance** separates the variation across $X$ from the variation left within each fixed $X$:
+Here $G=G(X,Y)$. The **law of total variance** separates the variation across $X$ from the variation left within each fixed $X$:
 
 <div class="math-display">
 $$
