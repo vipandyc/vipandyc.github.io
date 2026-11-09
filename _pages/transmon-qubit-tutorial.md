@@ -1,7 +1,7 @@
 ---
 permalink: /blog/transmon-qubit-tutorial/
 title: "A Tutorial Introduction to the Transmon Qubit"
-excerpt: "A compact lecture note on Josephson junctions, transmon circuit quantization, circuit-QED cavity coupling, universal gates, and using superconducting qubits to simulate spin Hamiltonians."
+excerpt: "A compact lecture note on transmon circuits, circuit QED, universal gates, and simulating spin and fermionic Hubbard Hamiltonians with superconducting qubits."
 author_profile: true
 ---
 
@@ -9,7 +9,7 @@ author_profile: true
 
 The transmon is the workhorse superconducting qubit. It is not a microscopic two-level atom; it is an engineered nonlinear LC oscillator made from a Josephson junction and a large shunting capacitance. The trick is to make the oscillator only weakly anharmonic, so it is insensitive to charge noise, while still keeping enough anharmonicity to address the lowest two levels as a qubit.
 
-This note builds the story in five steps. First, a Josephson junction gives a nondissipative nonlinear inductance. Second, adding capacitance gives a quantized circuit Hamiltonian. Third, the transmon regime protects against charge noise. Fourth, coupling to a microwave cavity enables control, readout, and qubit-qubit interactions. Fifth, single- and two-qubit gates let us simulate spin Hamiltonians.
+This note builds the story in six steps. First, a Josephson junction gives a nondissipative nonlinear inductance. Second, adding capacitance gives a quantized circuit Hamiltonian. Third, the transmon regime protects against charge noise. Fourth, coupling to a microwave cavity enables control, readout, and qubit-qubit interactions. Fifth, single- and two-qubit gates let us simulate spin Hamiltonians. Finally, a Jordan–Wigner map extends the same gate toolbox to fermions.
 
 I will keep $\hbar$ explicit in Hamiltonians. Frequencies such as $\omega_q$ are angular frequencies; ordinary frequencies are written as $f_q=\omega_q/2\pi$. The Pauli convention is $Z\lvert0\rangle=+\lvert0\rangle$ and $Z\lvert1\rangle=-\lvert1\rangle$ unless stated otherwise.
 
@@ -573,7 +573,59 @@ Then evolve $\lvert\psi(t)\rangle=e^{-iHt}\lvert\psi(0)\rangle$. For open-system
 
 A real device implements the same logic indirectly through calibrated pulses and gates. The clean mathematical model is the spin Hamiltonian; the hardware layer turns each term into microwave pulses on anharmonic superconducting oscillators.
 
-## 12. Extended Reading
+## 12. Fermions on Transmons: The Hubbard Model and Jordan–Wigner Map
+
+Spin Hamiltonians act directly on qubits. Electrons require one extra step because fermionic creation and annihilation operators anticommute, even when they act on different sites. Consider the spinful Fermi–Hubbard model on a chain:
+
+<div class="math-display">
+$$
+H=-t\sum_{j=1}^{L-1}\sum_{\sigma=\uparrow,\downarrow}
+\left(c_{j\sigma}^{\dagger}c_{j+1,\sigma}+c_{j+1,\sigma}^{\dagger}c_{j\sigma}\right)
++U\sum_{j=1}^{L}n_{j\uparrow}n_{j\downarrow},
+\qquad n_{j\sigma}=c_{j\sigma}^{\dagger}c_{j\sigma}.
+$$
+</div>
+
+Here $t$ sets the hopping rate, while $U$ penalizes two electrons occupying the same site. There are $2L$ spin orbitals, so the direct encoding uses $2L$ qubits: $\lvert0\rangle$ means an empty orbital and $\lvert1\rangle$ an occupied one. Choose an ordering of the orbitals and label them $p=0,\ldots,2L-1$. In the Pauli convention used above, the Jordan–Wigner transformation is
+
+<div class="math-display">
+$$
+c_p=\left(\prod_{k<p}Z_k\right)\frac{X_p+iY_p}{2},
+\qquad
+c_p^{\dagger}=\left(\prod_{k<p}Z_k\right)\frac{X_p-iY_p}{2},
+\qquad
+n_p=\frac{I-Z_p}{2}.
+$$
+</div>
+
+The preceding $Z$ operators record the parity of occupied orbitals before $p$. That parity string supplies the minus sign when two fermions are exchanged. Substituting these expressions gives the two useful building blocks, for $p<q$:
+
+<div class="math-display">
+$$
+c_p^{\dagger}c_q+c_q^{\dagger}c_p
+=\frac{1}{2}\left(X_p Z_{p+1}\cdots Z_{q-1}X_q
++Y_p Z_{p+1}\cdots Z_{q-1}Y_q\right),
+\qquad
+n_pn_q=\frac{(I-Z_p)(I-Z_q)}{4}.
+$$
+</div>
+
+For adjacent orbitals, the middle $Z$ string is empty and hopping becomes $(X_pX_q+Y_pY_q)/2$, an exchange interaction. The on-site repulsion becomes a constant plus single-qubit $Z$ and two-qubit $ZZ$ terms. An orbital ordering changes the length of the parity strings, but not the modeled fermionic physics.
+
+For a concrete two-site example, order the orbitals as $(1\uparrow,2\uparrow,1\downarrow,2\downarrow)$ and assign qubits $(0,1,2,3)$. Then
+
+<div class="math-display">
+$$
+H_{\rm qubit}=-\frac{t}{2}(X_0X_1+Y_0Y_1+X_2X_3+Y_2Y_3)
++\frac{U}{4}\big[(I-Z_0)(I-Z_2)+(I-Z_1)(I-Z_3)\big].
+$$
+</div>
+
+To simulate its dynamics digitally, initialize the occupation bitstring, split $H_{\rm qubit}$ into hopping and interaction pieces, and apply the Trotter steps from Section 9 using exchange-type and $Z/ZZ$ gates. For larger systems, compile any longer parity strings into Pauli-string rotations. Readout in the computational basis gives $\langle n_{j\sigma}\rangle=(1-\langle Z_{j\sigma}\rangle)/2$; adding or subtracting the two spin densities gives charge or spin density. Connectivity, parity-string length, and gate error determine the practical circuit cost.
+
+For a larger-scale example, [Alam *et al.*, “Programmable digital quantum simulation of 2D Fermi-Hubbard dynamics using 72 superconducting qubits”](https://arxiv.org/abs/2510.26845) report dynamics on up to a $6\times6$ lattice using Google's Willow processor. The two-site mapping above is the basic algebra behind fermion-to-qubit simulation; large experiments optimize the encoding and circuits around hardware constraints.
+
+## 13. Extended Reading
 
 For a first serious pass through the original literature, these are the references I would read in roughly this order.
 
@@ -587,32 +639,8 @@ For a first serious pass through the original literature, these are the referenc
 | Quantum gates and universality | M. A. Nielsen and I. L. Chuang, [*Quantum Computation and Quantum Information*](https://doi.org/10.1017/CBO9780511976667), especially the one-qubit/CNOT universality construction. |
 | Universal quantum simulation | S. Lloyd, ["Universal Quantum Simulators"](https://doi.org/10.1126/science.273.5278.1073), Science 273, 1073-1078 (1996). |
 | Quantum simulation review | I. M. Georgescu, S. Ashhab, and F. Nori, ["Quantum simulation"](https://doi.org/10.1103/RevModPhys.86.153), Rev. Mod. Phys. 86, 153 (2014). |
+| Fermi–Hubbard simulation on superconducting qubits | F. Alam et al., ["Programmable digital quantum simulation of 2D Fermi-Hubbard dynamics using 72 superconducting qubits"](https://arxiv.org/abs/2510.26845), arXiv:2510.26845. |
 
-## 13. Big Picture
+## 14. Big Picture
 
-The transmon is a carefully engineered compromise:
-
-| Ingredient | Role |
-|---|---|
-| Josephson junction | nonlinear inductance and anharmonic spectrum |
-| shunt capacitance | reduces charge noise by lowering $E_C$ |
-| lowest two levels | define the computational qubit |
-| microwave drive | implements single-qubit rotations |
-| cavity or resonator | enables readout, control ports, and mediated coupling |
-| entangling gates | make computation and spin simulation universal |
-
-In one line:
-
-<div class="math-display">
-$$
-\begin{array}{c}
-\text{Josephson nonlinearity}\\
-+\ \text{capacitance and microwave control}\\
-+\ \text{cavity-mediated measurement/coupling}\\[2mm]
-\Downarrow\\[1mm]
-\text{programmable spin-1/2 quantum hardware}
-\end{array}
-$$
-</div>
-
-That is why the transmon sits at the center of superconducting quantum computing: it turns circuit parameters into a controllable Hamiltonian, and controllable Hamiltonians are exactly what we need for gates, measurement, and quantum simulation.
+The Josephson junction supplies nonlinearity; the shunt capacitor suppresses charge noise; microwave drives, couplers, and resonators provide gates and readout. After truncating to two levels, each transmon is a controllable qubit. Spin models act on those qubits directly, while Jordan–Wigner maps fermionic models onto the same gate toolbox.
