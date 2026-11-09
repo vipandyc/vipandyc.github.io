@@ -59,7 +59,14 @@ $$
 
 Think of each fixed value of $X$ as a group. The first term is the **variance between group means**; the second is the **average variance within groups**.
 
-Rao–Blackwellization keeps the group means and removes the within-group sampling noise. Because the within-group term is nonnegative, conditioning cannot increase the variance.
+Replacing $G$ by its conditional mean $m(X)$ removes exactly the second term:
+
+<div class="math-display">
+$$
+\operatorname{Var}(G)-\operatorname{Var}_X(m(X))
+=\mathbb E_X[\operatorname{Var}_Y(G\mid X)]\geq 0.
+$$
+</div>
 
 To see why, write $G=m(X)+R$ with $R=G-m(X)$. Since $\mathbb E[R\mid X]=0$, we have $\mathbb E[m(X)R]=\mathbb E[m(X)\mathbb E[R\mid X]]=0$: the two parts are uncorrelated, so their variances add. Equality holds only when $G$ already has no randomness left after $X$ is known.
 
