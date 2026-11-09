@@ -100,7 +100,29 @@ Indeed, $1/4=1/12+1/6$, exactly as the total-variance identity predicts. At the 
 
 **Latent-variable models.** If a model contains an easy-to-integrate latent variable $Z$, replace a sampled contribution $G(X,Z)$ by $\int G(X,z)p(z\mid X)\,\mathrm dz$. This is useful when that integral is analytic or can be evaluated cheaply and accurately, for example with a Gaussian conditional distribution.
 
-**Particle filters.** In a state-space model with a nonlinear component and a conditionally linear-Gaussian component, particles can represent the nonlinear part while a Kalman filter integrates the Gaussian part for each particle. This is a *Rao–Blackwellized particle filter*: it spends sampling effort on the part that cannot be handled analytically. A [particle-filter study by Doucet and colleagues](https://arxiv.org/abs/1301.3853) develops this construction for dynamic Bayesian networks.
+**Particle filters.** Imagine a 20-dimensional state split into a difficult two-dimensional part $\mathbf x$ and an 18-dimensional part $\mathbf z$ that is Gaussian conditional on $\mathbf x$. Instead of sampling all 20 coordinates, sample particles $\mathbf x_i$ and attach a conditional Gaussian to each one. At a given filtering step, the result is a weighted mixture:
+
+<div class="math-display">
+$$
+p(\mathbf x,\mathbf z)\approx
+\sum_{i=1}^N w_i\,\delta(\mathbf x-\mathbf x_i)
+\mathcal N(\mathbf z;\boldsymbol\mu_i,\boldsymbol\Sigma_i),
+\qquad \sum_i w_i=1.
+$$
+</div>
+
+For an observable $f$, average over the Gaussian part instead of sampling it:
+
+<div class="math-display">
+$$
+\mathbb E[f]\approx\sum_{i=1}^N w_i
+\int f(\mathbf x_i,\mathbf z)\,
+\mathcal N(\mathbf z;\boldsymbol\mu_i,\boldsymbol\Sigma_i)
+\,\mathrm d\mathbf z.
+$$
+</div>
+
+This is a *Rao–Blackwellized particle filter*: it uses a conditional expectation over $\mathbf z$, retaining its distribution while removing its sampling noise. When the conditional dynamics are linear-Gaussian, a Kalman filter can update each Gaussian. See the [particle-filter study by Doucet and colleagues](https://arxiv.org/abs/1301.3853).
 
 ## 5. The Computational Tradeoff
 
