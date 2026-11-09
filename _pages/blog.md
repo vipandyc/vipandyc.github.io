@@ -24,6 +24,7 @@ Short technical notes on computational physics, applied math, many-body algorith
 
 ## Applied Math
 
+- [Rao–Blackwellization: Average Out the Noise You Can](/blog/rao-blackwellization/)
 - [Finite Groups: Irreps, Characters, and Orthogonality Cheat Sheet](/blog/finite-group-irreps-characters-orthogonality/)
 - [Radon-Nikodym, Girsanov, and Diffusion Flow Cheat Sheet](/blog/radon-nikodym-girsanov-diffusion-flows/)
 
