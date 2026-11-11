@@ -1,20 +1,22 @@
 ---
 permalink: /publications/
 title: "Selected Publications"
-excerpt: "Selected first-author and shared-lead publications"
+excerpt: "Selected publications in reverse chronological order"
 author_profile: true
 ---
 
 # Selected Publications
 
-Selected first-author and shared-lead work. <sup>*</sup>Equal contribution. For the full list, see my [Google Scholar profile](https://scholar.google.com/citations?user=RQP17VsAAAAJ&hl=en).
+Selected works in reverse chronological order. <sup>*</sup>Equal contribution. For the full list, see my [Google Scholar profile](https://scholar.google.com/citations?user=RQP17VsAAAAJ&hl=en).
 
 {% for paper in site.data.selected_publications %}
 <div class="paper-box">
   <div class="paper-box-image">
     <div class="paper-visual">
       {% if paper.image %}
-      <img src="{{ paper.image | relative_url }}" alt="{{ paper.image_alt | escape }}" loading="lazy">
+      <a class="paper-image-link" href="{{ paper.image | relative_url }}" target="_blank" rel="noopener" title="View full-size image">
+        <img src="{{ paper.image | relative_url }}" alt="{{ paper.image_alt | escape }}" loading="lazy">
+      </a>
       {% else %}
       <div class="paper-placeholder" aria-hidden="true"><span>{{ paper.topic }}</span></div>
       {% endif %}

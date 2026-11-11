@@ -4,6 +4,8 @@
   venue: "Nature Computational Science 6, 1114–1123 (2026)"
   badge: "Nature Computational Science"
   topic: "Generative design"
+  image: "/images/publications/crysvcd-fig1.webp"
+  image_alt: "Figure 1 of the valence-constrained crystal generation study"
   summary: "A generative framework incorporates valence constraints to guide the discovery of chemically valid crystal structures."
 
 - title: "JANUS: A multi-modal foundation neural sampler for disordered materials"
@@ -12,6 +14,8 @@
   venue: "arXiv:2608.19116 (2026), under peer review"
   badge: "Preprint"
   topic: "Disordered materials"
+  image: "/images/publications/janus-fig1.webp"
+  image_alt: "Figure 1: JANUS model and sampling workflow"
   summary: "Unifies chemical identities, atomic positions, and cell degrees of freedom for sampling and inverse design."
 
 - title: "ATLAS: A foundation neural sampler for amorphous materials"
@@ -20,6 +24,8 @@
   venue: "arXiv:2607.19198 (2026), under peer review"
   badge: "Preprint"
   topic: "Amorphous materials"
+  image: "/images/publications/atlas-fig1.webp"
+  image_alt: "Figure 1: ATLAS foundation sampler for amorphous materials"
   summary: "Enables thermodynamic sampling of amorphous materials across temperature and composition."
 
 - title: "Can LLMs extract scientific consensus? A case study in high-temperature superconductivity"
@@ -28,6 +34,8 @@
   venue: "arXiv:2606.07570 (2026), under peer review"
   badge: "Preprint"
   topic: "Scientific literature"
+  image: "/images/publications/scientific-consensus-fig1.webp"
+  image_alt: "Figure 1 of the LLM scientific consensus study"
   summary: "Studies how large language models can synthesize evidence from a complex research literature."
 
 - title: "Probing non-equilibrium grain boundary dynamics with XPCS and domain-adaptive machine learning"
@@ -36,6 +44,8 @@
   venue: "arXiv:2605.12194 (2026), under peer review"
   badge: "Preprint"
   topic: "X-ray experiments"
+  image: "/images/publications/xpcs-fig1.webp"
+  image_alt: "Figure 1: machine learning analysis of X-ray photon correlation spectroscopy"
   summary: "Connects machine learning with X-ray photon correlation spectroscopy to study evolving grain boundaries."
 
 - title: "A foundation model for non-destructive defect identification from vibrational spectra"
@@ -44,6 +54,8 @@
   venue: "Matter 9, 102728 (2026)"
   badge: "Matter"
   topic: "Defect spectroscopy"
+  image: "/images/publications/defectnet-fig1.webp"
+  image_alt: "Figure 1: foundation model for defect identification from vibrational spectra"
   summary: "Uses vibrational spectra to quantify point defects in materials without destructive measurement."
 
 - title: "Beyond overcomplication: a linear model suffices to decode hidden structure-property relationships in glasses"
@@ -52,6 +64,8 @@
   venue: "arXiv:2602.05313 (2026), under peer review"
   badge: "Preprint"
   topic: "Glass structure"
+  image: "/images/publications/glass-fig1.webp"
+  image_alt: "Figure 1 of the glass structure-property relationships study"
   summary: "Finds interpretable links between the structure and properties of disordered glasses."
 
 - title: "Artificial intelligence-driven approaches for materials design and discovery"
@@ -70,6 +84,8 @@
   venue: "arXiv:2510.22424 (2025), accepted by Newton"
   badge: "Accepted"
   topic: "Superconductors"
+  image: "/images/publications/rl-critical-current-fig1.webp"
+  image_alt: "Figure 1: reinforcement learning and simulation workflow for critical current optimization"
   summary: "Combines reinforcement learning and simulation to optimize defect landscapes for critical current."
 
 - title: "Are quantum materials economically and environmentally sustainable?"
@@ -78,6 +94,8 @@
   venue: "Materials Today 90, 241–248 (2025)"
   badge: "Materials Today"
   topic: "Sustainability"
+  image: "/images/publications/quantum-sustainability-fig1.webp"
+  image_alt: "Figure 1: framework for assessing quantum materials sustainability"
   summary: "Evaluates quantum materials alongside economic and environmental considerations."
 
 - title: "Simulated atomistic growth of amorphous monolayer carbon"
@@ -86,6 +104,8 @@
   venue: "Journal of Physical Chemistry Letters 16, 6866–6873 (2025)"
   badge: "J. Phys. Chem. Lett."
   topic: "Atomistic growth"
+  image: "/images/publications/amorphous-carbon-growth-figs5.webp"
+  image_alt: "Panels from Supplementary Figure S5 showing successive stages of simulated amorphous monolayer carbon growth"
   summary: "Simulates the growth of amorphous monolayer carbon at the atomic scale."
 
 - title: "AI-driven defect engineering for advanced thermoelectric materials"
@@ -94,6 +114,8 @@
   venue: "Advanced Materials 37, 2505642 (2025)"
   badge: "Advanced Materials"
   topic: "Thermoelectrics"
+  image: "/images/publications/thermoelectric-defect-figure.webp"
+  image_alt: "Figure from the thermoelectric defect engineering review showing transport properties and AI approaches"
   summary: "Reviews AI approaches to defect engineering for thermoelectric performance."
 
 - title: "Machine learning detection of Majorana zero modes from zero-bias peak measurements"
