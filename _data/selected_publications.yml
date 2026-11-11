@@ -104,8 +104,8 @@
   venue: "Journal of Physical Chemistry Letters 16, 6866–6873 (2025)"
   badge: "J. Phys. Chem. Lett."
   topic: "Atomistic growth"
-  image: "/images/publications/amorphous-carbon-growth-figs5.webp"
-  image_alt: "Panels from Supplementary Figure S5 showing successive stages of simulated amorphous monolayer carbon growth"
+  image: "/images/publications/amorphous-carbon-growth-fig1.png"
+  image_alt: "Figure 1: simulated atomistic growth and Monte Carlo sampling workflow for amorphous monolayer carbon"
   summary: "Simulates the growth of amorphous monolayer carbon at the atomic scale."
 
 - title: "AI-driven defect engineering for advanced thermoelectric materials"
