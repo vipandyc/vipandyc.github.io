@@ -22,7 +22,7 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 # Site Author
 author:
   name             : "Mouyang Cheng"
-  avatar           : "/images/mouyang-cheng-headshot.jpg"
+  avatar           : "/images/mouyang-cheng-headshot-centered.jpg"
   bio              : "AI for materials | Computational physics | Mingda Li Group, MIT"
   location         : "Cambridge, MA, U.S."
   employer         :
