@@ -3,30 +3,57 @@ permalink: /
 title: ""
 excerpt: ""
 author_profile: true
-redirect_from: 
+redirect_from:
   - /about/
   - /about.html
 ---
 
-{% if site.google_scholar_stats_use_cdn %}
-{% assign gsDataBaseUrl = "https://cdn.jsdelivr.net/gh/" | append: site.repository | append: "@" %}
-{% else %}
-{% assign gsDataBaseUrl = "https://raw.githubusercontent.com/" | append: site.repository | append: "/" %}
-{% endif %}
-{% assign url = gsDataBaseUrl | append: "google-scholar-stats/gs_data_shieldsio.json" %}
+<span class="anchor" id="about-me"></span>
 
-<span class='anchor' id='about-me'></span>
+Hi! I'm Mouyang Cheng (程谋阳), a Ph.D. candidate in Computational Materials Science and Engineering at MIT, advised by Prof. Mingda Li. I earned an S.M. in Materials Science and Engineering from MIT in 2026 and a B.S. in Physics from Peking University in 2024, where I worked with Prof. Ji Chen. I expect to complete my Ph.D. in May 2027.
 
-Hi! I'm Mouyang Cheng (程谋阳), 1st year graduate student in MIT CSE-DMSE (Computational Science and Engineering @ Department of Material Science and Engineering) program. I got my bachelor's degree in Peking University, China, majoring in physics, where I conducted my undergraduate research in Prof. Ji Chen's group. For the PhD career I'm now doing research at Prof. Mingda Li's group. My research interest covers a wide range of topics in computational material science, closely bonded to understanding actual experiments.
+I develop AI and physics-based methods to understand real materials, simulate complex atomic structures and dynamics, accelerate materials discovery, and interpret experimental measurements. My research connects generative models and scientific computing with spectroscopy, scattering, and transport experiments, particularly for defects, amorphous systems, and quantum and energy materials.
 
-# 🎖 Honors and Awards
-- *2025.05* Exceptional Graduate First Year Performance Award, MIT DMSE
-- *2024.03* Excellent Undergraduate Research Project, Peking University (Undergraduate)
-- *2023.09* National Scholarship, Peking University (Undergraduate, top 1%)
-- *2022.09* National Scholarship, Peking University (Undergraduate, top 1%)
-- *2021.09* National Scholarship, Peking University (Undergraduate, top 1%)
+<span class="anchor" id="selected-honors-and-awards"></span>
 
+# 🎖 Selected Honors and Awards
 
-# 📖 Educations
-- *2024.07 - (now)*, Ph.D. Computational Science and Engineering, MIT, US
-- *2020.09 - 2024.07*, B.S. Physics, Peking University, China 
+- **2026** MIT Energy Initiative Society of Energy Scholar Award
+- **2026** MIT CCSE MathWorks Research Prize for Outstanding Doctoral Research
+- **2025** MIT DMSE Exceptional Graduate First-Year Performance Award
+- **2025** MIT DMSE Best Paper for a First-Year Graduate Student Award
+- **2024** MIT DMSE Fellowship Award
+- **2024** Peking University Excellent Undergraduate Research Award
+- **2024** Peking University Junior Scholar Award
+- **2021–2023** National Scholarship in China (three times)
+- **2019** Gold Medal, 36th China Physics Olympics final
+
+<span class="anchor" id="education"></span>
+
+# 📖 Education
+
+- **Ph.D. in Computational Materials Science and Engineering**, MIT, September 2024–May 2027 (expected). Thesis: *Decoding Disorder with Artificial Intelligence*.
+- **S.M. in Materials Science and Engineering**, MIT, September 2024–February 2026. Thesis: *AI-Driven Exploration of Topological Quantum Materials*.
+- **B.S. in Physics**, Peking University, September 2020–July 2024. Thesis: *Electric Transport Properties in Two-Dimensional Amorphous Carbon*.
+
+<span class="anchor" id="tutorials-and-talks"></span>
+
+# 🎤 Tutorials and Talks
+
+- **2027** Organizer, *Physics-Inspired AI for Scientific Discovery: From Molecules to Materials*, proposed ICLR workshop. [Workshop site repository](https://github.com/phisci27/phisci27.github.io).
+- **2026** Organizer, *Winter AI for Materials & Chemistry Workshop*, Microsoft Research New England. [Workshop site](https://ai4mc26.github.io/).
+- **2026** *ATLAS: A Foundation Neural Sampler for Amorphous Materials*, Microsoft Research GenAI Workshop.
+- **2026** *Constrained Generative AI for Materials Inverse Design*, Microsoft Research GenAI Seminar.
+- **2026** *Generative AI for Physics: From Models to Materials*, American Physical Society tutorial.
+- **2026** *A Foundational Model for Non-Destructive Defect Detection from Vibrational Spectroscopy*, American Physical Society oral presentation.
+- **2025** *A Foundational Model for Non-Destructive Defect Detection from Vibrational Spectroscopy*, Materials Research Society Fall Meeting oral presentation.
+- **2025** *Enhancing Materials Design with Valence-Constrained Design in Generative Modelling*, Materials Research Society Fall Meeting oral presentation.
+
+<span class="anchor" id="internship"></span>
+
+# 💼 Internship
+
+**Research Intern, Microsoft Research** · May–August 2026. Mentors: Dr. Yuanqi Du and Dr. Carles Domingo-Enrich.
+
+- Built **ATLAS**, a foundation neural sampler for amorphous materials that enables direct thermodynamic sampling across temperatures and compositions with over 500× fewer energy evaluations.
+- Built **JANUS**, a multimodal foundation neural sampler for disordered materials that combines chemical identities with atomic and cell degrees of freedom for thermodynamics, inverse design, and defect discovery.
