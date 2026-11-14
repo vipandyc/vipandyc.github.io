@@ -165,153 +165,299 @@ Classical MD applies when nuclear motion is adequately classical; it misses quan
 
 ## 3. Property Map: What Do We Correlate?
 
-For 1–4 and 6, use equilibrium, isotropic three-dimensional classical systems. Here $V$ is volume, $T$ temperature, $\delta P_{xy}=P_{xy}-\langle P_{xy}\rangle$, and all currents are **total** currents, not current densities. For anisotropic materials, use tensor components. Proportionality signs below omit probe geometry and unit factors.
+For 1–4 and 6, assume classical equilibrium and isotropic three-dimensional transport. The cross-observable version of Eq. (2) is
+
+<div class="math-display">
+$$
+\chi_{AB}^{\rm cl}(t)
+=\beta\Theta(t)\langle\delta A(t)\,\delta\dot B(0)\rangle.
+$$
+</div>
+
+Choose transport polarizations with $\dot{\mathbf B}_b=\mathbf J_b$. Equation (2) then gives $\chi_{\mathbf J_a\mathbf B_b}^{\rm cl}(t)=\beta\Theta(t)\langle\mathbf J_a(t)\cdot\mathbf J_b(0)\rangle$. The entropy-production rate identifies the two driving forces:
+
+<div class="math-display">
+$$
+\dot s=\mathbf j_e\cdot\frac{\mathbf E}{T}
+-\mathbf j_Q\cdot\frac{\nabla T}{T^2}.
+$$
+</div>
+
+For total currents $\mathbf J_a=V\mathbf j_a$, the zero-frequency Kubo coefficients therefore give
+
+<div class="math-display">
+$$
+\begin{aligned}
+L_{ab}&=\frac{1}{3Vk_{\rm B}}\int_0^\infty
+\langle\mathbf J_a(t)\cdot\mathbf J_b(0)\rangle\,\mathrm dt,\\
+\begin{pmatrix}\mathbf j_e\\\mathbf j_Q\end{pmatrix}
+&=\begin{pmatrix}L_{ee}&L_{eQ}\\L_{Qe}&L_{QQ}\end{pmatrix}
+\begin{pmatrix}\mathbf E/T\\-\nabla T/T^2\end{pmatrix}.
+\end{aligned}
+$$
+</div>
+
+The second vector contains the electric and thermal driving forces. In 3D, $1/3$ averages the three directions; anisotropic materials use tensor components.
 
 ### 3.1 Self-diffusivity
 
+With $H'=-\mathbf F\cdot\mathbf r$, insert $A=v_x$, $B=x$, and $\dot B=v_x$ into the classical Kubo formula:
+
 <div class="math-display">
 $$
-D=\frac13\int_0^\infty\langle\mathbf v(t)\cdot\mathbf v(0)\rangle\,\mathrm dt
-=\lim_{t\to\infty}\frac{\langle\lVert\mathbf r(t)-\mathbf r(0)\rVert^2\rangle}{6t}.
+\begin{aligned}
+\mu&=\int_0^\infty\chi_{v_xx}^{\rm cl}(t)\,\mathrm dt
+=\beta\int_0^\infty\langle v_x(t)v_x(0)\rangle\,\mathrm dt,\\
+D&=k_{\rm B}T\mu
+=\frac13\int_0^\infty\langle\mathbf v(t)\cdot\mathbf v(0)\rangle\,\mathrm dt.
+\end{aligned}
 $$
 </div>
 
-**Why:** Persistent velocity produces long-time displacement.
+The equivalent displacement formula follows by integrating velocity twice:
+
+<div class="math-display">
+$$
+\langle\lVert\Delta\mathbf r(t)\rVert^2\rangle
+=2\int_0^t(t-s)\langle\mathbf v(s)\cdot\mathbf v(0)\rangle\,\mathrm ds
+\;\Longrightarrow\;
+D=\lim_{t\to\infty}\frac{\langle\lVert\Delta\mathbf r(t)\rVert^2\rangle}{6t}.
+$$
+</div>
 
 ### 3.2 Shear viscosity
 
+Use the total momentum current $J_p=V\delta P_{xy}$ and its Helfand polarization $B_p$ with $\dot B_p=J_p$. A shear rate supplies $f_p=-\partial_y u_x$ in $H'=-f_pB_p$, so $\delta P_{xy}=\eta f_p$:
+
 <div class="math-display">
 $$
-\eta=\frac{V}{k_{\rm B}T}\int_0^\infty
+\begin{aligned}
+\chi_{J_pB_p}^{\rm cl}(t)&=\beta\Theta(t)
+\langle J_p(t)J_p(0)\rangle,\\
+\eta&=\frac1V\int_0^\infty\chi_{J_pB_p}^{\rm cl}(t)\,\mathrm dt
+=\frac{V}{k_{\rm B}T}\int_0^\infty
 \langle\delta P_{xy}(t)\delta P_{xy}(0)\rangle\,\mathrm dt.
+\end{aligned}
 $$
 </div>
-
-**Why:** $P_{xy}$ carries $x$-momentum across a $y$-plane; its relaxation sets shear resistance.
 
 ### 3.3 Ionic conductivity
 
+The electric field couples to the total dipole. Insert $B=\mathbf P_e$ and $A=\mathbf I$:
+
 <div class="math-display">
 $$
-\mathbf I=\sum_a q_a\mathbf v_a,\qquad
-\sigma_{\rm ion}=\frac{1}{3Vk_{\rm B}T}\int_0^\infty
-\langle\mathbf I(t)\cdot\mathbf I(0)\rangle\,\mathrm dt.
+\begin{aligned}
+H'&=-\mathbf E\cdot\mathbf P_e,\qquad
+\mathbf P_e=\sum_a q_a\mathbf r_a,\qquad
+\dot{\mathbf P}_e=\mathbf I=\sum_a q_a\mathbf v_a,\\
+\sigma_{\rm ion}&=\frac{L_{ee}}{T}
+=\frac{1}{3Vk_{\rm B}T}\int_0^\infty
+\langle\mathbf I(t)\cdot\mathbf I(0)\rangle\,\mathrm dt,\\
+\langle\mathbf I(t)\cdot\mathbf I(0)\rangle
+&=\sum_{a,b}q_aq_b
+\langle\mathbf v_a(t)\cdot\mathbf v_b(0)\rangle.
+\end{aligned}
 $$
 </div>
-
-**Why:** An electric field drives charge current. The total-current correlation includes motion of *different* ions together.
 
 ### 3.4 Thermal conductivity
 
+Insert $a=b=Q$ in the transport matrix, then compare $\mathbf j_Q=-\kappa\nabla T$:
+
 <div class="math-display">
 $$
-\kappa=\frac{1}{3Vk_{\rm B}T^2}\int_0^\infty
-\langle\mathbf J_Q(t)\cdot\mathbf J_Q(0)\rangle\,\mathrm dt,
-\qquad \mathbf J_Q=V\mathbf j_Q.
+\begin{aligned}
+\mathbf j_Q&=L_{QQ}\left(-\frac{\nabla T}{T^2}\right),\qquad
+\mathbf J_Q=V\mathbf j_Q,\\
+\kappa&=\frac{L_{QQ}}{T^2}
+=\frac{1}{3Vk_{\rm B}T^2}\int_0^\infty
+\langle\mathbf J_Q(t)\cdot\mathbf J_Q(0)\rangle\,\mathrm dt.
+\end{aligned}
 $$
 </div>
 
-**Why:** $\mathbf J_Q$ carries heat; in an insulator this is often mainly phonon transport. The formula assumes no coupled charge or particle flow. [MD example](https://docs.lammps.org/compute_heat_flux.html).
+This form assumes no coupled charge or particle flow. [MD example](https://docs.lammps.org/compute_heat_flux.html).
 
 ### 3.5 Electronic conductivity
 
+Use the electronic current and a vector potential, with $\mathbf E(\omega)=i\omega\mathbf A^{\rm ext}(\omega)$. The contact term comes from the field dependence of the current:
+
 <div class="math-display">
 $$
+\begin{aligned}
+H'&=-J_\alpha A_\alpha^{\rm ext},\qquad
+\sigma_{\alpha\alpha}(\omega)
+=\frac{\chi_{J_\alpha J_\alpha}(\omega)+K_{\rm contact}}{iV\omega},\\
 \operatorname{Re}\sigma_{\alpha\alpha}(\omega)
-=\frac{\chi''_{J_\alpha J_\alpha}(\omega)}{V\omega}\quad(\omega>0),
-\qquad
-\sigma_{\rm dc}=\lim_{\omega\to0^+}\operatorname{Re}\sigma(\omega).
+&=\frac{\chi''_{J_\alpha J_\alpha}(\omega)}{V\omega}
+=\frac{\pi}{V\hbar\omega}\sum_{n,m}(p_n-p_m)
+|\langle m|J_\alpha|n\rangle|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)
+\quad(\omega>0).
+\end{aligned}
 $$
 </div>
 
-**Why:** The electric field drives electronic current $\mathbf J$. DFT Kubo–Greenwood uses band energies and current matrix elements; the full complex response includes a contact term. [Optical-properties note](/blog/optical-properties-kubo-dft-gw/).
+The second line inserts $A=B=J_\alpha$ into the Lehmann/FDT result of Section 2; $p_n=e^{-\beta E_n}/Z$. Replacing many-body transitions by band energies and occupations gives Kubo–Greenwood. The DC value is $\lim_{\omega\to0^+}\operatorname{Re}\sigma(\omega)$ when finite. [Optical-properties note](/blog/optical-properties-kubo-dft-gw/).
 
 ### 3.6 Thermoelectric response
 
+Use the *off-diagonal* entry $a=e$, $b=Q$ of the same transport matrix:
+
 <div class="math-display">
 $$
-L_{eQ}=\frac{1}{3Vk_{\rm B}T}\int_0^\infty
-\langle\mathbf J_e(t)\cdot\mathbf J_Q(0)\rangle\,\mathrm dt,
-\qquad
-\mathbf j_e=\sigma\mathbf E-\frac{L_{eQ}}{T}\nabla T.
+\begin{aligned}
+L_{eQ}&=\frac{1}{3Vk_{\rm B}}\int_0^\infty
+\langle\mathbf J_e(t)\cdot\mathbf J_Q(0)\rangle\,\mathrm dt,\\
+\mathbf j_e&=\frac{L_{ee}}{T}\mathbf E
+-\frac{L_{eQ}}{T^2}\nabla T,\\
+\mathbf j_e=0&\quad\Longrightarrow\quad
+S\equiv\frac{E}{\nabla T}
+=\frac{L_{eQ}}{T L_{ee}}.
+\end{aligned}
 $$
 </div>
-
-**Why:** Charge–heat *cross*-correlation gives the charge current driven by a temperature gradient; at zero current, $S=L_{eQ}/(T\sigma)$ with $S=E/\nabla T$.
 
 ### 3.7 Electric or magnetic susceptibility
 
+Choose the moment $A$ conjugate to the applied field $h$; then set $A=B$ in the quantum Kubo formula:
+
 <div class="math-display">
 $$
-\chi_{AA}(\omega)=\frac{i}{\hbar}\int_0^\infty e^{i\omega t}
-\langle[A(t),A(0)]\rangle\,\mathrm dt,
-\qquad A=M_{\rm electric}\ \text{or}\ M_{\rm magnetic}.
+\begin{aligned}
+H'&=-hA,\qquad A=M_{\rm electric}\ \text{or}\ M_{\rm magnetic},\\
+\chi_{AA}(\omega)&=\frac{i}{\hbar}\int_0^\infty e^{i\omega t}
+\langle[A(t),A(0)]\rangle\,\mathrm dt,\\
+\chi''_{AA}(\omega)&=
+\frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_A^>(\omega).
+\end{aligned}
 $$
 </div>
 
-**Why:** The applied field couples to the electric or magnetic moment $A$; $\operatorname{Im}\chi$ measures absorption.
+For a classical static field, integrate Eq. (2), assuming $C_A(t)\to0$:
+
+<div class="math-display">
+$$
+\chi_{AA}^{\rm cl}(0)
+=-\beta\int_0^\infty\dot C_A(t)\,\mathrm dt
+=\beta C_A(0)=\beta\operatorname{Var}(A).
+$$
+</div>
+
+Divide by $V$ for a bulk susceptibility, with the appropriate electromagnetic unit factor.
 
 ### 3.8 Infrared absorption
 
+Set $A=B=M$, the electric dipole along the light polarization. The field does work at rate $E(t)\dot M(t)$:
+
 <div class="math-display">
 $$
-I_{\rm IR}(\omega)\propto
-\omega\chi''_{MM}(\omega)
-\propto\omega(1-e^{-\beta\hbar\omega})S_M^>(\omega),
-\qquad M=\text{electric dipole}.
+\begin{aligned}
+H'&=-E(t)M,\qquad \delta M(\omega)=\chi_{MM}(\omega)E(\omega),\\
+\overline{P}_{\rm abs}
+&=\overline{E(t)\dot M(t)}
+=\frac{\omega}{2}|E_0|^2\chi''_{MM}(\omega),\\
+I_{\rm IR}(\omega)&\propto\omega\chi''_{MM}(\omega)
+=\frac{\omega(1-e^{-\beta\hbar\omega})}{2\hbar}S_M^>(\omega).
+\end{aligned}
 $$
 </div>
 
-**Why:** IR-active vibrations change $M$. In MD, use its dipole autocorrelation; in DFPT, use mode effective charges.
+In MD, calculate the dipole correlation; in harmonic DFPT, calculate its mode matrix elements through effective charges.
 
 ### 3.9 Nonresonant Raman scattering
 
+For nonresonant light, the quadratic light–matter coupling selects the projected polarizability $a$:
+
 <div class="math-display">
 $$
-I_{\rm Raman}(\omega)\propto(\omega_L-\omega)^4 S_a^>(\omega),
-\qquad
-a(t)=\mathbf e_{\rm out}\cdot\boldsymbol\alpha(t)\cdot\mathbf e_{\rm in}.
+\begin{aligned}
+H'_{\rm light}&=-\tfrac12\mathbf E\cdot\boldsymbol\alpha\cdot\mathbf E,
+\qquad a=\mathbf e_{\rm out}\cdot\boldsymbol\alpha\cdot\mathbf e_{\rm in},\\
+S_a^>(\omega)&=2\pi\sum_{n,m}p_n
+|\langle m|\delta a|n\rangle|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right),\\
+I_{\rm Raman}(\omega)&\propto
+(\omega_L-\omega)^4\sum_{n,m}p_n|\langle m|\delta a|n\rangle|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
+&=\frac{(\omega_L-\omega)^4}{2\pi}S_a^>(\omega),\\
+\chi''_{aa}(\omega)&=\frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_a^>(\omega).
+\end{aligned}
 $$
 </div>
 
-**Why:** Raman-active vibrations change polarizability $\boldsymbol\alpha$, selected by light polarizations. [DFPT example](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html).
+The middle line is the Lehmann spectrum from Section 2 with $A=a$; the last line uses the same FDT. The fourth power comes from the emitted dipole radiation. [DFPT example](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html).
 
 ### 3.10 Neutron or X-ray scattering
 
+The probe couples to density at momentum $\mathbf q$. Insert $A=\rho_{\mathbf q}$ and $B=\rho_{-\mathbf q}$ into the density response:
+
 <div class="math-display">
 $$
-S(\mathbf q,\omega)=\frac{1}{2\pi N}\int_{-\infty}^{\infty}
-e^{i\omega t}\langle\rho_{\mathbf q}(t)\rho_{-\mathbf q}(0)\rangle\,\mathrm dt,
-\qquad \rho_{\mathbf q}=\sum_j e^{-i\mathbf q\cdot\mathbf r_j}.
+\begin{aligned}
+H'&=-f_{\mathbf q}(t)\rho_{-\mathbf q},\qquad
+\rho_{\mathbf q}=\sum_j e^{-i\mathbf q\cdot\mathbf r_j},\\
+S_{\rm inel}(\mathbf q,\omega)
+&=\frac{1}{2\pi N}\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta\rho_{\mathbf q}(t)\delta\rho_{-\mathbf q}(0)\rangle\,\mathrm dt,\\
+\chi''_{\rho_{\mathbf q}\rho_{-\mathbf q}}(\omega)
+&=\frac{\pi N}{\hbar}
+(1-e^{-\beta\hbar\omega})S_{\rm inel}(\mathbf q,\omega),\\
+\frac{\mathrm d^2\sigma}{\mathrm d\Omega\,\mathrm d\omega}
+&\propto S_{\rm inel}(\mathbf q,\omega).
+\end{aligned}
 $$
 </div>
 
-**Why:** A probe transfers momentum $\mathbf q$ and energy $\hbar\omega$ to density fluctuations; peaks trace collective modes and phonon dispersion. For different atoms, weight $\rho_{\mathbf q}$ by scattering lengths or form factors.
+The last line is Section 2's FDT with $S^>_{\rho\rho}=2\pi N S_{\rm inel}$. Add the separate elastic Bragg peak if needed; for different atoms, weight $\rho_{\mathbf q}$ by scattering lengths or form factors.
 
 ### 3.11 Phonon or vibrational DOS
 
+Let $a$ run over all atoms in an $N_q$-cell harmonic sample. Expanding mass-weighted velocities into normal modes and using equipartition gives
+
 <div class="math-display">
 $$
-g_{\rm ph}(\omega)=\frac{1}{N_q}\sum_{\mathbf q\nu}
-\delta(\omega-\omega_{\mathbf q\nu}),\qquad
-g_{\rm MD}(\omega)\propto\int_{-\infty}^{\infty}e^{i\omega t}
-\sum_a m_a\langle\mathbf v_a(t)\cdot\mathbf v_a(0)\rangle\,\mathrm dt.
+\begin{aligned}
+C_v(t)&\equiv\sum_a m_a
+\langle\mathbf v_a(t)\cdot\mathbf v_a(0)\rangle
+=k_{\rm B}T\sum_{\mathbf q\nu}\cos(\omega_{\mathbf q\nu}t),\\
+\int_{-\infty}^{\infty}e^{i\omega t}\cos(\omega_{\mathbf q\nu}t)\,\mathrm dt
+&=\pi\bigl[\delta(\omega-\omega_{\mathbf q\nu})
++\delta(\omega+\omega_{\mathbf q\nu})\bigr],\\
+g_{\rm ph}(\omega)
+&=\frac1{N_q}\sum_{\mathbf q\nu}\delta(\omega-\omega_{\mathbf q\nu})
+=\frac{1}{\pi N_qk_{\rm B}T}
+\int_{-\infty}^{\infty}e^{i\omega t}C_v(t)\,\mathrm dt
+\quad(\omega>0).
+\end{aligned}
 $$
 </div>
 
-**Why:** Each normal mode adds a peak at its frequency; the mass-weighted MD spectrum recovers this in the classical harmonic limit. [Phonon calculation](https://www.quantum-espresso.org/Doc/INPUT_MATDYN.html); [MD spectrum](https://manual.gromacs.org/current/onlinehelp/gmx-dos.html).
+This is a mode-counting spectrum, not a current-response coefficient. The MD equality assumes classical harmonic motion; anharmonic motion broadens the peaks. [Phonon calculation](https://www.quantum-espresso.org/Doc/INPUT_MATDYN.html); [MD spectrum](https://manual.gromacs.org/current/onlinehelp/gmx-dos.html).
 
 ### 3.12 Electronic DOS
 
+Use the **fermionic one-particle** retarded Green function. For a noninteracting band, its pole gives a delta function:
+
 <div class="math-display">
 $$
-g_{\rm KS}(E)=\frac{1}{N_k}\sum_{n\mathbf k}\delta(E-\epsilon_{n\mathbf k}),
+\begin{aligned}
+G^R_{ij}(t)&=-\frac{i}{\hbar}\Theta(t)
+\langle\{c_i(t),c_j^\dagger(0)\}\rangle,\\
+G^R_{n\mathbf k}(E)&=\frac{1}{E-\epsilon_{n\mathbf k}+i0^+},
 \qquad
-g(E)=-\frac1\pi\operatorname{Im}\operatorname{Tr}G^R(E).
+-\frac1\pi\operatorname{Im}G^R_{n\mathbf k}(E)
+=\delta(E-\epsilon_{n\mathbf k}),\\
+g_{\rm KS}(E)&=\frac1{N_k}\sum_{n\mathbf k}
+\delta(E-\epsilon_{n\mathbf k}),\\
+g(E)&=-\frac{1}{\pi N_k}\sum_{\mathbf k}
+\operatorname{Im}\operatorname{Tr}_nG^R(\mathbf k,E).
+\end{aligned}
 $$
 </div>
 
-**Why:** The first counts DFT band states; the second counts interacting one-particle spectral weight. Here $G^R(E)$ is the fermionic one-particle Green function, distinct from the response Green function in Section 2. [DFT DOS example](https://quantum-espresso.org/Doc/pp_user_guide/node9.html).
+The last line remains valid with an interacting self-energy. Its anticommutator Green function differs from the commutator response Green function in Section 2. [DFT DOS example](https://quantum-espresso.org/Doc/pp_user_guide/node9.html).
 
 ## 4. MD, DFT, and the Practical Workflow
 
