@@ -174,7 +174,17 @@ $$
 $$
 </div>
 
-Choose transport polarizations with $\dot{\mathbf B}_b=\mathbf J_b$. Equation (2) then gives $\chi_{\mathbf J_a\mathbf B_b}^{\rm cl}(t)=\beta\Theta(t)\langle\mathbf J_a(t)\cdot\mathbf J_b(0)\rangle$. The entropy-production rate identifies the two driving forces:
+Choose transport polarizations whose time derivatives are the currents. Equation (2) gives
+
+<div class="math-display">
+$$
+\dot{\mathbf B}_b=\mathbf J_b,\qquad
+\chi_{\mathbf J_a\mathbf B_b}^{\rm cl}(t)
+=\beta\Theta(t)\langle\mathbf J_a(t)\cdot\mathbf J_b(0)\rangle.
+$$
+</div>
+
+The entropy-production rate identifies the two driving forces:
 
 <div class="math-display">
 $$
@@ -410,7 +420,7 @@ S_{\rm inel}(\mathbf q,\omega)
 $$
 </div>
 
-The last line is Section 2's FDT with $S^>_{\rho\rho}=2\pi N S_{\rm inel}$. Add the separate elastic Bragg peak if needed; for different atoms, weight $\rho_{\mathbf q}$ by scattering lengths or form factors.
+The response relation follows from Section 2's FDT and the structure factor's normalization. Add the elastic Bragg peak separately if needed; for different atoms, include scattering lengths or form factors in the density operator.
 
 ### 3.11 Phonon or vibrational DOS
 
