@@ -75,7 +75,19 @@ G^<_{AA}(t)&=-i\langle\delta A(0)\delta A(t)\rangle.
 $$
 </div>
 
-Thus $G^R=\Theta(t)(G^>-G^<)$. With the Fourier convention above, define $S_A^>(\omega)=iG^>_{AA}(\omega)$ and $S_A^<(\omega)=iG^<_{AA}(\omega)=S_A^>(-\omega)$.
+The retarded function is the causal difference of the two orderings. Their Fourier spectra are
+
+<div class="math-display">
+$$
+\begin{aligned}
+G^R_{AA}(t)&=\Theta(t)\bigl[G^>_{AA}(t)-G^<_{AA}(t)\bigr],\\
+S_A^>(\omega)&=iG^>_{AA}(\omega)
+=\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta A(t)\delta A(0)\rangle\,\mathrm dt,\\
+S_A^<(\omega)&=iG^<_{AA}(\omega)=S_A^>(-\omega).
+\end{aligned}
+$$
+</div>
 
 ### 2.2 Deriving quantum FDT
 
@@ -112,7 +124,7 @@ This is the **quantum FDT**: the equilibrium spectrum determines the dissipative
 
 ### 2.3 Classical FDT and the useful connection
 
-For the symmetrized spectrum $S_A^{\rm sym}=(S_A^>+S_A^<)/2$, the same result becomes
+For the symmetrized spectrum $S_A^{\rm sym}=(S_A^{>}+S_A^{<})/2$, the same result becomes
 
 <div class="math-display">
 $$
