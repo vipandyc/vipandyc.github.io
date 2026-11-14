@@ -37,90 +37,267 @@ $$
 $$
 </div>
 
-Thus response is linked to how a spontaneous fluctuation relaxes. Its time integral or its Fourier spectrum will give different physical outputs.
+For $H'=-fA$ and $\rho_{\rm eq}=Z^{-1}e^{-\beta H}$, phase-space integration by parts gives
+
+<div class="math-display">
+$$
+\begin{aligned}
+\chi_{AA}^{\rm cl}(t)
+&=-\Theta(t)\langle\{A(t),A(0)\}_{\rm PB}\rangle\\
+&=\Theta(t)\int\mathrm d\Gamma\,A(t)
+  \{\rho_{\rm eq},A(0)\}_{\rm PB}\\
+&=\beta\Theta(t)\langle\delta A(t)\dot A(0)\rangle\\
+&=-\beta\Theta(t)\frac{\mathrm d}{\mathrm dt}
+  \langle\delta A(t)\delta A(0)\rangle.
+\end{aligned}
+$$
+</div>
+
+The last equality uses equilibrium time-translation symmetry:
+$\langle\delta A(t)\dot A(0)\rangle=-\mathrm dC_A(t)/\mathrm dt$.
+
+Thus the relaxation of an equilibrium fluctuation fixes the response to a weak field.
 
 ## 2. Quantum and Classical FDT
 
-For a Hermitian observable $A$, define the **unsymmetrized quantum spectrum**
+### 2.1 Quantum Green functions and correlation spectra
+
+Let $A$ be Hermitian, with $\delta A=A-\langle A\rangle$. Three two-time Green functions separate causal response from the two operator orderings:
 
 <div class="math-display">
 $$
-S_A^{>}(\omega)
-=\int_{-\infty}^{\infty}e^{i\omega t}
-\langle\delta A(t)\delta A(0)\rangle\,\mathrm dt.
+\begin{aligned}
+G^R_{AA}(t)&=-i\Theta(t)\langle[\delta A(t),\delta A(0)]\rangle,\\
+\chi_{AA}(t)&=-G^R_{AA}(t)/\hbar,\\
+G^>_{AA}(t)&=-i\langle\delta A(t)\delta A(0)\rangle,\\
+G^<_{AA}(t)&=-i\langle\delta A(0)\delta A(t)\rangle.
+\end{aligned}
 $$
 </div>
 
-Equilibrium detailed balance and FDT give
+Thus $G^R=\Theta(t)(G^>-G^<)$. With the Fourier convention above, define $S_A^>(\omega)=iG^>_{AA}(\omega)$ and $S_A^<(\omega)=iG^<_{AA}(\omega)=S_A^>(-\omega)$.
+
+### 2.2 Deriving quantum FDT
+
+Insert energy eigenstates $H|n\rangle=E_n|n\rangle$ into the greater correlation:
 
 <div class="math-display">
 $$
-S_A^{>}(-\omega)=e^{-\beta\hbar\omega}S_A^{>}(\omega),
-\qquad
-\chi''_{AA}(\omega)
-=\frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_A^{>}(\omega).
+S_A^>(\omega)=\frac{2\pi}{Z}\sum_{n,m}e^{-\beta E_n}
+|\langle m|\delta A|n\rangle|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right).
 $$
 </div>
 
-Positive and negative frequencies therefore have different weights in a quantum spectrum. If we instead average the two orderings, $S_A^{\rm sym}=[S_A^{>}(\omega)+S_A^{>}(-\omega)]/2$, then
+For negative frequency, swap $n$ and $m$. The delta function then sets $E_m-E_n=\hbar\omega$:
+
+<div class="math-display">
+$$
+\begin{aligned}
+S_A^>(-\omega)
+&=\frac{2\pi}{Z}\sum_{n,m}e^{-\beta E_m}
+|\langle m|\delta A|n\rangle|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
+&=e^{-\beta\hbar\omega}S_A^>(\omega),\\
+S_A^<(\omega)&=S_A^>(-\omega)
+=e^{-\beta\hbar\omega}S_A^>(\omega),\\
+2\hbar\chi''_{AA}(\omega)
+&=S_A^>(\omega)-S_A^<(\omega)\\
+&=(1-e^{-\beta\hbar\omega})S_A^>(\omega).
+\end{aligned}
+$$
+</div>
+
+This is the **quantum FDT**: the equilibrium spectrum determines the dissipative response $\chi''$. The factor $1-e^{-\beta\hbar\omega}$ records the unequal probabilities of absorbing and emitting energy $\hbar\omega$.
+
+### 2.3 Classical FDT and the useful connection
+
+For the symmetrized spectrum $S_A^{\rm sym}=(S_A^>+S_A^<)/2$, the same result becomes
 
 <div class="math-display">
 $$
 S_A^{\rm sym}(\omega)
 =\hbar\coth\!\left(\frac{\beta\hbar\omega}{2}\right)\chi''_{AA}(\omega)
 \;\xrightarrow{\;\beta\hbar\omega\ll1\;}\;
-\frac{2k_{\rm B}T}{\omega}\chi''_{AA}(\omega).
+S_A^{\rm cl}(\omega)=\frac{2k_{\rm B}T}{\omega}\chi''_{AA}(\omega).
 $$
 </div>
 
-The rightmost expression is the **classical FDT** for the ordinary autocorrelation spectrum. Classical MD is useful when nuclear motion is adequately classical; it does not automatically reproduce quantum detailed balance, zero-point motion, or low-temperature occupation factors. These formulas use one Fourier convention throughout; changing the sign in the Fourier transform changes some intermediate signs, not the physics. [Kubo's original paper](https://doi.org/10.1143/JPSJ.12.570) and his [FDT review](https://www.zib.de/userpage/donati/stochastics2023/06/references/Kubo1966.pdf) develop the general theory.
-
-## 3. Property Map: What Do We Correlate?
-
-The **zero-frequency limit** of a current response often gives a transport coefficient. The **finite-frequency spectrum** gives absorption, scattering, or relaxation. Below, the Green–Kubo integrals are for equilibrium, isotropic three-dimensional systems; the heat formula assumes no coupled particle or charge flow. Let $V$ be the volume, $\mathbf v$ a tagged-particle velocity, $P_{xy}$ an off-diagonal stress, $\mathbf I=\sum_a q_a\mathbf v_a$ the **total** ionic charge current, and $\mathbf J_Q$ the **total** heat current (volume times the heat-flux density).
+Here $S_A^{\rm cl}(\omega)=\int e^{i\omega t}C_A(t)\,\mathrm dt$ is the classical equilibrium autocorrelation spectrum. It also follows directly from Eq. (2). Since $C_A(t)=C_A(-t)$,
 
 <div class="math-display">
 $$
 \begin{aligned}
-D&=\frac13\int_0^\infty
-  \langle\mathbf v(t)\!\cdot\!\mathbf v(0)\rangle\,\mathrm dt,\\
-\eta&=\frac{V}{k_{\rm B}T}\int_0^\infty
-  \langle\delta P_{xy}(t)\delta P_{xy}(0)\rangle\,\mathrm dt,\\
-\sigma_{\rm ion}&=\frac{1}{3Vk_{\rm B}T}\int_0^\infty
-  \langle\mathbf I(t)\!\cdot\!\mathbf I(0)\rangle\,\mathrm dt,\\
-\kappa&=\frac{1}{3Vk_{\rm B}T^2}\int_0^\infty
-  \langle\mathbf J_Q(t)\!\cdot\!\mathbf J_Q(0)\rangle\,\mathrm dt.
+\chi''_{AA}(\omega)
+&=-\beta\int_0^\infty\sin(\omega t)\dot C_A(t)\,\mathrm dt\\
+&=\beta\omega\int_0^\infty\cos(\omega t)C_A(t)\,\mathrm dt
+=\frac{\beta\omega}{2}S_A^{\rm cl}(\omega).
 \end{aligned}
 $$
 </div>
 
-These four formulas are the classical starting point, with tensor components used for anisotropic materials. The list below shows what changes when the target is a different property.
+This is the frequency-domain **classical FDT**.
 
-1. **Self-diffusivity.** Correlate one particle's velocity with its later velocity. In MD or ab initio MD, integrate the velocity autocorrelation above; the long-time mean-square displacement gives the equivalent Einstein route, $\langle\lVert\mathbf r(t)-\mathbf r(0)\rVert^2\rangle\sim6Dt$. A vibrational velocity spectrum uses a Fourier transform instead of this time integral.
+The link is useful in both directions: simulate or measure equilibrium fluctuations to predict absorption, or infer fluctuations from a response experiment. Causality also fixes the dispersive part:
 
-2. **Shear viscosity.** Correlate an off-diagonal stress with itself. The area under the stress autocorrelation gives $\eta$; a frequency-resolved stress response gives viscoelastic behavior. Slow stress tails make the integral noisy, so a flat region in the running integral and independent uncertainty estimates matter.
+<div class="math-display">
+$$
+\chi'_{AA}(\omega)=\frac1\pi\mathcal P\int_{-\infty}^{\infty}
+\frac{\chi''_{AA}(\omega')}{\omega'-\omega}\,\mathrm d\omega'.
+$$
+</div>
 
-3. **Ionic conductivity.** Correlate the **total charge current**, not merely each ion's self-diffusion. Expanding $\mathbf I(t)\cdot\mathbf I(0)$ includes correlations between different ions. Dropping those cross terms gives the Nernst–Einstein approximation, which can fail in concentrated electrolytes.
+Classical MD applies when nuclear motion is adequately classical; it misses quantum detailed balance and zero-point motion. [Kubo's original paper](https://doi.org/10.1143/JPSJ.12.570) and [FDT review](https://www.zib.de/userpage/donati/stochastics2023/06/references/Kubo1966.pdf) give the broader theory.
 
-4. **Thermal conductivity, often phonon dominated.** Correlate the microscopic heat current. Classical equilibrium MD gives the Green–Kubo $\kappa$ above; DFT-based force constants plus phonon scattering and the Boltzmann transport equation are a different route to phonon thermal conductivity. The heat-current definition and finite-size convergence deserve special care; [LAMMPS documents a practical Green–Kubo workflow](https://docs.lammps.org/compute_heat_flux.html).
+## 3. Property Map: What Do We Correlate?
 
-5. **Electronic conductivity.** Choose electronic current as both the perturbation-linked and measured quantity. The frequency-dependent *quantum* current response gives optical conductivity, and its low-frequency limit gives DC transport when that limit is well defined. Band energies and current matrix elements from DFT lead to independent-particle Kubo–Greenwood calculations. The full conductivity also has a diamagnetic/contact contribution, so it is more than a bare current autocorrelation. Our [optical-properties note](/blog/optical-properties-kubo-dft-gw/) develops that route.
+For 1–4 and 6, use equilibrium, isotropic three-dimensional classical systems. Here $V$ is volume, $T$ temperature, $\delta P_{xy}=P_{xy}-\langle P_{xy}\rangle$, and all currents are **total** currents, not current densities. For anisotropic materials, use tensor components. Proportionality signs below omit probe geometry and unit factors.
 
-6. **Thermoelectric coefficients.** Use **cross-correlations** between charge and heat currents. Together with the two autocorrelations, they form an Onsager response matrix from which quantities such as the Seebeck coefficient are constructed. This is why a single current autocorrelation cannot capture coupled heat and charge flow.
+### 3.1 Self-diffusivity
 
-7. **Electric or magnetic susceptibility.** Correlate polarization with polarization, or magnetization with magnetization. The retarded response gives $\chi(\omega)$; its imaginary part describes absorption. A classical static susceptibility can also be obtained from an equal-time variance of the field-conjugate quantity (with the appropriate volume and unit factors). In quantum systems, static response generally requires more than that simple equal-time variance.
+<div class="math-display">
+$$
+D=\frac13\int_0^\infty\langle\mathbf v(t)\cdot\mathbf v(0)\rangle\,\mathrm dt
+=\lim_{t\to\infty}\frac{\langle\lVert\mathbf r(t)-\mathbf r(0)\rVert^2\rangle}{6t}.
+$$
+</div>
 
-8. **Infrared (IR) absorption.** The field couples to the electric dipole or polarization $\mathbf M$. The absorptive signal tracks $\omega\,\operatorname{Im}\chi_{MM}(\omega)$, up to optical and geometry factors. In MD, one often Fourier-transforms a dipole or dipole-velocity autocorrelation; in harmonic DFT/DFPT, Born effective charges and phonon modes determine IR activity.
+**Why:** Persistent velocity produces long-time displacement.
 
-9. **Nonresonant Raman scattering.** Use the fluctuating polarizability tensor rather than the dipole. A polarization-projected polarizability correlation gives the Raman spectral shape, with quantum occupation and optical prefactors added for measured Stokes or anti-Stokes intensities. In DFPT, mode derivatives of polarizability become Raman tensors. [Quantum ESPRESSO's phonon tools](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html) implement the harmonic IR/Raman route.
+### 3.2 Shear viscosity
 
-10. **Neutron/X-ray scattering and phonon dispersion.** Correlate density at wavevector $\mathbf q$: $S(\mathbf q,\omega)\propto\int\mathrm dt\,e^{i\omega t}\langle\rho_{\mathbf q}(t)\rho_{-\mathbf q}(0)\rangle$. Peaks reveal collective modes; their width reflects finite lifetime. This is a space-and-time correlation, rather than just a local autocorrelation.
+<div class="math-display">
+$$
+\eta=\frac{V}{k_{\rm B}T}\int_0^\infty
+\langle\delta P_{xy}(t)\delta P_{xy}(0)\rangle\,\mathrm dt.
+$$
+</div>
 
-11. **Phonon or vibrational DOS.** In a harmonic calculation, count mode frequencies: $g_{\rm ph}(\omega)\propto\sum_{\mathbf q\nu}\delta(\omega-\omega_{\mathbf q\nu})$. From MD, the Fourier transform of a **mass-weighted velocity autocorrelation** gives a vibrational spectrum related to the DOS in the classical harmonic limit; anharmonicity broadens it. [Quantum ESPRESSO's matdyn.x](https://www.quantum-espresso.org/Doc/INPUT_MATDYN.html) computes a harmonic phonon DOS, while [GROMACS gmx dos](https://manual.gromacs.org/current/onlinehelp/gmx-dos.html) uses an MD correlation.
+**Why:** $P_{xy}$ carries $x$-momentum across a $y$-plane; its relaxation sets shear resistance.
 
-12. **Electronic DOS.** A DFT band calculation counts states at energy $E$, $g_{\rm KS}(E)\propto\sum_{n\mathbf k}\delta(E-\epsilon_{n\mathbf k})$. For interacting electrons the analogous object is the one-particle spectral function, $g(E)\propto-\operatorname{Im}\operatorname{Tr}G^R(E)/\pi$. It is a **one-particle Green-function spectrum**, not a charge-current Kubo coefficient. DFT codes compute the Kohn–Sham DOS directly; [Quantum ESPRESSO's DOS tools](https://quantum-espresso.org/Doc/pp_user_guide/node9.html) are one example.
+### 3.3 Ionic conductivity
 
-The last two entries are deliberately on the list: a DOS is a spectrum, but not every spectrum is a dissipative response. Likewise, two observables can have similar peaks yet different selection rules: a mode may appear in the phonon DOS but be weak in IR and strong in Raman.
+<div class="math-display">
+$$
+\mathbf I=\sum_a q_a\mathbf v_a,\qquad
+\sigma_{\rm ion}=\frac{1}{3Vk_{\rm B}T}\int_0^\infty
+\langle\mathbf I(t)\cdot\mathbf I(0)\rangle\,\mathrm dt.
+$$
+</div>
+
+**Why:** An electric field drives charge current. The total-current correlation includes motion of *different* ions together.
+
+### 3.4 Thermal conductivity
+
+<div class="math-display">
+$$
+\kappa=\frac{1}{3Vk_{\rm B}T^2}\int_0^\infty
+\langle\mathbf J_Q(t)\cdot\mathbf J_Q(0)\rangle\,\mathrm dt,
+\qquad \mathbf J_Q=V\mathbf j_Q.
+$$
+</div>
+
+**Why:** $\mathbf J_Q$ carries heat; in an insulator this is often mainly phonon transport. The formula assumes no coupled charge or particle flow. [MD example](https://docs.lammps.org/compute_heat_flux.html).
+
+### 3.5 Electronic conductivity
+
+<div class="math-display">
+$$
+\operatorname{Re}\sigma_{\alpha\alpha}(\omega)
+=\frac{\chi''_{J_\alpha J_\alpha}(\omega)}{V\omega}\quad(\omega>0),
+\qquad
+\sigma_{\rm dc}=\lim_{\omega\to0^+}\operatorname{Re}\sigma(\omega).
+$$
+</div>
+
+**Why:** The electric field drives electronic current $\mathbf J$. DFT Kubo–Greenwood uses band energies and current matrix elements; the full complex response includes a contact term. [Optical-properties note](/blog/optical-properties-kubo-dft-gw/).
+
+### 3.6 Thermoelectric response
+
+<div class="math-display">
+$$
+L_{eQ}=\frac{1}{3Vk_{\rm B}T}\int_0^\infty
+\langle\mathbf J_e(t)\cdot\mathbf J_Q(0)\rangle\,\mathrm dt,
+\qquad
+\mathbf j_e=\sigma\mathbf E-\frac{L_{eQ}}{T}\nabla T.
+$$
+</div>
+
+**Why:** Charge–heat *cross*-correlation gives the charge current driven by a temperature gradient; at zero current, $S=L_{eQ}/(T\sigma)$ with $S=E/\nabla T$.
+
+### 3.7 Electric or magnetic susceptibility
+
+<div class="math-display">
+$$
+\chi_{AA}(\omega)=\frac{i}{\hbar}\int_0^\infty e^{i\omega t}
+\langle[A(t),A(0)]\rangle\,\mathrm dt,
+\qquad A=M_{\rm electric}\ \text{or}\ M_{\rm magnetic}.
+$$
+</div>
+
+**Why:** The applied field couples to the electric or magnetic moment $A$; $\operatorname{Im}\chi$ measures absorption.
+
+### 3.8 Infrared absorption
+
+<div class="math-display">
+$$
+I_{\rm IR}(\omega)\propto
+\omega\chi''_{MM}(\omega)
+\propto\omega(1-e^{-\beta\hbar\omega})S_M^>(\omega),
+\qquad M=\text{electric dipole}.
+$$
+</div>
+
+**Why:** IR-active vibrations change $M$. In MD, use its dipole autocorrelation; in DFPT, use mode effective charges.
+
+### 3.9 Nonresonant Raman scattering
+
+<div class="math-display">
+$$
+I_{\rm Raman}(\omega)\propto(\omega_L-\omega)^4 S_a^>(\omega),
+\qquad
+a(t)=\mathbf e_{\rm out}\cdot\boldsymbol\alpha(t)\cdot\mathbf e_{\rm in}.
+$$
+</div>
+
+**Why:** Raman-active vibrations change polarizability $\boldsymbol\alpha$, selected by light polarizations. [DFPT example](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html).
+
+### 3.10 Neutron or X-ray scattering
+
+<div class="math-display">
+$$
+S(\mathbf q,\omega)=\frac{1}{2\pi N}\int_{-\infty}^{\infty}
+e^{i\omega t}\langle\rho_{\mathbf q}(t)\rho_{-\mathbf q}(0)\rangle\,\mathrm dt,
+\qquad \rho_{\mathbf q}=\sum_j e^{-i\mathbf q\cdot\mathbf r_j}.
+$$
+</div>
+
+**Why:** A probe transfers momentum $\mathbf q$ and energy $\hbar\omega$ to density fluctuations; peaks trace collective modes and phonon dispersion. For different atoms, weight $\rho_{\mathbf q}$ by scattering lengths or form factors.
+
+### 3.11 Phonon or vibrational DOS
+
+<div class="math-display">
+$$
+g_{\rm ph}(\omega)=\frac{1}{N_q}\sum_{\mathbf q\nu}
+\delta(\omega-\omega_{\mathbf q\nu}),\qquad
+g_{\rm MD}(\omega)\propto\int_{-\infty}^{\infty}e^{i\omega t}
+\sum_a m_a\langle\mathbf v_a(t)\cdot\mathbf v_a(0)\rangle\,\mathrm dt.
+$$
+</div>
+
+**Why:** Each normal mode adds a peak at its frequency; the mass-weighted MD spectrum recovers this in the classical harmonic limit. [Phonon calculation](https://www.quantum-espresso.org/Doc/INPUT_MATDYN.html); [MD spectrum](https://manual.gromacs.org/current/onlinehelp/gmx-dos.html).
+
+### 3.12 Electronic DOS
+
+<div class="math-display">
+$$
+g_{\rm KS}(E)=\frac{1}{N_k}\sum_{n\mathbf k}\delta(E-\epsilon_{n\mathbf k}),
+\qquad
+g(E)=-\frac1\pi\operatorname{Im}\operatorname{Tr}G^R(E).
+$$
+</div>
+
+**Why:** The first counts DFT band states; the second counts interacting one-particle spectral weight. Here $G^R(E)$ is the fermionic one-particle Green function, distinct from the response Green function in Section 2. [DFT DOS example](https://quantum-espresso.org/Doc/pp_user_guide/node9.html).
 
 ## 4. MD, DFT, and the Practical Workflow
 
