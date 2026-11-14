@@ -37,7 +37,9 @@ $$
 $$
 </div>
 
-For $H'=-fA$ and $\rho_{\rm eq}=Z^{-1}e^{-\beta H}$, phase-space integration by parts gives
+Here $\Gamma=(\mathbf r_1,\ldots,\mathbf r_N;\mathbf p_1,\ldots,\mathbf p_N)$ contains every particle's position and momentum. Thus $\mathrm d\Gamma=\prod_{i=1}^N\mathrm d^3r_i\,\mathrm d^3p_i$ integrates over the full phase space.
+
+For $H'=-fA$ and $\rho_{\rm eq}(\Gamma)=Z^{-1}e^{-\beta H(\Gamma)}$, phase-space integration by parts gives
 
 <div class="math-display">
 $$
