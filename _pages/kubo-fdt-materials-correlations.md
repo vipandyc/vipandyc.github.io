@@ -96,7 +96,7 @@ $$
 
 These four formulas are the classical starting point, with tensor components used for anisotropic materials. The list below shows what changes when the target is a different property.
 
-1. **Self-diffusivity.** Correlate one particle's velocity with its later velocity. In MD or ab initio MD, integrate the velocity autocorrelation above; the long-time mean-square displacement gives the equivalent Einstein route, $\langle|\mathbf r(t)-\mathbf r(0)|^2\rangle\sim6Dt$. A vibrational velocity spectrum uses a Fourier transform instead of this time integral.
+1. **Self-diffusivity.** Correlate one particle's velocity with its later velocity. In MD or ab initio MD, integrate the velocity autocorrelation above; the long-time mean-square displacement gives the equivalent Einstein route, $\langle\lVert\mathbf r(t)-\mathbf r(0)\rVert^2\rangle\sim6Dt$. A vibrational velocity spectrum uses a Fourier transform instead of this time integral.
 
 2. **Shear viscosity.** Correlate an off-diagonal stress with itself. The area under the stress autocorrelation gives $\eta$; a frequency-resolved stress response gives viscoelastic behavior. Slow stress tails make the integral noisy, so a flat region in the running integral and independent uncertainty estimates matter.
 
@@ -110,7 +110,7 @@ These four formulas are the classical starting point, with tensor components use
 
 7. **Electric or magnetic susceptibility.** Correlate polarization with polarization, or magnetization with magnetization. The retarded response gives $\chi(\omega)$; its imaginary part describes absorption. A classical static susceptibility can also be obtained from an equal-time variance of the field-conjugate quantity (with the appropriate volume and unit factors). In quantum systems, static response generally requires more than that simple equal-time variance.
 
-8. **Infrared (IR) absorption.** The field couples to the electric dipole or polarization $\mathbf M$. The absorptive signal tracks $\omega\chi''_{MM}(\omega)$, up to optical and geometry factors. In MD, one often Fourier-transforms a dipole or dipole-velocity autocorrelation; in harmonic DFT/DFPT, Born effective charges and phonon modes determine IR activity.
+8. **Infrared (IR) absorption.** The field couples to the electric dipole or polarization $\mathbf M$. The absorptive signal tracks $\omega\,\operatorname{Im}\chi_{MM}(\omega)$, up to optical and geometry factors. In MD, one often Fourier-transforms a dipole or dipole-velocity autocorrelation; in harmonic DFT/DFPT, Born effective charges and phonon modes determine IR activity.
 
 9. **Nonresonant Raman scattering.** Use the fluctuating polarizability tensor rather than the dipole. A polarization-projected polarizability correlation gives the Raman spectral shape, with quantum occupation and optical prefactors added for measured Stokes or anti-Stokes intensities. In DFPT, mode derivatives of polarizability become Raman tensors. [Quantum ESPRESSO's phonon tools](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html) implement the harmonic IR/Raman route.
 
