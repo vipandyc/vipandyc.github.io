@@ -18,6 +18,7 @@ Short technical notes on computational physics, applied math, many-body algorith
 
 ## Materials
 
+- [From Fluctuations to Materials Properties: Kubo, FDT, and Correlations](/blog/kubo-fdt-materials-correlations/)
 - [Transport Regimes: When Boltzmann Breaks Down](/blog/transport-regimes-boltzmann-quantum/)
 - [Simulating Optical Properties: From Kubo Formula to GW-BSE](/blog/optical-properties-kubo-dft-gw/)
 - [Reading X-ray Absorption Spectra: Edges, Regions, and First-Principles Models](/blog/x-ray-absorption-spectroscopy/)
