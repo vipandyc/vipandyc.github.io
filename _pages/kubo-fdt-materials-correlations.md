@@ -91,7 +91,7 @@ $$
 
 ### 2.2 Deriving quantum FDT
 
-Insert energy eigenstates $H|n\rangle=E_n|n\rangle$ into the greater correlation:
+Insert energy eigenstates $H\lvert n\rangle=E_n\lvert n\rangle$ into the greater correlation:
 
 <div class="math-display">
 $$
