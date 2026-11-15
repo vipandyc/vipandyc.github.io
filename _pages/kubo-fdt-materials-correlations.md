@@ -135,16 +135,27 @@ $$
 
 The last line uses stationarity: <span markdown="0">\(\langle\dot B\rangle=\mathrm d\langle B\rangle/\mathrm dt=0\)</span>. Subtracting <span markdown="0">\(\langle A\rangle\)</span> and <span markdown="0">\(\langle\dot B\rangle\)</span> therefore leaves the product's average unchanged.
 
-The dot means a derivative under <span markdown="0">\(H\)</span>; in particular, <span markdown="0">\(\dot A(0)=\{A(0),H\}_{\rm PB}\)</span>, evaluated at time zero. An ordinary-product **cross-correlation** is <span markdown="0">\(C_{AB}(t)=\langle\delta A(t)\delta B(0)\rangle\)</span>; setting <span markdown="0">\(B=A\)</span> gives the **autocorrelation** <span markdown="0">\(C_A(t)=C_{AA}(t)\)</span>. Stationarity also gives <span markdown="0">\(\langle\delta A(t)\dot A(0)\rangle=-\mathrm dC_A(t)/\mathrm dt\)</span>. The **classical fluctuation–dissipation theorem** therefore is
+The dot means a derivative under <span markdown="0">\(H\)</span>; for example, <span markdown="0">\(\dot B(0)=\{B(0),H\}_{\rm PB}\)</span>. Define the **cross-correlation** <span markdown="0">\(C_{AB}(t)=\langle\delta A(t)\delta B(0)\rangle\)</span>. In equilibrium, shifting both times by the same amount leaves this average unchanged. Differentiating that statement gives
 
 <div class="math-display">
 $$
-\chi_{AA}^{\rm cl}(t)
-=-\beta\Theta(t)\frac{\mathrm d C_A(t)}{\mathrm dt}.
+0=\left.\frac{\mathrm d}{\mathrm ds}
+\langle\delta A(t+s)\delta B(s)\rangle\right|_{s=0}
+=\frac{\mathrm d C_{AB}(t)}{\mathrm dt}
++\langle\delta A(t)\delta\dot B(0)\rangle.
 $$
 </div>
 
-This equality is the key computational step: the response can be obtained from a correlation measured with no field applied.
+Putting this into the response above gives the general **classical fluctuation–dissipation theorem**:
+
+<div class="math-display">
+$$
+\chi_{AB}^{\rm cl}(t)
+=-\beta\Theta(t)\frac{\mathrm d C_{AB}(t)}{\mathrm dt}.
+$$
+</div>
+
+Setting <span markdown="0">\(B=A\)</span> gives the autocorrelation <span markdown="0">\(C_A=C_{AA}\)</span> and <span markdown="0">\(\chi_{AA}^{\rm cl}=-\beta\Theta\,\mathrm dC_A/\mathrm dt\)</span> as a special case. The response can thus be obtained from a correlation measured with no field applied.
 
 ## 2. Quantum and Classical FDT
 
