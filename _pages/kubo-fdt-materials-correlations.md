@@ -26,9 +26,24 @@ $$
 $$
 </div>
 
-This is the **quantum Kubo formula**. The step function $\Theta(t)$ enforces causality: a probe cannot affect the past. If $A=B$, the response is tied to an autocorrelation; if they differ, a cross-correlation describes a coupled response. We use the Fourier convention $F(\omega)=\int_{-\infty}^{\infty}e^{i\omega t}F(t)\,\mathrm dt$ and write $\chi''=\operatorname{Im}\chi$.
+This is the **quantum Kubo formula**. The step function $\Theta(t)$ enforces causality: a probe cannot affect the past. If $A=B$, the response is tied to an autocorrelation; if they differ, a cross-correlation describes a coupled response. We use the Fourier convention $F(\omega)=\int_{-\infty}^{\infty}e^{i\omega t}F(t)\,\mathrm dt$.
 
-For classical equilibrium dynamics, ordinary products replace operator commutators. Write $\beta=1/(k_{\rm B}T)$ and $\delta A=A-\langle A\rangle$. The connected **cross-correlation** is $C_{AB}(t)=\langle\delta A(t)\delta B(0)\rangle$; setting $B=A$ gives the **autocorrelation** $C_A(t)=C_{AA}(t)$. For the field conjugate to $A$, it obeys
+The frequency-domain susceptibility is $\chi_{AB}(\omega)=\operatorname{Re}\chi_{AB}(\omega)+i\operatorname{Im}\chi_{AB}(\omega)$. For $A=B$, $\operatorname{Im}\chi_{AA}$ controls absorption, while $\operatorname{Re}\chi_{AA}$ describes the response in phase with the field.
+
+For classical dynamics, the response uses a Poisson bracket, while equilibrium correlations use ordinary products. Write $\beta=1/(k_{\rm B}T)$ and $\delta A=A-\langle A\rangle$. The connected **cross-correlation** is $C_{AB}(t)=\langle\delta A(t)\delta B(0)\rangle$; setting $B=A$ gives the **autocorrelation** $C_A(t)=C_{AA}(t)$.
+
+With $H'(t)=-f(t)A$, define the **classical response kernel** by
+
+<div class="math-display">
+$$
+\begin{aligned}
+\delta\langle A(t)\rangle_{\rm cl}
+&=\int_{-\infty}^{t}\chi_{AA}^{\rm cl}(t-s)f(s)\,\mathrm ds.
+\end{aligned}
+$$
+</div>
+
+The two $A$ subscripts mean the field couples to $A$ and $A$ is measured; “cl” means classical. In equilibrium,
 
 <div class="math-display">
 $$
@@ -39,7 +54,7 @@ $$
 
 Here $\Gamma=(\mathbf r_1,\ldots,\mathbf r_N;\mathbf p_1,\ldots,\mathbf p_N)$ contains every particle's position and momentum. Thus $\mathrm d\Gamma=\prod_{i=1}^N\mathrm d^3r_i\,\mathrm d^3p_i$ integrates over the full phase space.
 
-For $H'=-fA$ and $\rho_{\rm eq}(\Gamma)=Z^{-1}e^{-\beta H(\Gamma)}$, phase-space integration by parts gives
+The dot means a time derivative under the equilibrium Hamiltonian $H$: $\dot A(0)=\{A(0),H\}_{\rm PB}$. For $H'=-fA$ and $\rho_{\rm eq}(\Gamma)=Z^{-1}e^{-\beta H(\Gamma)}$, phase-space integration by parts gives
 
 <div class="math-display">
 $$
@@ -115,14 +130,14 @@ S_A^>(-\omega)
 &=e^{-\beta\hbar\omega}S_A^>(\omega),\\
 S_A^<(\omega)&=S_A^>(-\omega)
 =e^{-\beta\hbar\omega}S_A^>(\omega),\\
-2\hbar\chi''_{AA}(\omega)
+2\hbar\operatorname{Im}\chi_{AA}(\omega)
 &=S_A^>(\omega)-S_A^<(\omega)\\
 &=(1-e^{-\beta\hbar\omega})S_A^>(\omega).
 \end{aligned}
 $$
 </div>
 
-This is the **quantum FDT**: the equilibrium spectrum determines the dissipative response $\chi''$. The factor $1-e^{-\beta\hbar\omega}$ records the unequal probabilities of absorbing and emitting energy $\hbar\omega$.
+This is the **quantum FDT**: the equilibrium spectrum determines the dissipative response $\operatorname{Im}\chi$. The factor $1-e^{-\beta\hbar\omega}$ records the unequal probabilities of absorbing and emitting energy $\hbar\omega$.
 
 ### 2.3 Classical FDT and the useful connection
 
@@ -131,9 +146,9 @@ For the symmetrized spectrum $S_A^{\rm sym}=(S_A^{>}+S_A^{<})/2$, the same resul
 <div class="math-display">
 $$
 S_A^{\rm sym}(\omega)
-=\hbar\coth\!\left(\frac{\beta\hbar\omega}{2}\right)\chi''_{AA}(\omega)
+=\hbar\coth\!\left(\frac{\beta\hbar\omega}{2}\right)\operatorname{Im}\chi_{AA}(\omega)
 \;\xrightarrow{\;\beta\hbar\omega\ll1\;}\;
-S_A^{\rm cl}(\omega)=\frac{2k_{\rm B}T}{\omega}\chi''_{AA}(\omega).
+S_A^{\rm cl}(\omega)=\frac{2k_{\rm B}T}{\omega}\operatorname{Im}\chi_{AA}(\omega).
 $$
 </div>
 
@@ -142,7 +157,7 @@ Here $S_A^{\rm cl}(\omega)=\int e^{i\omega t}C_A(t)\,\mathrm dt$ is the classica
 <div class="math-display">
 $$
 \begin{aligned}
-\chi''_{AA}(\omega)
+\operatorname{Im}\chi_{AA}(\omega)
 &=-\beta\int_0^\infty\sin(\omega t)\dot C_A(t)\,\mathrm dt\\
 &=\beta\omega\int_0^\infty\cos(\omega t)C_A(t)\,\mathrm dt
 =\frac{\beta\omega}{2}S_A^{\rm cl}(\omega).
@@ -156,8 +171,8 @@ The link is useful in both directions: simulate or measure equilibrium fluctuati
 
 <div class="math-display">
 $$
-\chi'_{AA}(\omega)=\frac1\pi\mathcal P\int_{-\infty}^{\infty}
-\frac{\chi''_{AA}(\omega')}{\omega'-\omega}\,\mathrm d\omega'.
+\operatorname{Re}\chi_{AA}(\omega)=\frac1\pi\mathcal P\int_{-\infty}^{\infty}
+\frac{\operatorname{Im}\chi_{AA}(\omega')}{\omega'-\omega}\,\mathrm d\omega'.
 $$
 </div>
 
@@ -300,7 +315,7 @@ H'&=-J_\alpha A_\alpha^{\rm ext},\qquad
 \sigma_{\alpha\alpha}(\omega)
 =\frac{\chi_{J_\alpha J_\alpha}(\omega)+K_{\rm contact}}{iV\omega},\\
 \operatorname{Re}\sigma_{\alpha\alpha}(\omega)
-&=\frac{\chi''_{J_\alpha J_\alpha}(\omega)}{V\omega}
+&=\frac{\operatorname{Im}\chi_{J_\alpha J_\alpha}(\omega)}{V\omega}
 =\frac{\pi}{V\hbar\omega}\sum_{n,m}(p_n-p_m)
 |\langle m|J_\alpha|n\rangle|^2
 \delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)
@@ -339,7 +354,7 @@ $$
 H'&=-hA,\qquad A=M_{\rm electric}\ \text{or}\ M_{\rm magnetic},\\
 \chi_{AA}(\omega)&=\frac{i}{\hbar}\int_0^\infty e^{i\omega t}
 \langle[A(t),A(0)]\rangle\,\mathrm dt,\\
-\chi''_{AA}(\omega)&=
+\operatorname{Im}\chi_{AA}(\omega)&=
 \frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_A^>(\omega).
 \end{aligned}
 $$
@@ -367,8 +382,8 @@ $$
 H'&=-E(t)M,\qquad \delta M(\omega)=\chi_{MM}(\omega)E(\omega),\\
 \overline{P}_{\rm abs}
 &=\overline{E(t)\dot M(t)}
-=\frac{\omega}{2}|E_0|^2\chi''_{MM}(\omega),\\
-I_{\rm IR}(\omega)&\propto\omega\chi''_{MM}(\omega)
+=\frac{\omega}{2}|E_0|^2\operatorname{Im}\chi_{MM}(\omega),\\
+I_{\rm IR}(\omega)&\propto\omega\operatorname{Im}\chi_{MM}(\omega)
 =\frac{\omega(1-e^{-\beta\hbar\omega})}{2\hbar}S_M^>(\omega).
 \end{aligned}
 $$
@@ -392,7 +407,7 @@ I_{\rm Raman}(\omega)&\propto
 (\omega_L-\omega)^4\sum_{n,m}p_n|\langle m|\delta a|n\rangle|^2
 \delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
 &=\frac{(\omega_L-\omega)^4}{2\pi}S_a^>(\omega),\\
-\chi''_{aa}(\omega)&=\frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_a^>(\omega).
+\operatorname{Im}\chi_{aa}(\omega)&=\frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_a^>(\omega).
 \end{aligned}
 $$
 </div>
@@ -411,7 +426,7 @@ H'&=-f_{\mathbf q}(t)\rho_{-\mathbf q},\qquad
 S_{\rm inel}(\mathbf q,\omega)
 &=\frac{1}{2\pi N}\int_{-\infty}^{\infty}e^{i\omega t}
 \langle\delta\rho_{\mathbf q}(t)\delta\rho_{-\mathbf q}(0)\rangle\,\mathrm dt,\\
-\chi''_{\rho_{\mathbf q}\rho_{-\mathbf q}}(\omega)
+\operatorname{Im}\chi_{\rho_{\mathbf q}\rho_{-\mathbf q}}(\omega)
 &=\frac{\pi N}{\hbar}
 (1-e^{-\beta\hbar\omega})S_{\rm inel}(\mathbf q,\omega),\\
 \frac{\mathrm d^2\sigma}{\mathrm d\Omega\,\mathrm d\omega}
