@@ -62,26 +62,25 @@ $$
 $$
 </div>
 
-The sum runs over particles <span markdown="0">\(i\)</span> and Cartesian directions <span markdown="0">\(\alpha\)</span>. Under <span markdown="0">\(H+H'\)</span>, Hamilton's equation is <span markdown="0">\(\mathrm dA/\mathrm dt=\{A,H\}_{\rm PB}-f(t)\{A,B\}_{\rm PB}\)</span>. During a short interval <span markdown="0">\([s,s+\mathrm ds]\)</span>, the field shifts the phase-space point by <span markdown="0">\(\delta_s\Gamma_s=-f(s)\,\mathrm ds\,X_B(\Gamma_s)\)</span>, where <span markdown="0">\(X_B\cdot\nabla_\Gamma F=\{F,B\}_{\rm PB}\)</span>. Propagate this shifted point to time <span markdown="0">\(t\)</span> under <span markdown="0">\(H\)</span>. With subscript <span markdown="0">\(0\)</span> denoting field-free evolution, the chain rule gives
+The sum runs over particles <span markdown="0">\(i\)</span> and Cartesian directions <span markdown="0">\(\alpha\)</span>. Under <span markdown="0">\(H+H'\)</span>, Hamilton's equation for any function <span markdown="0">\(F\)</span> of the positions and momenta is <span markdown="0">\(\mathrm dF/\mathrm dt=\{F,H\}_{\rm PB}-f(t)\{F,B\}_{\rm PB}\)</span>.
+
+Imagine that the field acts only during a short interval <span markdown="0">\(\mathrm ds\)</span> at time <span markdown="0">\(s\)</span>. The part of Hamilton's equation caused by the field changes <span markdown="0">\(F\)</span> by <span markdown="0">\(-f(s)\,\mathrm ds\,\{F,B\}_{\rm PB}\)</span>. To find the effect on a measurement at a later time <span markdown="0">\(t\)</span>, choose <span markdown="0">\(F=A_0(t-s)\)</span>, viewed as a function of the positions and momenta at <span markdown="0">\(s\)</span>: it gives the value that <span markdown="0">\(A\)</span> will have after another <span markdown="0">\(t-s\)</span> of motion under <span markdown="0">\(H\)</span> alone. For this short interval, take <span markdown="0">\(s\)</span> as time zero. Then
 
 <div class="math-display">
 $$
 \begin{aligned}
 \delta_s A(t)
-&=\nabla_{\Gamma_s}A_0(t-s)\cdot\delta_s\Gamma_s\\
-&=-f(s)\,\mathrm ds\,\{A_0(t),B_0(s)\}_{\rm PB},\\
+&=-f(s)\,\mathrm ds\,\{A_0(t-s),B(0)\}_{\rm PB},\\
 \delta\langle A(t)\rangle_{\rm cl}
 &=-\int_{-\infty}^t f(s)
-  \langle\{A_0(t),B_0(s)\}_{\rm PB}\rangle\,\mathrm ds\\
-&=-\int_{-\infty}^t f(s)
-  \langle\{A_0(t-s),B_0(0)\}_{\rm PB}\rangle\,\mathrm ds.
+  \langle\{A_0(t-s),B(0)\}_{\rm PB}\rangle\,\mathrm ds.
 \end{aligned}
 $$
 </div>
 
-The field's shift becomes a Poisson bracket through <span markdown="0">\(X_B\cdot\nabla F=\{F,B\}_{\rm PB}\)</span>. Hamiltonian evolution preserves that bracket, so <span markdown="0">\(\{A_0(t-s),B\}_{\rm PB}(\Gamma_s)=\{A_0(t),B_0(s)\}_{\rm PB}(\Gamma_0)\)</span>, where <span markdown="0">\(\Gamma_0\)</span> is the phase-space point at time zero.
+For a familiar example, <span markdown="0">\(B=x\)</span> means <span markdown="0">\(H'=-f(s)x\)</span>: the short pulse adds <span markdown="0">\(f(s)\,\mathrm ds\)</span> to the momentum, which changes the position measured later. The Poisson bracket gives that later change for any choice of <span markdown="0">\(A\)</span> and <span markdown="0">\(B\)</span>.
 
-Adding all short intervals gives the change in the average. Field-free trajectories suffice at first order because their field corrections would multiply <span markdown="0">\(f(s)\)</span> and be second order. Equilibrium time-translation symmetry then changes the two-time average to a function of <span markdown="0">\(t-s\)</span>, as shown in the last line. Comparing it with a convolution defines the classical response kernel:
+Adding the effects of all pulses before <span markdown="0">\(t\)</span> and averaging over equilibrium states gives the integral. Equilibrium is unchanged by shifting the time origin, so the average depends only on <span markdown="0">\(t-s\)</span>. We use field-free motion inside the bracket because its field correction would be multiplied by <span markdown="0">\(f(s)\)</span> and would be second order. Dropping the subscript <span markdown="0">\(0\)</span> for field-free quantities, we identify the response kernel:
 
 <div class="math-display">
 $$
