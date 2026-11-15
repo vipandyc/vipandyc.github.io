@@ -62,7 +62,26 @@ $$
 $$
 </div>
 
-The sum runs over particles <span markdown="0">\(i\)</span> and Cartesian directions <span markdown="0">\(\alpha\)</span>. Hamilton's equation under <span markdown="0">\(H+H'\)</span> is <span markdown="0">\(\mathrm dA/\mathrm dt=\{A,H\}_{\rm PB}-f(t)\{A,B\}_{\rm PB}\)</span>. Integrating its field-dependent term to first order, with all observables evolved under <span markdown="0">\(H\)</span>, gives the classical response
+The sum runs over particles <span markdown="0">\(i\)</span> and Cartesian directions <span markdown="0">\(\alpha\)</span>. Under <span markdown="0">\(H+H'\)</span>, Hamilton's equation is <span markdown="0">\(\mathrm dA/\mathrm dt=\{A,H\}_{\rm PB}-f(t)\{A,B\}_{\rm PB}\)</span>. During a short interval <span markdown="0">\([s,s+\mathrm ds]\)</span>, the field shifts the phase-space point by <span markdown="0">\(\delta_s\Gamma_s=-f(s)\,\mathrm ds\,X_B(\Gamma_s)\)</span>, where <span markdown="0">\(X_B\cdot\nabla_\Gamma F=\{F,B\}_{\rm PB}\)</span>. Propagate this shifted point to time <span markdown="0">\(t\)</span> under <span markdown="0">\(H\)</span>. With subscript <span markdown="0">\(0\)</span> denoting field-free evolution, the chain rule gives
+
+<div class="math-display">
+$$
+\begin{aligned}
+\delta_s A(t)
+&=\nabla_{\Gamma_s}A_0(t-s)\cdot\delta_s\Gamma_s\\
+&=-f(s)\,\mathrm ds\,\{A_0(t),B_0(s)\}_{\rm PB},\\
+\delta\langle A(t)\rangle_{\rm cl}
+&=-\int_{-\infty}^t f(s)
+  \langle\{A_0(t),B_0(s)\}_{\rm PB}\rangle\,\mathrm ds\\
+&=-\int_{-\infty}^t f(s)
+  \langle\{A_0(t-s),B_0(0)\}_{\rm PB}\rangle\,\mathrm ds.
+\end{aligned}
+$$
+</div>
+
+The field's shift becomes a Poisson bracket through <span markdown="0">\(X_B\cdot\nabla F=\{F,B\}_{\rm PB}\)</span>. Hamiltonian evolution preserves that bracket, so <span markdown="0">\(\{A_0(t-s),B\}_{\rm PB}(\Gamma_s)=\{A_0(t),B_0(s)\}_{\rm PB}(\Gamma_0)\)</span>, where <span markdown="0">\(\Gamma_0\)</span> is the phase-space point at time zero.
+
+Adding all short intervals gives the change in the average. Field-free trajectories suffice at first order because their field corrections would multiply <span markdown="0">\(f(s)\)</span> and be second order. Equilibrium time-translation symmetry then changes the two-time average to a function of <span markdown="0">\(t-s\)</span>, as shown in the last line. Comparing it with a convolution defines the classical response kernel:
 
 <div class="math-display">
 $$
@@ -74,7 +93,7 @@ $$
 $$
 </div>
 
-The superscript “cl” means classical. Set <span markdown="0">\(\rho_{\rm eq}(\Gamma)=Z^{-1}e^{-\beta H(\Gamma)}\)</span>, where <span markdown="0">\(Z=\int\mathrm d\Gamma\,e^{-\beta H}\)</span> normalizes the equilibrium density. To pass from the first line below to the second, integrate each derivative of <span markdown="0">\(A(t)\)</span> in the Poisson bracket by parts:
+The superscript “cl” means classical. Set <span markdown="0">\(\rho_{\rm eq}(\Gamma)=Z^{-1}e^{-\beta H(\Gamma)}\)</span>, where <span markdown="0">\(Z=\int\mathrm d\Gamma\,e^{-\beta H}\)</span> normalizes the equilibrium density. Phase-space integration by parts gives
 
 <div class="math-display">
 $$
