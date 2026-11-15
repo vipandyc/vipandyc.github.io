@@ -74,7 +74,34 @@ $$
 $$
 </div>
 
-The superscript “cl” means classical. Now set <span markdown="0">\(\beta=1/(k_{\rm B}T)\)</span> and <span markdown="0">\(\rho_{\rm eq}(\Gamma)=Z^{-1}e^{-\beta H(\Gamma)}\)</span>, where <span markdown="0">\(Z=\int\mathrm d\Gamma\,e^{-\beta H}\)</span> normalizes the probability density. Integrating the Poisson bracket by parts, with vanishing boundary terms, and using <span markdown="0">\(\{\rho_{\rm eq},B\}_{\rm PB}=\beta\rho_{\rm eq}\dot B\)</span> yields
+The superscript “cl” means classical. Set <span markdown="0">\(\rho_{\rm eq}(\Gamma)=Z^{-1}e^{-\beta H(\Gamma)}\)</span>, where <span markdown="0">\(Z=\int\mathrm d\Gamma\,e^{-\beta H}\)</span> normalizes the equilibrium density. To pass from the first line below to the second, integrate each derivative of <span markdown="0">\(A(t)\)</span> in the Poisson bracket by parts:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\int\mathrm d\Gamma\,\rho_{\rm eq}\{F,B\}_{\rm PB}
+&=-\int\mathrm d\Gamma\,F\sum_{i,\alpha}
+\left[
+\partial_{r_{i\alpha}}(\rho_{\rm eq}\partial_{p_{i\alpha}}B)
+-\partial_{p_{i\alpha}}(\rho_{\rm eq}\partial_{r_{i\alpha}}B)
+\right]\\
+&=-\int\mathrm d\Gamma\,F\{\rho_{\rm eq},B\}_{\rm PB}.
+\end{aligned}
+$$
+</div>
+
+Here <span markdown="0">\(F\)</span> can be any phase-space function. The two terms containing mixed second derivatives of <span markdown="0">\(B\)</span> cancel; boundary terms vanish for periodic coordinates or sufficiently decaying densities. For the next step, use the chain rule on the Boltzmann density and then Hamilton's equation:
+
+<div class="math-display">
+$$
+\{\rho_{\rm eq},B\}_{\rm PB}
+=-\beta\rho_{\rm eq}\{H,B\}_{\rm PB}
+=\beta\rho_{\rm eq}\{B,H\}_{\rm PB}
+=\beta\rho_{\rm eq}\dot B.
+$$
+</div>
+
+Putting these identities into the response kernel gives
 
 <div class="math-display">
 $$
@@ -82,12 +109,15 @@ $$
 \chi_{AB}^{\rm cl}(t)
 &=-\Theta(t)\int\mathrm d\Gamma\,\rho_{\rm eq}\{A(t),B(0)\}_{\rm PB}\\
 &=\Theta(t)\int\mathrm d\Gamma\,A(t)\{\rho_{\rm eq},B(0)\}_{\rm PB}\\
+&=\beta\Theta(t)\langle A(t)\dot B(0)\rangle\\
 &=\beta\Theta(t)\langle\delta A(t)\,\delta\dot B(0)\rangle.
 \end{aligned}
 $$
 </div>
 
-We used <span markdown="0">\(\langle\dot B\rangle=0\)</span> in equilibrium. The dot means a derivative under <span markdown="0">\(H\)</span>; in particular, <span markdown="0">\(\dot A(0)=\{A(0),H\}_{\rm PB}\)</span>, evaluated at time zero. An ordinary-product **cross-correlation** is <span markdown="0">\(C_{AB}(t)=\langle\delta A(t)\delta B(0)\rangle\)</span>; setting <span markdown="0">\(B=A\)</span> gives the **autocorrelation** <span markdown="0">\(C_A(t)=C_{AA}(t)\)</span>. Stationarity gives <span markdown="0">\(\langle\delta A(t)\dot A(0)\rangle=-\mathrm dC_A(t)/\mathrm dt\)</span>. The **classical fluctuation–dissipation theorem** therefore is
+The last line uses stationarity: <span markdown="0">\(\langle\dot B\rangle=\mathrm d\langle B\rangle/\mathrm dt=0\)</span>. Subtracting <span markdown="0">\(\langle A\rangle\)</span> and <span markdown="0">\(\langle\dot B\rangle\)</span> therefore leaves the product's average unchanged.
+
+The dot means a derivative under <span markdown="0">\(H\)</span>; in particular, <span markdown="0">\(\dot A(0)=\{A(0),H\}_{\rm PB}\)</span>, evaluated at time zero. An ordinary-product **cross-correlation** is <span markdown="0">\(C_{AB}(t)=\langle\delta A(t)\delta B(0)\rangle\)</span>; setting <span markdown="0">\(B=A\)</span> gives the **autocorrelation** <span markdown="0">\(C_A(t)=C_{AA}(t)\)</span>. Stationarity also gives <span markdown="0">\(\langle\delta A(t)\dot A(0)\rangle=-\mathrm dC_A(t)/\mathrm dt\)</span>. The **classical fluctuation–dissipation theorem** therefore is
 
 <div class="math-display">
 $$
