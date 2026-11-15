@@ -159,106 +159,155 @@ Setting <span markdown="0">\(B=A\)</span> gives the autocorrelation <span markdo
 
 ## 2. Quantum and Classical FDT
 
-### 2.1 Quantum Green functions and correlation spectra
+### 2.1 Retarded Green function
 
-Let <span markdown="0">\(A\)</span> be Hermitian, so <span markdown="0">\(A^\dagger=A\)</span>, and put <span markdown="0">\(\delta A=A-\langle A\rangle\)</span>. In quantum mechanics the two products <span markdown="0">\(\delta A(t)\delta A(0)\)</span> and <span markdown="0">\(\delta A(0)\delta A(t)\)</span> need not agree. Define the retarded, greater, and lesser Green functions by
+For observables <span markdown="0">\(A\)</span> and <span markdown="0">\(B\)</span>, define <span markdown="0">\(\delta A=A-\langle A\rangle\)</span> and likewise for <span markdown="0">\(B\)</span>. The **retarded Green function** uses the commutator and vanishes before the perturbation acts:
+
+<div class="math-display">
+$$
+G^R_{AB}(t)=-i\Theta(t)\langle[\delta A(t),\delta B(0)]\rangle,
+\qquad \chi_{AB}(t)=-\frac{G^R_{AB}(t)}{\hbar}.
+$$
+</div>
+
+The second equality follows directly from the Kubo formula for <span markdown="0">\(H'=-fB\)</span>. Subtracting equilibrium means leaves a commutator unchanged. To derive FDT, set <span markdown="0">\(B=A=A^\dagger\)</span> and write its ordered *quantum* correlation as
+
+<div class="math-display">
+$$
+C_A(t)=\langle\delta A(t)\delta A(0)\rangle.
+$$
+</div>
+
+Operator order matters: <span markdown="0">\(\delta A(t)\delta A(0)\)</span> need not equal <span markdown="0">\(\delta A(0)\delta A(t)\)</span>. In equilibrium, <span markdown="0">\(\rho_{\rm eq}\)</span> commutes with <span markdown="0">\(H\)</span>. Cyclicity of the trace then shows why shifting *both* times by <span markdown="0">\(s\)</span> leaves an average unchanged:
 
 <div class="math-display">
 $$
 \begin{aligned}
-G^R_{AA}(t)&=-i\Theta(t)\langle[\delta A(t),\delta A(0)]\rangle,\\
-\chi_{AA}(t)&=-G^R_{AA}(t)/\hbar,\\
-G^>_{AA}(t)&=-i\langle\delta A(t)\delta A(0)\rangle,\\
-G^<_{AA}(t)&=-i\langle\delta A(0)\delta A(t)\rangle.
+\langle\delta A(t_1+s)\delta A(t_2+s)\rangle
+&=\operatorname{Tr}\!\left[\rho_{\rm eq}e^{iHs/\hbar}
+\delta A(t_1)\delta A(t_2)e^{-iHs/\hbar}\right]\\
+&=\langle\delta A(t_1)\delta A(t_2)\rangle.
 \end{aligned}
 $$
 </div>
 
-The retarded function is the causal difference of the two orderings, which explains its relation to the response <span markdown="0">\(\chi_{AA}\)</span>. With the Fourier convention in Section 1, define the greater and lesser spectra:
+The last equality uses <span markdown="0">\(e^{-iHs/\hbar}\rho_{\rm eq}e^{iHs/\hbar}=\rho_{\rm eq}\)</span>. Taking <span markdown="0">\((t_1,t_2,s)=(0,t,-t)\)</span> gives
 
 <div class="math-display">
 $$
 \begin{aligned}
-G^R_{AA}(t)&=\Theta(t)\bigl[G^>_{AA}(t)-G^<_{AA}(t)\bigr],\\
-S_A^>(\omega)&=iG^>_{AA}(\omega)
-=\int_{-\infty}^{\infty}e^{i\omega t}
-\langle\delta A(t)\delta A(0)\rangle\,\mathrm dt,\\
-S_A^<(\omega)&=iG^<_{AA}(\omega)
-=\int_{-\infty}^{\infty}e^{i\omega t}
-\langle\delta A(0)\delta A(t)\rangle\,\mathrm dt
-=S_A^>(-\omega).
+\langle\delta A(0)\delta A(t)\rangle
+&=\langle\delta A(-t)\delta A(0)\rangle=C_A(-t),\\
+D(t)&\equiv\langle[\delta A(t),\delta A(0)]\rangle
+=C_A(t)-C_A(-t),\\
+D(-t)&=C_A(-t)-C_A(t)=-D(t).
 \end{aligned}
 $$
 </div>
 
-### 2.2 Deriving quantum FDT
+Thus the oddness of the commutator follows from stationarity and the definition of a commutator. We next use energy eigenstates to turn this time-domain statement into the frequency-domain FDT.
 
-For the canonical equilibrium state, <span markdown="0">\(p_n=e^{-\beta E_n}/Z\)</span> and <span markdown="0">\(H\lvert n\rangle=E_n\lvert n\rangle\)</span>. Insert <span markdown="0">\(\sum_m\lvert m\rangle\langle m\rvert=1\)</span> between the two operators. The phase from <span markdown="0">\(A(t)\)</span> is <span markdown="0">\(e^{-i(E_m-E_n)t/\hbar}\)</span>, and its Fourier transform is <span markdown="0">\(2\pi\delta(\omega-(E_m-E_n)/\hbar)\)</span>, where this <span markdown="0">\(\delta\)</span> is a Dirac delta peak. Consequently,
+### 2.2 Deriving quantum FDT from energy eigenstates
+
+Write <span markdown="0">\(H|n\rangle=E_n|n\rangle\)</span> and <span markdown="0">\(p_n=e^{-\beta E_n}/Z\)</span>. Inserting <span markdown="0">\(\sum_m|m\rangle\langle m|=1\)</span> between the two factors of <span markdown="0">\(\delta A\)</span> gives
 
 <div class="math-display">
 $$
-S_A^>(\omega)=\frac{2\pi}{Z}\sum_{n,m}e^{-\beta E_n}
-|\langle m|\delta A|n\rangle|^2
+\begin{aligned}
+C_A(t)
+&=\sum_{n,m}p_n\langle n|\delta A|m\rangle
+\langle m|\delta A|n\rangle e^{-i(E_m-E_n)t/\hbar}\\
+&=\sum_{n,m}p_n|\langle m|\delta A|n\rangle|^2
+e^{-i(E_m-E_n)t/\hbar},\\
+\int_{-\infty}^{\infty}e^{i\omega t}C_A(t)\,\mathrm dt
+&=2\pi\sum_{n,m}p_n|\langle m|\delta A|n\rangle|^2
 \delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right).
-$$
-</div>
-
-For negative frequency, swap <span markdown="0">\(n\)</span> and <span markdown="0">\(m\)</span>. Hermiticity leaves the squared matrix element unchanged; on the support of the delta function, the new Boltzmann weight is <span markdown="0">\(e^{-\beta\hbar\omega}\)</span> times the old one:
-
-<div class="math-display">
-$$
-\begin{aligned}
-S_A^>(-\omega)
-&=\frac{2\pi}{Z}\sum_{n,m}e^{-\beta E_m}
-|\langle m|\delta A|n\rangle|^2
-\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
-&=e^{-\beta\hbar\omega}S_A^>(\omega),\\
-S_A^<(\omega)&=e^{-\beta\hbar\omega}S_A^>(\omega).
 \end{aligned}
 $$
 </div>
 
-This relation is **detailed balance**: positive- and negative-frequency processes have different thermal weights. To obtain the response, let <span markdown="0">\(D(t)=\langle[\delta A(t),\delta A(0)]\rangle\)</span>. Stationarity gives <span markdown="0">\(D(-t)=-D(t)\)</span>, while <span markdown="0">\(\chi_{AA}(t)=i\Theta(t)D(t)/\hbar\)</span> is real for Hermitian <span markdown="0">\(A\)</span>. Taking the imaginary part of its Fourier transform therefore gives
+The first equality uses <span markdown="0">\(A(t)=e^{iHt/\hbar}Ae^{-iHt/\hbar}\)</span>; the second uses Hermiticity. The last line Fourier-transforms <span markdown="0">\(e^{-i(E_m-E_n)t/\hbar}\)</span> into a Dirac delta peak. For the reversed time ordering <span markdown="0">\(C_A(-t)=\langle\delta A(0)\delta A(t)\rangle\)</span>, exchange <span markdown="0">\(n\)</span> and <span markdown="0">\(m\)</span> in the same sum:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\int_{-\infty}^{\infty}e^{i\omega t}C_A(-t)\,\mathrm dt
+&=2\pi\sum_{n,m}p_m|\langle m|\delta A|n\rangle|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
+&=e^{-\beta\hbar\omega}
+\int_{-\infty}^{\infty}e^{i\omega t}C_A(t)\,\mathrm dt.
+\end{aligned}
+$$
+</div>
+
+In the last step, the delta peak sets <span markdown="0">\(E_m-E_n=\hbar\omega\)</span>, so <span markdown="0">\(p_m/p_n=e^{-\beta\hbar\omega}\)</span>. This is **detailed balance**.
+
+Now use the same energy-state sum in <span markdown="0">\(D(t)=C_A(t)-C_A(-t)\)</span>. Exchanging the indices in the second term changes its weight from <span markdown="0">\(p_n\)</span> to <span markdown="0">\(p_m\)</span>. Fourier-transforming the retarded Green function with a small damping factor <span markdown="0">\(e^{-\eta t}\)</span>, then taking <span markdown="0">\(\eta\to0^+\)</span>, gives
+
+<div class="math-display">
+$$
+\begin{aligned}
+D(t)&=\sum_{n,m}(p_n-p_m)|\langle m|\delta A|n\rangle|^2
+e^{-i(E_m-E_n)t/\hbar},\\
+G^R_{AA}(\omega)
+&=\sum_{n,m}\frac{(p_n-p_m)|\langle m|\delta A|n\rangle|^2}
+{\omega-(E_m-E_n)/\hbar+i0^+}.
+\end{aligned}
+$$
+</div>
+
+Here <span markdown="0">\(-i\int_0^\infty e^{ixt-\eta t}\,\mathrm dt=(x+i\eta)^{-1}\)</span>. Using <span markdown="0">\(\operatorname{Im}(x+i0^+)^{-1}=-\pi\delta(x)\)</span> and <span markdown="0">\(\chi_{AA}=-G^R_{AA}/\hbar\)</span> gives
 
 <div class="math-display">
 $$
 \begin{aligned}
 2\hbar\operatorname{Im}\chi_{AA}(\omega)
-&=2i\int_0^\infty\sin(\omega t)D(t)\,\mathrm dt\\
-&=\int_{-\infty}^{\infty}e^{i\omega t}D(t)\,\mathrm dt\\
-&=S_A^>(\omega)-S_A^<(\omega)\\
-&=(1-e^{-\beta\hbar\omega})S_A^>(\omega).
+&=2\pi\sum_{n,m}(p_n-p_m)|\langle m|\delta A|n\rangle|^2
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
+&=\int_{-\infty}^{\infty}e^{i\omega t}
+\bigl[C_A(t)-C_A(-t)\bigr]\,\mathrm dt\\
+&=\bigl(1-e^{-\beta\hbar\omega}\bigr)
+\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta A(t)\delta A(0)\rangle\,\mathrm dt.
 \end{aligned}
 $$
 </div>
 
-This is the **quantum FDT**. It tells us exactly how to obtain the absorptive part of a linear response from an equilibrium correlation, including the unequal probabilities of energy absorption and emission.
+This is the **quantum FDT**: the imaginary part of the response is the difference between the two time orderings of an equilibrium correlation, with detailed balance fixing their ratio.
 
 ### 2.3 Classical FDT and the useful connection
 
-For the symmetrized spectrum <span markdown="0">\(S_A^{\rm sym}=(S_A^{>}+S_A^{<})/2\)</span>, divide the sum of the two spectra by their difference. Detailed balance gives <span markdown="0">\((1+e^{-\beta\hbar\omega})/(1-e^{-\beta\hbar\omega})=\coth(\beta\hbar\omega/2)\)</span>, hence
+The symmetrized correlation averages the two operator orderings. Their Fourier transforms have the ratio <span markdown="0">\(e^{-\beta\hbar\omega}\)</span>, so divide their sum by their difference in the quantum FDT. Since <span markdown="0">\((1+e^{-\beta\hbar\omega})/(1-e^{-\beta\hbar\omega})=\coth(\beta\hbar\omega/2)\)</span>, this gives
 
 <div class="math-display">
 $$
-S_A^{\rm sym}(\omega)
+\frac12\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\{\delta A(t),\delta A(0)\}\rangle\,\mathrm dt
 =\hbar\coth\!\left(\frac{\beta\hbar\omega}{2}\right)
-  \operatorname{Im}\chi_{AA}(\omega)
-\;\xrightarrow{\;\beta\hbar\omega\ll1\;}\;
-S_A^{\rm cl}(\omega)
-=\frac{2k_{\rm B}T}{\omega}
-  \operatorname{Im}\chi_{AA}^{\rm cl}(\omega).
+\operatorname{Im}\chi_{AA}(\omega).
 $$
 </div>
 
-Here <span markdown="0">\(S_A^{\rm cl}(\omega)=\int_{-\infty}^{\infty}e^{i\omega t}C_A(t)\,\mathrm dt\)</span> is the classical equilibrium autocorrelation spectrum. The limit assumes <span markdown="0">\(\beta\hbar\omega\ll1\)</span> and a valid classical description of the dynamics. The same result follows directly from the time-domain classical FDT. Since <span markdown="0">\(C_A(t)=C_A(-t)\)</span>, integrate by parts (assuming <span markdown="0">\(C_A(t)\)</span> decays at long times):
+Here the braces are an **anticommutator**, <span markdown="0">\(\{X,Y\}=XY+YX\)</span>, not the classical Poisson bracket. When <span markdown="0">\(\beta\hbar\omega\ll1\)</span> and the dynamics admit a classical description, <span markdown="0">\(\coth(\beta\hbar\omega/2)\simeq2/(\beta\hbar\omega)\)</span>. With the classical autocorrelation <span markdown="0">\(C_A^{\rm cl}(t)=\langle\delta A(t)\delta A(0)\rangle_{\rm cl}\)</span>, the limit is
+
+<div class="math-display">
+$$
+\int_{-\infty}^{\infty}e^{i\omega t}C_A^{\rm cl}(t)\,\mathrm dt
+=\frac{2k_{\rm B}T}{\omega}\operatorname{Im}\chi_{AA}^{\rm cl}(\omega).
+$$
+</div>
+
+The same result follows directly from the time-domain classical FDT. Since <span markdown="0">\(C_A^{\rm cl}(t)=C_A^{\rm cl}(-t)\)</span>, integrate by parts (assuming the correlation decays at long times):
 
 <div class="math-display">
 $$
 \begin{aligned}
 \operatorname{Im}\chi_{AA}^{\rm cl}(\omega)
-&=-\beta\int_0^\infty\sin(\omega t)\dot C_A(t)\,\mathrm dt\\
-&=\beta\omega\int_0^\infty\cos(\omega t)C_A(t)\,\mathrm dt
-=\frac{\beta\omega}{2}S_A^{\rm cl}(\omega).
+&=-\beta\int_0^\infty\sin(\omega t)
+\frac{\mathrm d C_A^{\rm cl}(t)}{\mathrm dt}\,\mathrm dt\\
+&=\beta\omega\int_0^\infty\cos(\omega t)C_A^{\rm cl}(t)\,\mathrm dt\\
+&=\frac{\beta\omega}{2}\int_{-\infty}^{\infty}
+e^{i\omega t}C_A^{\rm cl}(t)\,\mathrm dt.
 \end{aligned}
 $$
 </div>
@@ -453,7 +502,9 @@ H'&=-hA,\qquad A=M_{\rm electric}\ \text{or}\ M_{\rm magnetic},\\
 \chi_{AA}(\omega)&=\frac{i}{\hbar}\int_0^\infty e^{i\omega t}
 \langle[A(t),A(0)]\rangle\,\mathrm dt,\\
 \operatorname{Im}\chi_{AA}(\omega)&=
-\frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_A^>(\omega).
+\frac{1-e^{-\beta\hbar\omega}}{2\hbar}
+\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta A(t)\delta A(0)\rangle\,\mathrm dt.
 \end{aligned}
 $$
 </div>
@@ -483,7 +534,9 @@ H'&=-E(t)M,\qquad
 &=\overline{E(t)\dot M(t)}
 =\frac{\omega}{2}|E_0|^2\operatorname{Im}\chi_{MM}(\omega),\\
 I_{\rm IR}(\omega)&\propto\omega\operatorname{Im}\chi_{MM}(\omega)
-=\frac{\omega(1-e^{-\beta\hbar\omega})}{2\hbar}S_M^>(\omega).
+=\frac{\omega(1-e^{-\beta\hbar\omega})}{2\hbar}
+\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta M(t)\delta M(0)\rangle\,\mathrm dt.
 \end{aligned}
 $$
 </div>
@@ -492,7 +545,7 @@ The last equality substitutes the quantum FDT with <span markdown="0">\(A=M\)</s
 
 ### 3.9 Nonresonant Raman scattering
 
-For nonresonant light, the incident field induces a dipole <span markdown="0">\(\mathbf p_{\rm ind}=\boldsymbol\alpha\mathbf E_{\rm in}\)</span>. Projecting its scattered component onto the outgoing polarization selects <span markdown="0">\(a=\mathbf e_{\rm out}\cdot\boldsymbol\alpha\cdot\mathbf e_{\rm in}\)</span>. Let <span markdown="0">\(\omega=\omega_L-\omega_{\rm out}>0\)</span> be the Stokes shift from incident frequency <span markdown="0">\(\omega_L\)</span>. Transitions <span markdown="0">\(n\to m\)</span> then sample the matrix elements of <span markdown="0">\(a\)</span>, exactly as in the greater spectrum from Section 2:
+For nonresonant light, the incident field induces a dipole <span markdown="0">\(\mathbf p_{\rm ind}=\boldsymbol\alpha\mathbf E_{\rm in}\)</span>. Projecting its scattered component onto the outgoing polarization selects <span markdown="0">\(a=\mathbf e_{\rm out}\cdot\boldsymbol\alpha\cdot\mathbf e_{\rm in}\)</span>. Let <span markdown="0">\(\omega=\omega_L-\omega_{\rm out}>0\)</span> be the Stokes shift from incident frequency <span markdown="0">\(\omega_L\)</span>. Transitions <span markdown="0">\(n\to m\)</span> then sample the matrix elements of <span markdown="0">\(a\)</span>, as in Section 2:
 
 <div class="math-display">
 $$
@@ -502,23 +555,30 @@ H'_{\rm light}&=-\tfrac12\mathbf E\cdot\boldsymbol\alpha\cdot\mathbf E,
 p_{\rm out}(\omega_{\rm out})
 &\propto E_0\!\int\mathrm dt\,
 e^{i(\omega_{\rm out}-\omega_L)t}a(t),\\
-S_a^>(\omega)&=2\pi\sum_{n,m}p_n
+\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta a(t)\delta a(0)\rangle\,\mathrm dt
+&=2\pi\sum_{n,m}p_n
 |\langle m|\delta a|n\rangle|^2
 \delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right),\\
 I_{\rm Raman}(\omega)&\propto
 (\omega_L-\omega)^4\sum_{n,m}p_n|\langle m|\delta a|n\rangle|^2
 \delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
-&=\frac{(\omega_L-\omega)^4}{2\pi}S_a^>(\omega),\\
-\operatorname{Im}\chi_{aa}(\omega)&=\frac{1-e^{-\beta\hbar\omega}}{2\hbar}S_a^>(\omega).
+&=\frac{(\omega_L-\omega)^4}{2\pi}
+\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta a(t)\delta a(0)\rangle\,\mathrm dt,\\
+\operatorname{Im}\chi_{aa}(\omega)&=
+\frac{1-e^{-\beta\hbar\omega}}{2\hbar}
+\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta a(t)\delta a(0)\rangle\,\mathrm dt.
 \end{aligned}
 $$
 </div>
 
-The Fourier component of the induced dipole selects transitions with energy loss <span markdown="0">\(\hbar\omega\)</span>; its squared amplitude produces <span markdown="0">\(S_a^>\)</span> above. Dipole-radiated intensity contributes <span markdown="0">\(\omega_{\rm out}^4=(\omega_L-\omega)^4\)</span>. The last line substitutes <span markdown="0">\(A=a\)</span> into quantum FDT. Optical geometry and constants are absorbed into the proportionality. [DFPT example](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html).
+The Fourier component of the induced dipole selects transitions with energy loss <span markdown="0">\(\hbar\omega\)</span>; its squared amplitude gives the matrix-element sum above. Dipole-radiated intensity contributes <span markdown="0">\(\omega_{\rm out}^4=(\omega_L-\omega)^4\)</span>. The last line substitutes <span markdown="0">\(A=a\)</span> into quantum FDT. Optical geometry and constants are absorbed into the proportionality. [DFPT example](https://quantum-espresso.org/Doc/INPUT_DYNMAT.html).
 
 ### 3.10 Neutron or X-ray scattering
 
-For a probe transferring momentum <span markdown="0">\(\mathbf q\)</span>, define <span markdown="0">\(\rho_{\mathbf q}=\sum_j e^{-i\mathbf q\cdot\mathbf r_j}\)</span>; then <span markdown="0">\(\rho_{-\mathbf q}=\rho_{\mathbf q}^\dagger\)</span>. The probe couples to <span markdown="0">\(\rho_{-\mathbf q}\)</span> and measures <span markdown="0">\(\rho_{\mathbf q}\)</span>. The inelastic dynamic structure factor is the corresponding greater correlation divided by <span markdown="0">\(2\pi N\)</span>, where <span markdown="0">\(N\)</span> is the number of scattering particles:
+For a probe transferring momentum <span markdown="0">\(\mathbf q\)</span>, define <span markdown="0">\(\rho_{\mathbf q}=\sum_j e^{-i\mathbf q\cdot\mathbf r_j}\)</span>; then <span markdown="0">\(\rho_{-\mathbf q}=\rho_{\mathbf q}^\dagger\)</span>. The probe couples to <span markdown="0">\(\rho_{-\mathbf q}\)</span> and measures <span markdown="0">\(\rho_{\mathbf q}\)</span>. The inelastic dynamic structure factor is the ordered correlation divided by <span markdown="0">\(2\pi N\)</span>, where <span markdown="0">\(N\)</span> is the number of scattering particles:
 
 <div class="math-display">
 $$
@@ -540,7 +600,7 @@ S_{\rm inel}(\mathbf q,\omega)
 $$
 </div>
 
-The second line follows by inserting energy eigenstates, as in Section 2. In the weak-scattering (first Born) limit, the same density matrix element gives the probe's transition probability, so its cross section is proportional to <span markdown="0">\(S_{\rm inel}\)</span>. Applying detailed balance to <span markdown="0">\(\rho_{\mathbf q},\rho_{-\mathbf q}\)</span> gives spectral difference <span markdown="0">\(2\hbar\operatorname{Im}\chi_{\rho_{\mathbf q}\rho_{-\mathbf q}}\)</span>; substituting <span markdown="0">\(S^>=2\pi N S_{\rm inel}\)</span> gives the response line. Probe-dependent factors are omitted. Add the elastic Bragg peak separately; for different atoms, put scattering lengths or form factors inside the density operator.
+The second line follows by inserting energy eigenstates, as in Section 2. In the weak-scattering (first Born) limit, the same density matrix element gives the probe's transition probability, so its cross section is proportional to <span markdown="0">\(S_{\rm inel}\)</span>. Applying detailed balance to <span markdown="0">\(\rho_{\mathbf q},\rho_{-\mathbf q}\)</span> gives the response line from the correlation integral above. Probe-dependent factors are omitted. Add the elastic Bragg peak separately; for different atoms, put scattering lengths or form factors inside the density operator.
 
 ### 3.11 Phonon or vibrational DOS
 
