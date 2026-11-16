@@ -276,12 +276,13 @@ This is the **quantum FDT for a cross response**. The left side is the dissipati
 <div class="math-display">
 $$
 \begin{aligned}
-2\hbar\operatorname{Im}\chi_{AA}(\omega)
+-2\operatorname{Im}G^R_{AA}(\omega)
+&=2\hbar\operatorname{Im}\chi_{AA}(\omega)\\
 &=\bigl(1-e^{-\beta\hbar\omega}\bigr)iG^>_{AA}(\omega)\\
 &=\bigl(1-e^{-\beta\hbar\omega}\bigr)
 \int_{-\infty}^{\infty}e^{i\omega t}
 \langle\delta A(t)\delta A(0)\rangle\,\mathrm dt.
-\end{aligned}
+\end{aligned}\tag{9}
 $$
 </div>
 
