@@ -161,7 +161,7 @@ Setting <span markdown="0">\(B=A\)</span> gives the autocorrelation <span markdo
 
 ### 2.1 Retarded Green function
 
-For observables <span markdown="0">\(A\)</span> and <span markdown="0">\(B\)</span>, define <span markdown="0">\(\delta A=A-\langle A\rangle\)</span> and likewise for <span markdown="0">\(B\)</span>. The **retarded Green function** uses the commutator and vanishes before the perturbation acts:
+Let <span markdown="0">\(A=A^\dagger\)</span> be the measured observable and <span markdown="0">\(B=B^\dagger\)</span> the one coupled to the field, with <span markdown="0">\(\delta A=A-\langle A\rangle\)</span> and <span markdown="0">\(\delta B=B-\langle B\rangle\)</span>. For <span markdown="0">\(H'=-fB\)</span>, the **retarded Green function** and Kubo response are
 
 <div class="math-display">
 $$
@@ -170,102 +170,114 @@ G^R_{AB}(t)=-i\Theta(t)\langle[\delta A(t),\delta B(0)]\rangle,
 $$
 </div>
 
-The second equality follows directly from the Kubo formula for <span markdown="0">\(H'=-fB\)</span>. Subtracting equilibrium means leaves a commutator unchanged. To derive FDT, set <span markdown="0">\(B=A=A^\dagger\)</span> and write its ordered *quantum* correlation as
-
-<div class="math-display">
-$$
-C_A(t)=\langle\delta A(t)\delta A(0)\rangle.
-$$
-</div>
-
-Operator order matters: <span markdown="0">\(\delta A(t)\delta A(0)\)</span> need not equal <span markdown="0">\(\delta A(0)\delta A(t)\)</span>. In equilibrium, <span markdown="0">\(\rho_{\rm eq}\)</span> commutes with <span markdown="0">\(H\)</span>. Cyclicity of the trace then shows why shifting *both* times by <span markdown="0">\(s\)</span> leaves an average unchanged:
+The two orderings define the **greater** and **lesser** Green functions:
 
 <div class="math-display">
 $$
 \begin{aligned}
-\langle\delta A(t_1+s)\delta A(t_2+s)\rangle
+G^>_{AB}(t)&=-i\langle\delta A(t)\delta B(0)\rangle,\\
+G^<_{AB}(t)&=-i\langle\delta B(0)\delta A(t)\rangle,\\
+G^R_{AB}(t)&=\Theta(t)\bigl[G^>_{AB}(t)-G^<_{AB}(t)\bigr].
+\end{aligned}
+$$
+</div>
+
+The greater and lesser functions are equilibrium correlations; the retarded one is the response. We use the Fourier convention from Section 1.
+
+In equilibrium, <span markdown="0">\(\rho_{\rm eq}\)</span> commutes with <span markdown="0">\(H\)</span>. Cyclicity of the trace shows that shifting *both* time arguments by <span markdown="0">\(s\)</span> leaves a correlation unchanged:
+
+<div class="math-display">
+$$
+\begin{aligned}
+\langle\delta A(t_1+s)\delta B(t_2+s)\rangle
 &=\operatorname{Tr}\!\left[\rho_{\rm eq}e^{iHs/\hbar}
-\delta A(t_1)\delta A(t_2)e^{-iHs/\hbar}\right]\\
-&=\langle\delta A(t_1)\delta A(t_2)\rangle.
+\delta A(t_1)\delta B(t_2)e^{-iHs/\hbar}\right]\\
+&=\langle\delta A(t_1)\delta B(t_2)\rangle.
 \end{aligned}
 $$
 </div>
 
-The last equality uses <span markdown="0">\(e^{-iHs/\hbar}\rho_{\rm eq}e^{iHs/\hbar}=\rho_{\rm eq}\)</span>. Taking <span markdown="0">\((t_1,t_2,s)=(0,t,-t)\)</span> gives
+The last equality uses <span markdown="0">\(e^{-iHs/\hbar}\rho_{\rm eq}e^{iHs/\hbar}=\rho_{\rm eq}\)</span>. Let <span markdown="0">\(D_{AB}(t)=\langle[\delta A(t),\delta B(0)]\rangle\)</span>. Then
 
 <div class="math-display">
 $$
 \begin{aligned}
-\langle\delta A(0)\delta A(t)\rangle
-&=\langle\delta A(-t)\delta A(0)\rangle=C_A(-t),\\
-D(t)&\equiv\langle[\delta A(t),\delta A(0)]\rangle
-=C_A(t)-C_A(-t),\\
-D(-t)&=C_A(-t)-C_A(t)=-D(t).
+D_{AB}(-t)
+&=\langle[\delta A(-t),\delta B(0)]\rangle\\
+&=\langle[\delta A(0),\delta B(t)]\rangle
+=-D_{BA}(t).
 \end{aligned}
 $$
 </div>
 
-Thus the oddness of the commutator follows from stationarity and the definition of a commutator. We next use energy eigenstates to turn this time-domain statement into the frequency-domain FDT.
+Thus <span markdown="0">\(D_{AB}\)</span> is generally not odd in time; <span markdown="0">\(D_{AA}\)</span> is.
 
 ### 2.2 Deriving quantum FDT from energy eigenstates
 
-Write <span markdown="0">\(H|n\rangle=E_n|n\rangle\)</span> and <span markdown="0">\(p_n=e^{-\beta E_n}/Z\)</span>. Inserting <span markdown="0">\(\sum_m|m\rangle\langle m|=1\)</span> between the two factors of <span markdown="0">\(\delta A\)</span> gives
+Write <span markdown="0">\(H|n\rangle=E_n|n\rangle\)</span>, <span markdown="0">\(p_n=e^{-\beta E_n}/Z\)</span>, and <span markdown="0">\(A_{nm}=\langle n|\delta A|m\rangle\)</span>, <span markdown="0">\(B_{mn}=\langle m|\delta B|n\rangle\)</span>. Inserting <span markdown="0">\(\sum_m|m\rangle\langle m|=1\)</span> between the operators gives
 
 <div class="math-display">
 $$
 \begin{aligned}
-C_A(t)
-&=\sum_{n,m}p_n\langle n|\delta A|m\rangle
-\langle m|\delta A|n\rangle e^{-i(E_m-E_n)t/\hbar}\\
-&=\sum_{n,m}p_n|\langle m|\delta A|n\rangle|^2
-e^{-i(E_m-E_n)t/\hbar},\\
-\int_{-\infty}^{\infty}e^{i\omega t}C_A(t)\,\mathrm dt
-&=2\pi\sum_{n,m}p_n|\langle m|\delta A|n\rangle|^2
+\langle\delta A(t)\delta B(0)\rangle
+&=\sum_{n,m}p_n A_{nm}B_{mn}e^{-i(E_m-E_n)t/\hbar},\\
+iG^>_{AB}(\omega)
+&=2\pi\sum_{n,m}p_n A_{nm}B_{mn}
 \delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right).
 \end{aligned}
 $$
 </div>
 
-The first equality uses <span markdown="0">\(A(t)=e^{iHt/\hbar}Ae^{-iHt/\hbar}\)</span>; the second uses Hermiticity. The last line Fourier-transforms <span markdown="0">\(e^{-i(E_m-E_n)t/\hbar}\)</span> into a Dirac delta peak. For the reversed time ordering <span markdown="0">\(C_A(-t)=\langle\delta A(0)\delta A(t)\rangle\)</span>, exchange <span markdown="0">\(n\)</span> and <span markdown="0">\(m\)</span> in the same sum:
+Fourier transformation produces the delta peak. Exchanging <span markdown="0">\(n,m\)</span> gives the lesser function:
 
 <div class="math-display">
 $$
 \begin{aligned}
-\int_{-\infty}^{\infty}e^{i\omega t}C_A(-t)\,\mathrm dt
-&=2\pi\sum_{n,m}p_m|\langle m|\delta A|n\rangle|^2
+iG^<_{AB}(\omega)
+&=2\pi\sum_{n,m}p_m A_{nm}B_{mn}
 \delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
-&=e^{-\beta\hbar\omega}
-\int_{-\infty}^{\infty}e^{i\omega t}C_A(t)\,\mathrm dt.
+&=e^{-\beta\hbar\omega}\,iG^>_{AB}(\omega).
 \end{aligned}
 $$
 </div>
 
-In the last step, the delta peak sets <span markdown="0">\(E_m-E_n=\hbar\omega\)</span>, so <span markdown="0">\(p_m/p_n=e^{-\beta\hbar\omega}\)</span>. This is **detailed balance**.
+On the delta peak, <span markdown="0">\(E_m-E_n=\hbar\omega\)</span>, so <span markdown="0">\(p_m/p_n=e^{-\beta\hbar\omega}\)</span>. This is **detailed balance**.
 
-Now use the same energy-state sum in <span markdown="0">\(D(t)=C_A(t)-C_A(-t)\)</span>. Exchanging the indices in the second term changes its weight from <span markdown="0">\(p_n\)</span> to <span markdown="0">\(p_m\)</span>. Fourier-transforming the retarded Green function with a small damping factor <span markdown="0">\(e^{-\eta t}\)</span>, then taking <span markdown="0">\(\eta\to0^+\)</span>, gives
+The difference <span markdown="0">\(G^>-G^<\)</span> contains the weight <span markdown="0">\(p_n-p_m\)</span>. Fourier-transforming the retarded function with a small damping factor <span markdown="0">\(e^{-\eta t}\)</span>, then taking <span markdown="0">\(\eta\to0^+\)</span>, gives
+
+<div class="math-display">
+$$
+G^R_{AB}(\omega)
+=\sum_{n,m}\frac{(p_n-p_m)A_{nm}B_{mn}}
+{\omega-(E_m-E_n)/\hbar+i0^+}.
+$$
+</div>
+
+Here <span markdown="0">\(-i\int_0^\infty e^{ixt-\eta t}\,\mathrm dt=(x+i\eta)^{-1}\)</span>. Since <span markdown="0">\(A_{nm}B_{mn}\)</span> may be complex, <span markdown="0">\(\operatorname{Im}\chi_{AB}\)</span> alone also contains principal-value terms. Hermiticity gives <span markdown="0">\((B_{nm}A_{mn})^*=A_{nm}B_{mn}\)</span>, so <span markdown="0">\(\chi_{BA}(\omega)^*\)</span> has the same numerator but an opposite <span markdown="0">\(i0^+\)</span>. Subtracting uses <span markdown="0">\((x+i0^+)^{-1}-(x-i0^+)^{-1}=-2\pi i\delta(x)\)</span>:
 
 <div class="math-display">
 $$
 \begin{aligned}
-D(t)&=\sum_{n,m}(p_n-p_m)|\langle m|\delta A|n\rangle|^2
-e^{-i(E_m-E_n)t/\hbar},\\
-G^R_{AA}(\omega)
-&=\sum_{n,m}\frac{(p_n-p_m)|\langle m|\delta A|n\rangle|^2}
-{\omega-(E_m-E_n)/\hbar+i0^+}.
+\frac{\chi_{AB}(\omega)-\chi_{BA}(\omega)^*}{2i}
+&=\frac{\pi}{\hbar}\sum_{n,m}(p_n-p_m)A_{nm}B_{mn}
+\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
+&=\frac{i}{2\hbar}\bigl[G^>_{AB}(\omega)-G^<_{AB}(\omega)\bigr]\\
+&=\frac{i}{2\hbar}\bigl(1-e^{-\beta\hbar\omega}\bigr)
+G^>_{AB}(\omega)\\
+&=\frac{1-e^{-\beta\hbar\omega}}{2\hbar}
+\int_{-\infty}^{\infty}e^{i\omega t}
+\langle\delta A(t)\delta B(0)\rangle\,\mathrm dt.
 \end{aligned}
 $$
 </div>
 
-Here <span markdown="0">\(-i\int_0^\infty e^{ixt-\eta t}\,\mathrm dt=(x+i\eta)^{-1}\)</span>. Using <span markdown="0">\(\operatorname{Im}(x+i0^+)^{-1}=-\pi\delta(x)\)</span> and <span markdown="0">\(\chi_{AA}=-G^R_{AA}/\hbar\)</span> gives
+This is the **quantum FDT for a cross response**. The left side is the dissipative part of the response matrix; the right side is the greater Green function, an ordered equilibrium correlation. For <span markdown="0">\(B=A\)</span>, it reduces to
 
 <div class="math-display">
 $$
 \begin{aligned}
 2\hbar\operatorname{Im}\chi_{AA}(\omega)
-&=2\pi\sum_{n,m}(p_n-p_m)|\langle m|\delta A|n\rangle|^2
-\delta\!\left(\omega-\frac{E_m-E_n}{\hbar}\right)\\
-&=\int_{-\infty}^{\infty}e^{i\omega t}
-\bigl[C_A(t)-C_A(-t)\bigr]\,\mathrm dt\\
+&=\bigl(1-e^{-\beta\hbar\omega}\bigr)iG^>_{AA}(\omega)\\
 &=\bigl(1-e^{-\beta\hbar\omega}\bigr)
 \int_{-\infty}^{\infty}e^{i\omega t}
 \langle\delta A(t)\delta A(0)\rangle\,\mathrm dt.
@@ -273,11 +285,9 @@ $$
 $$
 </div>
 
-This is the **quantum FDT**: the imaginary part of the response is the difference between the two time orderings of an equilibrium correlation, with detailed balance fixing their ratio.
-
 ### 2.3 Classical FDT and the useful connection
 
-The symmetrized correlation averages the two operator orderings. Their Fourier transforms have the ratio <span markdown="0">\(e^{-\beta\hbar\omega}\)</span>, so divide their sum by their difference in the quantum FDT. Since <span markdown="0">\((1+e^{-\beta\hbar\omega})/(1-e^{-\beta\hbar\omega})=\coth(\beta\hbar\omega/2)\)</span>, this gives
+For <span markdown="0">\(A=B\)</span>, the symmetrized correlation averages the greater and lesser orderings. Their Fourier transforms have the ratio <span markdown="0">\(e^{-\beta\hbar\omega}\)</span>, so divide their sum by their difference in the quantum FDT. Since <span markdown="0">\((1+e^{-\beta\hbar\omega})/(1-e^{-\beta\hbar\omega})=\coth(\beta\hbar\omega/2)\)</span>, this gives
 
 <div class="math-display">
 $$
@@ -600,7 +610,7 @@ S_{\rm inel}(\mathbf q,\omega)
 $$
 </div>
 
-The second line follows by inserting energy eigenstates, as in Section 2. In the weak-scattering (first Born) limit, the same density matrix element gives the probe's transition probability, so its cross section is proportional to <span markdown="0">\(S_{\rm inel}\)</span>. Applying detailed balance to <span markdown="0">\(\rho_{\mathbf q},\rho_{-\mathbf q}\)</span> gives the response line from the correlation integral above. Probe-dependent factors are omitted. Add the elastic Bragg peak separately; for different atoms, put scattering lengths or form factors inside the density operator.
+The second line follows by inserting energy eigenstates, as in Section 2. In the weak-scattering (first Born) limit, the same density matrix element gives the probe's transition probability, so its cross section is proportional to <span markdown="0">\(S_{\rm inel}\)</span>. Here <span markdown="0">\(\rho_{-\mathbf q}=\rho_{\mathbf q}^\dagger\)</span> makes the Lehmann numerator a real squared magnitude; thus <span markdown="0">\(\operatorname{Im}\chi_{\rho_{\mathbf q}\rho_{-\mathbf q}}\)</span> isolates the delta peaks, and detailed balance gives the response line. Probe-dependent factors are omitted. Add the elastic Bragg peak separately; for different atoms, put scattering lengths or form factors inside the density operator.
 
 ### 3.11 Phonon or vibrational DOS
 
